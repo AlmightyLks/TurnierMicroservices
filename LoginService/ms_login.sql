@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 29, 2021 at 09:59 AM
+-- Generation Time: Feb 01, 2021 at 07:47 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.2.34
 
@@ -31,16 +31,16 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(33) DEFAULT NULL,
   `password` varchar(33) DEFAULT NULL,
-  `loggedIn` int(1) DEFAULT NULL
+  `sessionId` varchar(33) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `loggedIn`) VALUES
-(1, 'Admin', 'Admin', 0),
-(2, 'User', 'User', 1);
+INSERT INTO `users` (`id`, `username`, `password`, `sessionId`) VALUES
+(1, 'Admin', 'Admin', ''),
+(2, 'User', 'User', '');
 
 --
 -- Indexes for dumped tables

@@ -14,12 +14,35 @@ namespace LoginService.Controllers
         private const string databaseName = "ms_login";
 
         // GET: api/Message
-        public IEnumerable<string> Get()
+        public IEnumerable<User> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<User> result = new List<User>();
+            MySqlDataReader dataReader;
+            MySqlConnection connection;
+
+            (dataReader, connection) = QueryDB($"select * from users;");
+
+            if ((dataReader, connection) == (null, null))
+                return result;
+
+            while (dataReader.Read())
+            {
+                User user = new User()
+                {
+                    Id = (int)dataReader["id"],
+                    SessionID = (string)dataReader["SessionID"],
+                    Password = (string)dataReader["password"],
+                    Username = (string)dataReader["username"]
+                };
+                result.Add(user);
+            }
+
+            dataReader.Close();
+            connection.Close();
+            return result;
         }
 
-        // GET: api/Message/
+        // GET: api/Message?username=name
         public IEnumerable<User> Get(string username)
         {
             List<User> result = new List<User>();
@@ -36,7 +59,7 @@ namespace LoginService.Controllers
                 User user = new User()
                 {
                     Id = (int)dataReader["id"],
-                    LoggedIn = ((int)dataReader["loggedIn"]) == 1,
+                    SessionID = (string)dataReader["SessionID"],
                     Password = (string)dataReader["password"],
                     Username = (string)dataReader["username"]
                 };
@@ -49,12 +72,12 @@ namespace LoginService.Controllers
         }
 
         // PUT: api/Message/5
-        public bool Put(int id, [FromBody] int loginStatus)
+        public bool Put(int id, [FromBody] string sessionId)
         {
             int affectedRows = 0;
             try
             {
-                affectedRows = NonQueryDB($"update users set loggedIn='{loginStatus}' where id='{id}';");
+                affectedRows = NonQueryDB($"update users set `sessionId`='{sessionId}' where id='{id}';");
             }
             catch (Exception e)
             {

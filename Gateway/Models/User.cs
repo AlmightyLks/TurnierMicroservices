@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
-namespace LoginService.Models
+namespace Gateway.Models
 {
     public class User
     {
@@ -50,28 +46,7 @@ namespace LoginService.Models
         #endregion
 
         #region Worker
-        public void LogIn(string sessionId)
-        {
-            SessionID = sessionId;
-            using (HttpClient client = new HttpClient())
-            {
-                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
-                Task<HttpResponseMessage> response = client.PutAsync($"https://localhost:44315/api/Message/{Id}", jsonContent);
-                response.Wait();
-                Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
-            }
-        }
-        public void LogOut()
-        {
-            SessionID = string.Empty;
-            using (HttpClient client = new HttpClient())
-            {
-                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
-                Task<HttpResponseMessage> response = client.PutAsync($"https://localhost:44315/api/Message/{Id}", jsonContent);
-                response.Wait();
-                Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
-            }
-        }
+
         #endregion
     }
 }

@@ -1,20 +1,22 @@
-﻿using LoginService.Models;
+﻿using Gateway.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
-namespace LoginService.Controllers
+namespace Gateway.Controllers
 {
     public class Controller
     {
         #region Eigenschaften
-        private List<User> _users;
+        private List<User> _sessionUsers;
         #endregion
 
         #region Accessoren/Modifier
-        public List<User> Users { get => _users; set => _users = value; }
+        public List<User> Users { get => _sessionUsers; set => _sessionUsers = value; }
         #endregion
 
         #region Konstruktoren
@@ -26,9 +28,7 @@ namespace LoginService.Controllers
         {
             Users = controller.Users;
         }
-        #endregion
 
-        #region Worker
         public void FetchUsers()
         {
             try
@@ -47,27 +47,10 @@ namespace LoginService.Controllers
 
             }
         }
-        public User CheckCredentials(string username, string password)
-        {
-            User result = null;
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    Task<HttpResponseMessage> response = client.GetAsync($"https://localhost:44315/api/Message?username={username}");
-                    response.Wait();
-                    Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
-                    jsonStr.Wait();
-                    result = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result)
-                        .Find(_ => _.Password == password);
-                }
-            }
-            catch (Exception e)
-            {
+        #endregion
 
-            }
-            return result;
-        }
+        #region Worker
+
         #endregion
     }
 }
