@@ -2,4 +2,10 @@
 
 <!DOCTYPE html>
 
-<h1>Guten Tag</h1>
+<form id="form1" runat="server">
+    <asp:Button ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" />
+</form>
+<h1 style="width: 152px">Guten Tag</h1>
+<br>
+<br>
+<br>

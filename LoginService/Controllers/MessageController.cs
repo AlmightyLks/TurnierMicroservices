@@ -72,12 +72,12 @@ namespace LoginService.Controllers
         }
 
         // PUT: api/Message/5
-        public bool Put(int id, [FromBody] string sessionId)
+        public bool Put(int id, [FromBody] User user)
         {
             int affectedRows = 0;
             try
             {
-                affectedRows = NonQueryDB($"update users set `sessionId`='{sessionId}' where id='{id}';");
+                affectedRows = NonQueryDB($"update users set `sessionId`='{user.SessionID}' where id='{id}';");
             }
             catch (Exception e)
             {
