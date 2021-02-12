@@ -1,4 +1,4 @@
-﻿using Gateway.Models;
+﻿using MitgliederService.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,30 +7,22 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Gateway.Controllers
+namespace MitgliederService.Controllers
 {
-    public class Controller
+    public sealed class Controller
     {
-        #region Eigenschaften
-        private List<User> _sessionUsers;
-        #endregion
+        private List<User> users;
 
-        #region Accessoren/Modifier
-        public List<User> Users { get => _sessionUsers; set => _sessionUsers = value; }
-        #endregion
+        public List<User> Users { get => users; set => users = value; }
 
-        #region Konstruktoren
         public Controller()
         {
             Users = new List<User>();
         }
-        public Controller(Controller controller)
+        public Controller(Controller c)
         {
-            Users = controller.Users;
+            Users = c.Users;
         }
-        #endregion
-
-        #region Worker
         public void FetchUsers()
         {
             try
@@ -47,6 +39,5 @@ namespace Gateway.Controllers
 
             }
         }
-        #endregion
     }
 }

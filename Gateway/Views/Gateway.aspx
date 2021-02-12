@@ -2,13 +2,27 @@
 
 <!DOCTYPE html>
 <head>
-    <link href="../Content/Testen.css" type="text/css" rel="stylesheet" />
+    <link href="../Content/nav-bar.css" type="text/css" rel="stylesheet" />
 </head>
-
-<form id="form1" runat="server">
-    <asp:Button ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" />
-</form>
-<h1 class="Test" style="width: 254px">Guten Tag</h1>
-<br>
-<br>
-<br>
+<body>
+    <form id="LogoutForm" runat="server">
+        <nav class="nav-bar">
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="https://localhost:44366/Views/Verwaltung.aspx?SessionID=<%= Session.SessionID %>">Mitgliederverwaltung</a></li>
+                <li><a href="#">Mannschaftsverwaltung</a></li>
+                <li style="float: right">
+                    <asp:Button CssClass="logout" ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" Height="47px" />
+                </li>
+                <li style="float: right;"><a id="LoggedInAs" href="#">Eingeloggt als: <%= GetLoggedInUsername() %></a></li>
+            </ul>
+        </nav>
+    </form>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br>
+    <br>
+    <br>
+</body>
