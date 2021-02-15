@@ -1,4 +1,4 @@
-﻿using MitgliederService.Models;
+﻿using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

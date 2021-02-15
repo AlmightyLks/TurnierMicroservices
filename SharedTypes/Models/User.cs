@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace MitgliederService.Models
+namespace SharedTypes.Models
 {
     public class User
     {

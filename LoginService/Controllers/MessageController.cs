@@ -1,17 +1,14 @@
-﻿using LoginService.Models;
+﻿using SharedTypes.Models;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace LoginService.Controllers
 {
     public class MessageController : ApiController
     {
-        private const string databaseName = "ms_login";
+        private const string databaseName = "ms_LoginService";
 
         // GET: api/Message
         public IEnumerable<User> Get()

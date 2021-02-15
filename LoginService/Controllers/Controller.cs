@@ -1,4 +1,4 @@
-﻿using LoginService.Models;
+﻿using SharedTypes.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

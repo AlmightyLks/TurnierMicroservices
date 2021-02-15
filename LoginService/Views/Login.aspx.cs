@@ -1,5 +1,5 @@
 ﻿using LoginService.Controllers;
-using LoginService.Models;
+using SharedTypes.Models;
 using System;
 
 namespace LoginService.Views
