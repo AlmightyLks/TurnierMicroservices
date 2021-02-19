@@ -14,13 +14,13 @@ namespace SharedTypes.Models
     public class Mannschaft
     {
         #region Eigenschaften
-        private List<Person> _Personen;
+        private List<Mitglied> _Personen;
         private string _Name;
         private string _SportArt;
         #endregion
 
         #region Accessoren/Modifier
-        public List<Person> Personen { get => _Personen; set => _Personen = value; }
+        public List<Mitglied> Personen { get => _Personen; set => _Personen = value; }
         public string Name { get => _Name; set => _Name = value; }
         public string SportArt { get => _SportArt; set => _SportArt = value; }
         #endregion
@@ -28,19 +28,19 @@ namespace SharedTypes.Models
         #region Konstruktoren
         public Mannschaft()
         {
-            Personen = new List<Person>();
+            Personen = new List<Mitglied>();
             Name = "";
             SportArt = "";
         }
-        public Mannschaft(Person P)
+        public Mannschaft(Mitglied P)
         {
             Personen.Add(P);
             Name = "";
             SportArt = "";
         }
-        public Mannschaft(Person[] PP)
+        public Mannschaft(Mitglied[] PP)
         {
-            foreach (Person P in PP)
+            foreach (Mitglied P in PP)
             {
                 Personen.Add(P);
             }
@@ -56,8 +56,8 @@ namespace SharedTypes.Models
             {
                 #region Bubble Sort
 
-                Person TempPerson;
-                Person[] TempPersonenArray = new Person[Personen.Count];
+                Mitglied TempPerson;
+                Mitglied[] TempPersonenArray = new Mitglied[Personen.Count];
 
                 if (Kriterium == 0) //Name
                 {
@@ -138,7 +138,7 @@ namespace SharedTypes.Models
             {
                 #region Merge Sort 
 
-                Person[] ParaPerson = Personen.ToArray();
+                Mitglied[] ParaPerson = Personen.ToArray();
                 bool aufwaerts = false;
                 if (Richtung == 1)
                 {
@@ -159,7 +159,7 @@ namespace SharedTypes.Models
                 //Nichts
             }
         }
-        private void Sort(ref Person[] Menge, bool aufwaerts)
+        private void Sort(ref Mitglied[] Menge, bool aufwaerts)
         {
 
             if (Menge.Length > 1)
@@ -168,14 +168,14 @@ namespace SharedTypes.Models
                 int mitte = Convert.ToInt32(Menge.Length / 2);
 
                 //2.Linke Seite erstellen
-                Person[] Neulinks = new Person[mitte];
+                Mitglied[] Neulinks = new Mitglied[mitte];
                 for (int i = 0; i <= Neulinks.Length - 1; i++)
                 {
                     Neulinks[i] = Menge[i];
                 }
 
                 //3.rechte Seite erstellen
-                Person[] Neurechts = new Person[Menge.Length - mitte];
+                Mitglied[] Neurechts = new Mitglied[Menge.Length - mitte];
                 for (int i = mitte; i <= Menge.Length - 1; i++)
                 {
                     Neurechts[i - mitte] = Menge[i];
@@ -193,9 +193,9 @@ namespace SharedTypes.Models
                 //Nichts
             }
         }
-        private Person[] merge(ref Person[] MengeLinks, ref Person[] MengeRechts, bool aufwaerts)
+        private Mitglied[] merge(ref Mitglied[] MengeLinks, ref Mitglied[] MengeRechts, bool aufwaerts)
         {
-            Person[] neueArray = new Person[MengeLinks.Length + MengeRechts.Length];
+            Mitglied[] neueArray = new Mitglied[MengeLinks.Length + MengeRechts.Length];
             int indexLinks = 0;
             int indexRechts = 0;
             int indexErgebnis = 0;

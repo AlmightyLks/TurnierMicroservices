@@ -1,4 +1,5 @@
 ﻿using Gateway.Controllers;
+using SharedTypes;
 using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Gateway.Views
 
             //If no User with that SessionID is known, redirect to login
             if (!Verwalter.Users.Any(_ => _.SessionID == Session.SessionID))
-                Response.Redirect($"https://localhost:44315/Views/Login?SessionID={Session.SessionID}");
+                Response.Redirect($"{Microservices.LoginServicePage}?SessionID={Session.SessionID}");
         }
         protected void LogoutButton_Click(object sender, EventArgs e)
         {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public class Physiotherapeut : Person
+    public class Physiotherapeut : Mitglied
     {
         #region Eigenschaften
         private Mannschaft _EigeneMannschaft;
@@ -41,7 +41,7 @@ namespace SharedTypes.Models
         {
             Console.WriteLine("Der Physiotherapeut führt seinen Job aus.");
         }
-        public override int CompareByName(Person P)
+        public override int CompareByName(Mitglied P)
         {
             int ergebnis = 0;
 

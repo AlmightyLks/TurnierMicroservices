@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public abstract class Person
+    public abstract class Mitglied
     {
         #region Eigenschaften
         private string _Name;
@@ -22,15 +22,15 @@ namespace SharedTypes.Models
         #endregion
 
         #region Konstruktoren
-        public Person()
+        public Mitglied()
         {
             Name = "";
         }
-        public Person(string N)
+        public Mitglied(string N)
         {
             Name = N;
         }
-        public Person(Person P)
+        public Mitglied(Mitglied P)
         {
             Name = P.Name;
         }
@@ -41,7 +41,7 @@ namespace SharedTypes.Models
         {
             Console.WriteLine(T);
         }
-        public abstract int CompareByName(Person SP);
+        public abstract int CompareByName(Mitglied SP);
         #endregion
     }
 }

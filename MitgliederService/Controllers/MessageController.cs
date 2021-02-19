@@ -1,6 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
+using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace MitgliederService.Controllers
@@ -10,9 +12,106 @@ namespace MitgliederService.Controllers
         private const string databaseName = "ms_MitgliederService";
 
         // GET: api/Message
-        public IEnumerable<string> Get()
+        public IEnumerable<Mitglied> Get()
         {
-            return new string[] { "value1", "value2" };
+            var newMembers = new List<KeyValuePair<int, Mitglied>>();                           //Alle Leute
+
+            var dbTennisspieler = new Dictionary<int, int>();                                   //Spieler_ID & JahreErfahrung
+            var dbHandballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
+            var dbFussballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
+            var dbTrainer = new Dictionary<int, int>();                                         //Person_ID & EigeneMannschaft_ID
+            var dbPhysiotherapeut = new Dictionary<int, int>();                                 //Person_ID & EigeneMannschaft_ID
+            var dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();                      //ID <Person_ID & AnzahlSpiele>
+            var dbPerson = new Dictionary<int, string>();                                       //ID <Person_ID & AnzahlSpiele>
+
+            //Query Tennisspieler
+            var sqlRdr = QueryDB($"Select * from `tennisspieler`");
+
+            while (sqlRdr.DataReader.Read())
+                dbTennisspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], (int)sqlRdr.DataReader["JahreErfahrung"]);
+
+
+
+            //Query Handballspieler
+            sqlRdr = QueryDB($"Select * from `handballspieler`");
+
+            while (sqlRdr.DataReader.Read())
+                dbHandballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
+
+
+
+            //Query Fussballspieler
+            sqlRdr = QueryDB($"Select * from `fussballspieler`");
+
+            while (sqlRdr.DataReader.Read())
+                dbFussballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
+
+
+            //Query Spieler
+            sqlRdr = QueryDB($"Select * from `spieler`");
+
+            while (sqlRdr.DataReader.Read()) //ID <Person_ID & AnzahlSpiele>
+                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Person_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+
+
+            //Query Person
+            sqlRdr = QueryDB($"Select * from `mitglied`");
+
+            while (sqlRdr.DataReader.Read())
+                dbPerson.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+
+
+            //Query 
+            sqlRdr = QueryDB($"Select * from `trainer`");
+
+            while (sqlRdr.DataReader.Read())
+                dbTrainer.Add((int)sqlRdr.DataReader["Person_ID"], (int)sqlRdr.DataReader["EigeneMannschaft_ID"]);
+
+
+            //Query Physiotherapeut
+            sqlRdr = QueryDB($"Select * from `physiotherapeut`");
+
+            while (sqlRdr.DataReader.Read())
+                dbPhysiotherapeut.Add((int)sqlRdr.DataReader["Person_ID"], (int)sqlRdr.DataReader["EigeneMannschaft_ID"]);
+
+            foreach (var tennisspieler in dbTennisspieler)
+            {
+                newMembers.Add(new KeyValuePair<int, Mitglied>(tennisspieler.Key, new Tennisspieler()
+                {
+                    JahreErfahrung = tennisspieler.Value,
+                    Sportart = "Tennis",
+                    AnzahlSpiele = dbSpieler.First(e => e.Key == tennisspieler.Key).Value.Value,
+                    Name = dbPerson.First(e => e.Key == dbSpieler.First(el => el.Key == tennisspieler.Key).Value.Key).Value
+                }));
+            }
+
+            foreach (var handballspieler in dbHandballspieler)
+            {
+                newMembers.Add(new KeyValuePair<int, Mitglied>(handballspieler.Key, new Handballspieler()
+                {
+                    Position = handballspieler.Value,
+                    Sportart = "Handball",
+                    AnzahlSpiele = dbSpieler.First(e => e.Key == handballspieler.Key).Value.Value,
+                    Name = dbPerson.First(e => e.Key == dbSpieler.First(el => el.Key == handballspieler.Key).Value.Key).Value
+                }));
+            }
+
+            foreach (var fussballspieler in dbFussballspieler)
+            {
+                newMembers.Add(new KeyValuePair<int, Mitglied>(fussballspieler.Key, new Fussballspieler()
+                {
+                    Position = fussballspieler.Value,
+                    Sportart = "Fussball",
+                    AnzahlSpiele = dbSpieler.First(e => e.Key == fussballspieler.Key).Value.Value,
+                    Name = dbPerson.First(e => e.Key == dbSpieler.First(el => el.Key == fussballspieler.Key).Value.Key).Value
+                }));
+            }
+
+            sqlRdr.DataReader.Close();
+            sqlRdr.Connection.Close();
+            IEnumerable<Mitglied> mitglieder = newMembers.Select((e) => e.Value);
+
+            return mitglieder;
         }
 
         // GET: api/Message/5
@@ -22,12 +121,12 @@ namespace MitgliederService.Controllers
         }
 
         // POST: api/Message
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
 
         // PUT: api/Message/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 
@@ -35,6 +134,8 @@ namespace MitgliederService.Controllers
         public void Delete(int id)
         {
         }
+
+
         private (MySqlDataReader DataReader, MySqlConnection Connection) QueryDB(string sqlStr)
         {
             (MySqlDataReader DataReader, MySqlConnection Connection) result = (null, null);

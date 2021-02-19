@@ -1,4 +1,5 @@
 ﻿using LoginService.Controllers;
+using SharedTypes;
 using SharedTypes.Models;
 using System;
 
@@ -15,7 +16,7 @@ namespace LoginService.Views
                 Verwalter = Global.Verwalter;
 
             if (Request.Params["SessionID"] == null)
-                Response.Redirect("https://localhost:44338/Views/Gateway");
+                Response.Redirect($"{Microservices.GatewayPage}");
 
             Verwalter.FetchUsers();
         }
@@ -35,7 +36,7 @@ namespace LoginService.Views
             else
             {
                 user.LogIn(Request.Params["SessionID"]);
-                Response.Redirect("https://localhost:44338/Views/Gateway");
+                Response.Redirect($"{Microservices.GatewayPage}");
             }
         }
     }

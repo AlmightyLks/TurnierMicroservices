@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using SharedTypes;
 
 namespace Gateway.Controllers
 {
@@ -37,9 +38,12 @@ namespace Gateway.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    HttpResponseMessage response = client.GetAsync($"https://localhost:44315/api/Message").GetAwaiter().GetResult();
+                    HttpResponseMessage response = client.GetAsync($"{Microservices.LoginServiceApi}").GetAwaiter().GetResult();
                     string jsonStr = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Users = JsonConvert.DeserializeObject<List<User>>(jsonStr);
+                    Users = JsonConvert.DeserializeObject<List<User>>(jsonStr, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
                 }
             }
             catch (Exception e)

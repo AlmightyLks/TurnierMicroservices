@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SharedTypes;
 
 namespace LoginService.Controllers
 {
@@ -35,11 +36,14 @@ namespace LoginService.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    Task<HttpResponseMessage> response = client.GetAsync($"https://localhost:44315/api/Message");
+                    Task<HttpResponseMessage> response = client.GetAsync($"{Microservices.LoginServiceApi}");
                     response.Wait();
                     Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
                     jsonStr.Wait();
-                    Users = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result);
+                    Users = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
                 }
             }
             catch (Exception e)
@@ -58,8 +62,11 @@ namespace LoginService.Controllers
                     response.Wait();
                     Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
                     jsonStr.Wait();
-                    result = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result)
-                        .Find(_ => _.Password == password);
+                    result = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    })
+                    .Find(_ => _.Password == password);
                 }
             }
             catch (Exception e)

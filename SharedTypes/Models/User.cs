@@ -55,8 +55,16 @@ namespace SharedTypes.Models
             SessionID = sessionId;
             using (HttpClient client = new HttpClient())
             {
-                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
-                Task<HttpResponseMessage> response = client.PutAsync($"https://localhost:44315/api/Message/{Id}", jsonContent);
+                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(
+                    this,
+                    Formatting.None,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    }), 
+                    Encoding.UTF8, 
+                    "application/json");
+                Task<HttpResponseMessage> response = client.PutAsync($"{Microservices.LoginServiceApi}/{Id}", jsonContent);
                 response.Wait();
                 Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
             }
@@ -66,8 +74,16 @@ namespace SharedTypes.Models
             SessionID = string.Empty;
             using (HttpClient client = new HttpClient())
             {
-                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
-                Task<HttpResponseMessage> response = client.PutAsync($"https://localhost:44315/api/Message/{Id}", jsonContent);
+                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(
+                    this,
+                    Formatting.None,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    }),
+                    Encoding.UTF8,
+                    "application/json");
+                Task<HttpResponseMessage> response = client.PutAsync($"{Microservices.LoginServiceApi}/{Id}", jsonContent);
                 response.Wait();
                 Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
             }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public abstract class Spieler : Person
+    public abstract class Spieler : Mitglied
     {
         #region Eigenschaften
         private string _Sportart;
@@ -55,7 +55,7 @@ namespace SharedTypes.Models
         {
             Console.WriteLine("Der Spieler spielt.");
         }
-        public abstract override int CompareByName(Person P);
+        public abstract override int CompareByName(Mitglied P);
         public abstract int CompareBySpiele(Spieler S);
         #endregion
     }

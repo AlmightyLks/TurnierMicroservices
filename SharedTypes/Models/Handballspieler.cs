@@ -41,7 +41,7 @@ namespace SharedTypes.Models
         {
             Console.WriteLine("Der Fussball Spieler wirft einen Ball.");
         }
-        public override int CompareByName(Person P)
+        public override int CompareByName(Mitglied P)
         {
             int ergebnis = Name.CompareTo(P.Name);
             return ergebnis;

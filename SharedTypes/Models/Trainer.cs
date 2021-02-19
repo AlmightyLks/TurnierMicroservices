@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public class Trainer : Person
+    public class Trainer : Mitglied
     {
         #region Eigenschaften
         private Mannschaft _EigeneMannschaft;
@@ -42,7 +42,7 @@ namespace SharedTypes.Models
             Console.WriteLine("Trainer ist am Coachen.");
         }
 
-        public override int CompareByName(Person P)
+        public override int CompareByName(Mitglied P)
         {
             int ergebnis = 0;
 
