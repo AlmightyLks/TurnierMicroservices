@@ -19,10 +19,10 @@ namespace MitgliederService.Controllers
             var dbTennisspieler = new Dictionary<int, int>();                                   //Spieler_ID & JahreErfahrung
             var dbHandballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
             var dbFussballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
-            var dbTrainer = new Dictionary<int, int>();                                         //Person_ID & EigeneMannschaft_ID
-            var dbPhysiotherapeut = new Dictionary<int, int>();                                 //Person_ID & EigeneMannschaft_ID
-            var dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();                      //ID <Person_ID & AnzahlSpiele>
-            var dbPerson = new Dictionary<int, string>();                                       //ID <Person_ID & AnzahlSpiele>
+            var dbTrainer = new List<int>();                                                    //Mitglied_ID
+            var dbPhysiotherapeut = new List<int>();                                            //Mitglied_ID
+            var dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();                      //ID <Mitglied_ID & AnzahlSpiele>
+            var dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
             //Query Tennisspieler
             var sqlRdr = QueryDB($"Select * from `tennisspieler`");
@@ -50,29 +50,29 @@ namespace MitgliederService.Controllers
             //Query Spieler
             sqlRdr = QueryDB($"Select * from `spieler`");
 
-            while (sqlRdr.DataReader.Read()) //ID <Person_ID & AnzahlSpiele>
-                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Person_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
 
 
-            //Query Person
+            //Query Mitglied
             sqlRdr = QueryDB($"Select * from `mitglied`");
 
             while (sqlRdr.DataReader.Read())
-                dbPerson.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
 
 
             //Query 
             sqlRdr = QueryDB($"Select * from `trainer`");
 
             while (sqlRdr.DataReader.Read())
-                dbTrainer.Add((int)sqlRdr.DataReader["Person_ID"], (int)sqlRdr.DataReader["EigeneMannschaft_ID"]);
+                dbTrainer.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
 
 
             //Query Physiotherapeut
             sqlRdr = QueryDB($"Select * from `physiotherapeut`");
 
             while (sqlRdr.DataReader.Read())
-                dbPhysiotherapeut.Add((int)sqlRdr.DataReader["Person_ID"], (int)sqlRdr.DataReader["EigeneMannschaft_ID"]);
+                dbPhysiotherapeut.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
 
             foreach (var tennisspieler in dbTennisspieler)
             {
@@ -81,7 +81,7 @@ namespace MitgliederService.Controllers
                     JahreErfahrung = tennisspieler.Value,
                     Sportart = "Tennis",
                     AnzahlSpiele = dbSpieler.First(e => e.Key == tennisspieler.Key).Value.Value,
-                    Name = dbPerson.First(e => e.Key == dbSpieler.First(el => el.Key == tennisspieler.Key).Value.Key).Value
+                    Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == tennisspieler.Key).Value.Key).Value
                 }));
             }
 
@@ -92,7 +92,7 @@ namespace MitgliederService.Controllers
                     Position = handballspieler.Value,
                     Sportart = "Handball",
                     AnzahlSpiele = dbSpieler.First(e => e.Key == handballspieler.Key).Value.Value,
-                    Name = dbPerson.First(e => e.Key == dbSpieler.First(el => el.Key == handballspieler.Key).Value.Key).Value
+                    Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == handballspieler.Key).Value.Key).Value
                 }));
             }
 
@@ -103,7 +103,20 @@ namespace MitgliederService.Controllers
                     Position = fussballspieler.Value,
                     Sportart = "Fussball",
                     AnzahlSpiele = dbSpieler.First(e => e.Key == fussballspieler.Key).Value.Value,
-                    Name = dbPerson.First(e => e.Key == dbSpieler.First(el => el.Key == fussballspieler.Key).Value.Key).Value
+                    Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == fussballspieler.Key).Value.Key).Value
+                }));
+            }
+
+            foreach (var trainer in dbTrainer)
+            {
+                newMembers.Add(new Trainer()
+                {
+                    Name = dbTrainer.First(e => e.Key == dbSpieler.First(el => el.Key == trainer.Key).Value.Key).Value
+                    EigeneMannschaft
+                    Position = fussballspieler.Value,
+                    Sportart = "Fussball",
+                    AnzahlSpiele = dbSpieler.First(e => e.Key == fussballspieler.Key).Value.Value,
+                    
                 }));
             }
 

@@ -38,7 +38,6 @@ namespace MitgliederService.Views
             THR.Cells.Add(new TableCell { Text = "Typ" });
             THR.Cells.Add(new TableCell { Text = "Position" });
             THR.Cells.Add(new TableCell { Text = "Erfahrung (in Jahren)" });
-            THR.Cells.Add(new TableCell { Text = "Mannschaftsname" });
             THR.Cells.Add(new TableCell { Text = "Anzahl gespielter Spiele" });
             THR.Cells.Add(new TableCell { Text = "" });
             THR.Cells.Add(new TableCell { Text = "" });
@@ -138,12 +137,12 @@ namespace MitgliederService.Views
 
         private void DeleteButtonClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
         }
 
         private void EditButtonClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
         }
 
         private void LoadSportarten()

@@ -36,7 +36,7 @@ namespace MitgliederService.Controllers
         }
         public void FetchUsers()
         {
-            Users = FetchData<List<User>>(Microservices.MitgliederServiceApi) ?? Users;
+            Users = FetchData<List<User>>(Microservices.LoginServiceApi) ?? Users;
         }
 
         public void FetchMitglieder()

@@ -33,12 +33,6 @@
             <asp:DropDownList ID="SportArtenListe" runat="server"></asp:DropDownList>
             <br />
             <br />
-            <asp:Label ID="MitgliedNameLabel1" runat="server" Text="Name:"></asp:Label>
-            <br />
-            <asp:DropDownList ID="DropDownList1" runat="server">
-            </asp:DropDownList>
-            <br />
-            <br />
             <asp:Label ID="AddPersonTypeLabel" runat="server" Text="Auswahl des Personen Typs:" Font-Size="Medium"></asp:Label>
             <br />
             <br />
@@ -70,11 +64,6 @@
             <asp:TextBox ID="PersonErfahrungTextBox" type="number" runat="server" Enabled="False"></asp:TextBox>
             <br />
             <br />
-            <asp:Label ID="MitgliedMannschaftsnameLabel" runat="server" Text="Mannschaft:"></asp:Label>
-            <br />
-            <asp:DropDownList ID="PersonMannschaftDropDownList" runat="server">
-            </asp:DropDownList>
-            <br />
             <br />
             <br />
         </asp:Panel>
@@ -99,7 +88,6 @@
             <asp:TableCell runat="server">Typ</asp:TableCell>
             <asp:TableCell runat="server">Position</asp:TableCell>
             <asp:TableCell runat="server">Erfahrung (in Jahren)</asp:TableCell>
-            <asp:TableCell runat="server">Mannschaftsname</asp:TableCell>
             <asp:TableCell runat="server">Anzahl gespielter Spiele</asp:TableCell>
             <asp:TableCell runat="server"></asp:TableCell>
             <asp:TableCell runat="server"></asp:TableCell>
