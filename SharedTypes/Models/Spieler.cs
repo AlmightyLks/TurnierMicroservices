@@ -34,12 +34,12 @@ namespace SharedTypes.Models
             AnzahlSpiele = 0;
             Sportart = SA;
         }
-        public Spieler(string SA, string name) : base(name)
+        public Spieler(string SA, string name, int id) : base(name, id)
         {
             AnzahlSpiele = 0;
             Sportart = SA;
         }
-        public Spieler(string SA, int AS, string Name) : base(Name)
+        public Spieler(string SA, int AS, string Name, int id) : base(Name, id)
         {
             AnzahlSpiele = AS;
             Sportart = SA;

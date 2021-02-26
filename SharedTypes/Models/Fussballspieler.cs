@@ -26,7 +26,7 @@ namespace SharedTypes.Models
         {
             Position = "Mittelfeld";
         }
-        public Fussballspieler(string P, string N):base("FussballSpieler", N)
+        public Fussballspieler(string P, string N, int id) :base("FussballSpieler", N, id)
         {
             Position = P;
         }

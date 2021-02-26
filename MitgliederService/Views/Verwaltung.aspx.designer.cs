@@ -96,13 +96,40 @@ namespace MitgliederService.Views
         protected global::System.Web.UI.WebControls.RadioButtonList AddPersonTypeRadioButtons;
 
         /// <summary>
-        /// PersonenTypLabel control.
+        /// ConfirmMitgliedTyp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PersonenTypLabel;
+        protected global::System.Web.UI.WebControls.Button ConfirmMitgliedTyp;
+
+        /// <summary>
+        /// MitgliedTypLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MitgliedTypLabel;
+
+        /// <summary>
+        /// MitgliedIdLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MitgliedIdLabel;
+
+        /// <summary>
+        /// MitgliedIdTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MitgliedIdTextBox;
 
         /// <summary>
         /// MitgliedNameLabel control.
@@ -114,13 +141,13 @@ namespace MitgliederService.Views
         protected global::System.Web.UI.WebControls.Label MitgliedNameLabel;
 
         /// <summary>
-        /// PersonNameTextBox control.
+        /// MitgliedNameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersonNameTextBox;
+        protected global::System.Web.UI.WebControls.TextBox MitgliedNameTextBox;
 
         /// <summary>
         /// MitgliedAnzahlSpieleLabel control.
@@ -132,13 +159,13 @@ namespace MitgliederService.Views
         protected global::System.Web.UI.WebControls.Label MitgliedAnzahlSpieleLabel;
 
         /// <summary>
-        /// PersonAnzahlSpieleTextBox control.
+        /// MitgliedAnzahlSpieleTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersonAnzahlSpieleTextBox;
+        protected global::System.Web.UI.WebControls.TextBox MitgliedAnzahlSpieleTextBox;
 
         /// <summary>
         /// MitgliedPositionLabel control.
@@ -150,13 +177,13 @@ namespace MitgliederService.Views
         protected global::System.Web.UI.WebControls.Label MitgliedPositionLabel;
 
         /// <summary>
-        /// PersonPositionTextBox control.
+        /// MitgliedPositionTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersonPositionTextBox;
+        protected global::System.Web.UI.WebControls.TextBox MitgliedPositionTextBox;
 
         /// <summary>
         /// MitgliedErfahrungLabel control.
@@ -168,13 +195,31 @@ namespace MitgliederService.Views
         protected global::System.Web.UI.WebControls.Label MitgliedErfahrungLabel;
 
         /// <summary>
-        /// PersonErfahrungTextBox control.
+        /// MitgliedErfahrungTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersonErfahrungTextBox;
+        protected global::System.Web.UI.WebControls.TextBox MitgliedErfahrungTextBox;
+
+        /// <summary>
+        /// AddMemberConfirmButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddMemberConfirmButton;
+
+        /// <summary>
+        /// EditMemberConfirmButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button EditMemberConfirmButton;
 
         /// <summary>
         /// Mitglieder control.

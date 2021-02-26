@@ -16,6 +16,7 @@ input,
 select,
 textarea {
     max-width: 280px;
+    margin-top: 0px;
 }
 
 
@@ -28,4 +29,9 @@ textarea {
     .body-content {
         padding: 0;
     }
+}
+
+.AddLabel {
+}
+.AddTextbox {
 }

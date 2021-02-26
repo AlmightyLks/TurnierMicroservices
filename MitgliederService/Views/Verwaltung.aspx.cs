@@ -46,39 +46,39 @@ namespace MitgliederService.Views
 
             Verwalter.FetchMitglieder();
 
-            int personIndex = 0;
+            int MitgliedIndex = 0;
 
-            foreach (Mitglied person in Verwalter.Mitglieder)
+            foreach (Mitglied Mitglied in Verwalter.Mitglieder)
             {
                 TableRow TR = new TableRow();
 
-                TR.Cells.Add(new TableCell { Text = person.Name });
+                TR.Cells.Add(new TableCell { Text = Mitglied.Name });
 
-                if (person is Fussballspieler)
+                if (Mitglied is Fussballspieler)
                 {
                     TR.Cells.Add(new TableCell { Text = "Fussballspieler" });
-                    TR.Cells.Add(new TableCell { Text = (person as Fussballspieler).Position });
+                    TR.Cells.Add(new TableCell { Text = (Mitglied as Fussballspieler).Position });
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
-                else if (person is Handballspieler)
+                else if (Mitglied is Handballspieler)
                 {
                     TR.Cells.Add(new TableCell { Text = "Handballspieler" });
-                    TR.Cells.Add(new TableCell { Text = (person as Handballspieler).Position });
+                    TR.Cells.Add(new TableCell { Text = (Mitglied as Handballspieler).Position });
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
-                else if (person is Tennisspieler)
+                else if (Mitglied is Tennisspieler)
                 {
                     TR.Cells.Add(new TableCell { Text = "Tennisspieler" });
                     TR.Cells.Add(new TableCell { Text = "-" });
-                    TR.Cells.Add(new TableCell { Text = (person as Tennisspieler).JahreErfahrung.ToString() });
+                    TR.Cells.Add(new TableCell { Text = (Mitglied as Tennisspieler).JahreErfahrung.ToString() });
                 }
-                else if (person is Physiotherapeut)
+                else if (Mitglied is Physiotherapeut)
                 {
                     TR.Cells.Add(new TableCell { Text = "Physiotherapeut" });
                     TR.Cells.Add(new TableCell { Text = "-" });
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
-                else if (person is Trainer)
+                else if (Mitglied is Trainer)
                 {
                     TR.Cells.Add(new TableCell { Text = "Trainer" });
                     TR.Cells.Add(new TableCell { Text = "-" });
@@ -89,7 +89,7 @@ namespace MitgliederService.Views
                 /*
                 foreach (Mannschaft M in Verwalter.Mannschaften)
                 {
-                    if (M.Personen.Contains(person))
+                    if (M.Mitglieden.Contains(Mitglied))
                     {
                         TR.Cells.Add(new TableCell { Text = M.Name });
                         inMannschaft = true;
@@ -104,7 +104,7 @@ namespace MitgliederService.Views
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
 
-                if (person is Tennisspieler tennisSpieler)
+                if (Mitglied is Tennisspieler tennisSpieler)
                 {
                     TR.Cells.Add(new TableCell { Text = tennisSpieler.AnzahlSpiele.ToString() });
                 }
@@ -116,14 +116,14 @@ namespace MitgliederService.Views
                 var editCell = new TableCell();
                 var editButton = new Button();
                 editButton.Text = "Edit";
-                editButton.ID = "Edit " + personIndex;
+                editButton.ID = "Edit " + MitgliedIndex;
                 editButton.Click += EditButtonClick;
                 editCell.Controls.Add(editButton);
 
                 var deleteCell = new TableCell();
                 var deleteButton = new Button();
                 deleteButton.Text = "Delete";
-                deleteButton.ID = "Delete " + personIndex;
+                deleteButton.ID = "Delete " + MitgliedIndex;
                 deleteButton.Click += DeleteButtonClick;
                 deleteCell.Controls.Add(deleteButton);
 
@@ -131,18 +131,8 @@ namespace MitgliederService.Views
                 TR.Cells.Add(deleteCell);
 
                 MyTable.Rows.Add(TR);
-                personIndex++;
+                MitgliedIndex++;
             }
-        }
-
-        private void DeleteButtonClick(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EditButtonClick(object sender, EventArgs e)
-        {
-
         }
 
         private void LoadSportarten()
@@ -187,6 +177,8 @@ namespace MitgliederService.Views
             FormPanel.Visible = true;
             AddMemberButton.Visible = false;
             CancelButton.Visible = true;
+            AddMemberConfirmButton.Visible = false;
+            EditMemberConfirmButton.Visible = false;
         }
 
         protected void CancelButton_Click(object sender, EventArgs e)
@@ -194,6 +186,244 @@ namespace MitgliederService.Views
             FormPanel.Visible = false;
             AddMemberButton.Visible = true;
             CancelButton.Visible = false;
+            AddMemberConfirmButton.Visible = false;
+            EditMemberConfirmButton.Visible = false;
+        }
+        private void DeleteButtonClick(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            int index = int.Parse(button.ID.Split(' ')[1]);
+            Verwalter.DeleteMember(Verwalter.Mitglieder[index]);
+            string gateSessionId = Request.Params["SessionID"];
+            Response.Redirect($"{Microservices.MitgliederServicePage}?SessionID={gateSessionId}");
+        }
+
+        private void EditButtonClick(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPanel.Visible = true;
+                Button button = sender as Button;
+                int index = int.Parse(button.ID.Split(' ')[1]);
+
+                Mitglied mitglied = Verwalter.Mitglieder[index];
+                ToggleUIInputByType(mitglied);
+                PlaceEditInfo(mitglied);
+                EditMemberConfirmButton.Visible = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        protected void EditMemberConfirmButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Button button = sender as Button;
+                int id = int.Parse(MitgliedIdTextBox.Text);
+                Mitglied mitglied = Verwalter.Mitglieder.Find(_ => _.Id == id);
+
+                if (mitglied is Fussballspieler fussballspieler)
+                {
+                    fussballspieler.Name = MitgliedNameTextBox.Text;
+                    fussballspieler.AnzahlSpiele = int.Parse(MitgliedAnzahlSpieleTextBox.Text);
+                    fussballspieler.Position = MitgliedPositionTextBox.Text;
+                }
+                else if (mitglied is Handballspieler handballspieler)
+                {
+                    handballspieler.Name = MitgliedNameTextBox.Text;
+                    handballspieler.AnzahlSpiele = int.Parse(MitgliedAnzahlSpieleTextBox.Text);
+                    handballspieler.Position = MitgliedPositionTextBox.Text;
+                }
+                else if (mitglied is Tennisspieler tennisspieler)
+                {
+                    tennisspieler.Name = MitgliedNameTextBox.Text;
+                    tennisspieler.AnzahlSpiele = int.Parse(MitgliedAnzahlSpieleTextBox.Text);
+                    tennisspieler.JahreErfahrung = int.Parse(MitgliedErfahrungTextBox.Text);
+                }
+                else if (mitglied is Trainer trainer)
+                {
+                    trainer.Name = MitgliedNameTextBox.Text;
+                }
+                else if (mitglied is Physiotherapeut physiotherapeut)
+                {
+                    physiotherapeut.Name = MitgliedNameTextBox.Text;
+                }
+
+                Verwalter.PutMember(mitglied);
+                string gateSessionId = Request.Params["SessionID"];
+                Response.Redirect($"{Microservices.MitgliederServicePage}?SessionID={gateSessionId}");
+                EditMemberConfirmButton.Visible = false;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        protected void AddMemberConfirmButton_Click(object sender, EventArgs e)
+        {
+            Mitglied mitglied = null;
+
+            switch (AddPersonTypeRadioButtons.SelectedValue)
+            {
+                case "Physiotherapeut":
+                    mitglied = new Physiotherapeut()
+                    {
+                        Id = 0,
+                        EigeneMannschaft = null,
+                        Name = MitgliedNameTextBox.Text
+                    };
+                    break;
+                case "Trainer":
+                    mitglied = new Trainer()
+                    {
+                        Id = 0,
+                        EigeneMannschaft = null,
+                        Name = MitgliedNameTextBox.Text
+                    };
+                    break;
+                case "Spieler" when SportArtenListe.SelectedValue == "Fussball":
+                    mitglied = new Fussballspieler()
+                    {
+                        Id = 0,
+                        Name = MitgliedNameTextBox.Text,
+                        AnzahlSpiele = int.Parse(MitgliedAnzahlSpieleTextBox.Text),
+                        Position = MitgliedPositionTextBox.Text,
+                        Sportart = "Fussball"
+                    };
+                    break;
+                case "Spieler" when SportArtenListe.SelectedValue == "Tennis":
+                    mitglied = new Tennisspieler()
+                    {
+                        Id = 0,
+                        Name = MitgliedNameTextBox.Text,
+                        AnzahlSpiele = int.Parse(MitgliedAnzahlSpieleTextBox.Text),
+                        JahreErfahrung = int.Parse(MitgliedErfahrungTextBox.Text),
+                        Sportart = "Tennis"
+                    };
+                    break;
+                case "Spieler" when SportArtenListe.SelectedValue == "Handball":
+                    mitglied = new Handballspieler()
+                    {
+                        Id = 0,
+                        Name = MitgliedNameTextBox.Text,
+                        AnzahlSpiele = int.Parse(MitgliedAnzahlSpieleTextBox.Text),
+                        Position = MitgliedPositionTextBox.Text,
+                        Sportart = "Handball"
+                    };
+                    break;
+            }
+
+            if (mitglied != null)
+            {
+                Verwalter.PostMember(mitglied);
+            }
+        }
+
+        private void PlaceEditInfo(Mitglied mitglied)
+        {
+            MitgliedIdTextBox.Text = mitglied.Id.ToString();
+            MitgliedNameTextBox.Text = mitglied.Name;
+
+            if (mitglied is Fussballspieler fussballspieler)
+            { 
+                MitgliedAnzahlSpieleTextBox.Text = fussballspieler.AnzahlSpiele.ToString();
+                MitgliedPositionTextBox.Text = fussballspieler.Position;
+                MitgliedTypLabel.Text = "Fussballspieler";
+            }
+            else if (mitglied is Handballspieler handballspieler)
+            {
+                MitgliedAnzahlSpieleTextBox.Text = handballspieler.AnzahlSpiele.ToString();
+                MitgliedPositionTextBox.Text = handballspieler.Position;
+                MitgliedTypLabel.Text = "Handballspieler";
+            }
+            else if (mitglied is Tennisspieler tennisspieler)
+            {
+                MitgliedAnzahlSpieleTextBox.Text = tennisspieler.AnzahlSpiele.ToString();
+                MitgliedErfahrungTextBox.Text = tennisspieler.JahreErfahrung.ToString();
+                MitgliedTypLabel.Text = "Tennisspieler";
+            }
+        }
+        protected void ConfirmSportart_Click(object sender, EventArgs e)
+        {
+            ToggleUIInputByElements();
+        }
+        private void ToggleUIInputByElements()
+        {
+            MitgliedNameLabel.Enabled = true;
+            MitgliedNameTextBox.Enabled = true;
+            MitgliedAnzahlSpieleLabel.Enabled = false;
+            MitgliedAnzahlSpieleTextBox.Enabled = false;
+            MitgliedErfahrungLabel.Enabled = false;
+            MitgliedErfahrungTextBox.Enabled = false;
+            MitgliedPositionLabel.Enabled = false;
+            MitgliedPositionTextBox.Enabled = false;
+            AddMemberConfirmButton.Visible = true;
+
+            switch (AddPersonTypeRadioButtons.SelectedValue)
+            {
+                case "Spieler" when SportArtenListe.SelectedValue == "Fussball":
+                    MitgliedAnzahlSpieleLabel.Enabled = true;
+                    MitgliedAnzahlSpieleTextBox.Enabled = true;
+                    MitgliedPositionLabel.Enabled = true;
+                    MitgliedPositionTextBox.Enabled = true;
+                    MitgliedTypLabel.Text = "Fussballspieler";
+                    break;
+                case "Spieler" when SportArtenListe.SelectedValue == "Tennis":
+                    MitgliedAnzahlSpieleLabel.Enabled = true;
+                    MitgliedAnzahlSpieleTextBox.Enabled = true;
+                    MitgliedErfahrungLabel.Enabled = true;
+                    MitgliedErfahrungTextBox.Enabled = true;
+                    MitgliedTypLabel.Text = "Tennisspieler";
+                    break;
+                case "Spieler" when SportArtenListe.SelectedValue == "Handball":
+                    MitgliedAnzahlSpieleLabel.Enabled = true;
+                    MitgliedAnzahlSpieleTextBox.Enabled = true;
+                    MitgliedPositionLabel.Enabled = true;
+                    MitgliedPositionTextBox.Enabled = true;
+                    MitgliedTypLabel.Text = "Handballspieler";
+                    break;
+            }
+        }
+        private void ToggleUIInputByType(Mitglied mitglied)
+        {
+            MitgliedNameLabel.Enabled = true;
+            MitgliedNameTextBox.Enabled = true;
+            MitgliedAnzahlSpieleLabel.Enabled = false;
+            MitgliedAnzahlSpieleTextBox.Enabled = false;
+            MitgliedErfahrungLabel.Enabled = false;
+            MitgliedErfahrungTextBox.Enabled = false;
+            MitgliedPositionLabel.Enabled = false;
+            MitgliedPositionTextBox.Enabled = false;
+            AddMemberConfirmButton.Visible = false;
+
+            if (mitglied is Fussballspieler)
+            {
+                MitgliedAnzahlSpieleLabel.Enabled = true;
+                MitgliedAnzahlSpieleTextBox.Enabled = true;
+                MitgliedPositionLabel.Enabled = true;
+                MitgliedPositionTextBox.Enabled = true;
+                MitgliedTypLabel.Text = "Fussballspieler";
+            }
+            else if (mitglied is Handballspieler handballspieler)
+            {
+                MitgliedAnzahlSpieleLabel.Enabled = true;
+                MitgliedAnzahlSpieleTextBox.Enabled = true;
+                MitgliedPositionLabel.Enabled = true;
+                MitgliedPositionTextBox.Enabled = true;
+                MitgliedTypLabel.Text = "Handballspieler";
+            }
+            else if (mitglied is Tennisspieler tennisspieler)
+            {
+                MitgliedAnzahlSpieleLabel.Enabled = true;
+                MitgliedAnzahlSpieleTextBox.Enabled = true;
+                MitgliedErfahrungLabel.Enabled = true;
+                MitgliedErfahrungTextBox.Enabled = true;
+                MitgliedTypLabel.Text = "Tennisspieler";
+            }
         }
     }
 }

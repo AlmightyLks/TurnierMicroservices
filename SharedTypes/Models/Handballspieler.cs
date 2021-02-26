@@ -26,7 +26,7 @@ namespace SharedTypes.Models
         {
             Position = "Kreisläufer";
         }
-        public Handballspieler(string P, string N) : base("HandballSpieler", N)
+        public Handballspieler(string P, string N, int id) : base("HandballSpieler", N, id)
         {
             Position = P;
         }

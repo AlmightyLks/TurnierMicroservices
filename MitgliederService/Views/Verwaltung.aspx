@@ -4,6 +4,7 @@
 
 <head>
     <link href="../Content/nav-bar.css" type="text/css" rel="stylesheet" />
+    <link href="../Content/Site.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
     <form id="LogoutForm" runat="server">
@@ -27,7 +28,6 @@
 
         <asp:Panel runat="server" ID="FormPanel" Visible="false">
             &nbsp;<br />
-            <br />
             <asp:Label ID="SportartenListenLabel" runat="server" Text="Sportarten:"></asp:Label>
             <br />
             <asp:DropDownList ID="SportArtenListe" runat="server"></asp:DropDownList>
@@ -42,29 +42,34 @@
                 <asp:ListItem>Trainer</asp:ListItem>
             </asp:RadioButtonList>
             <br />
-            <asp:Label ID="PersonenTypLabel" runat="server" Text=" " Font-Bold="True" Font-Overline="False" Font-Underline="True"></asp:Label>
-            <br />
-            <asp:Label ID="MitgliedNameLabel" runat="server" Text="Name:"></asp:Label>
-            <br />
-            <asp:TextBox ID="PersonNameTextBox" runat="server" Enabled="False"></asp:TextBox>
+            <asp:Button ID="ConfirmMitgliedTyp" runat="server" OnClick="ConfirmSportart_Click" Text="Sportart bestätigen" />
             <br />
             <br />
-            <asp:Label ID="MitgliedAnzahlSpieleLabel" runat="server" Text="Anzahl gespielter Spiele:"></asp:Label>
+            <asp:Label ID="MitgliedTypLabel" runat="server" Text=" " Font-Bold="True" Font-Overline="False" Font-Underline="True"></asp:Label>
+            <asp:Label ID="MitgliedIdLabel" runat="server" CssClass="AddLabel" Text="ID:"></asp:Label>
             <br />
-            <asp:TextBox ID="PersonAnzahlSpieleTextBox" type="number" runat="server" Enabled="False"></asp:TextBox>
+            <asp:TextBox ID="MitgliedIdTextBox" runat="server" CssClass="AddTextbox" Enabled="False" TextMode="Number"></asp:TextBox>
             <br />
+            <asp:Label ID="MitgliedNameLabel" CssClass="AddLabel" runat="server" Text="Name:"></asp:Label>
+            <br />
+            <asp:TextBox ID="MitgliedNameTextBox" CssClass="AddTextbox" runat="server" Enabled="False"></asp:TextBox>
+            <br />
+            <asp:Label ID="MitgliedAnzahlSpieleLabel" runat="server" CssClass="AddLabel" Text="Anzahl gespielter Spiele:"></asp:Label>
+            <br />
+            <asp:TextBox ID="MitgliedAnzahlSpieleTextBox" runat="server" CssClass="AddTextbox" Enabled="False" type="number"></asp:TextBox>
             <br />
             <asp:Label ID="MitgliedPositionLabel" runat="server" Text="Position:"></asp:Label>
             <br />
-            <asp:TextBox ID="PersonPositionTextBox" runat="server" Enabled="False"></asp:TextBox>
-            <br />
+            <asp:TextBox ID="MitgliedPositionTextBox" runat="server" Enabled="False"></asp:TextBox>
             <br />
             <asp:Label ID="MitgliedErfahrungLabel" runat="server" Text="Erfahrung:"></asp:Label>
             <br />
-            <asp:TextBox ID="PersonErfahrungTextBox" type="number" runat="server" Enabled="False"></asp:TextBox>
+            <asp:TextBox ID="MitgliedErfahrungTextBox" runat="server" Enabled="False" type="number"></asp:TextBox>
             <br />
             <br />
+            <asp:Button ID="AddMemberConfirmButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberConfirmButton_Click" />
             <br />
+            <asp:Button ID="EditMemberConfirmButton" runat="server" Text="Bestätigen" OnClick="EditMemberConfirmButton_Click" />
             <br />
         </asp:Panel>
 
@@ -80,18 +85,18 @@
         <br />
         <br />
         <br />
-    </form>
 
-    <asp:Table ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
-        <asp:TableHeaderRow runat="server">
-            <asp:TableCell runat="server">Name</asp:TableCell>
-            <asp:TableCell runat="server">Typ</asp:TableCell>
-            <asp:TableCell runat="server">Position</asp:TableCell>
-            <asp:TableCell runat="server">Erfahrung (in Jahren)</asp:TableCell>
-            <asp:TableCell runat="server">Anzahl gespielter Spiele</asp:TableCell>
-            <asp:TableCell runat="server"></asp:TableCell>
-            <asp:TableCell runat="server"></asp:TableCell>
-        </asp:TableHeaderRow>
-    </asp:Table>
+        <asp:Table ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
+            <asp:TableHeaderRow runat="server">
+                <asp:TableCell runat="server">Name</asp:TableCell>
+                <asp:TableCell runat="server">Typ</asp:TableCell>
+                <asp:TableCell runat="server">Position</asp:TableCell>
+                <asp:TableCell runat="server">Erfahrung (in Jahren)</asp:TableCell>
+                <asp:TableCell runat="server">Anzahl gespielter Spiele</asp:TableCell>
+                <asp:TableCell runat="server"></asp:TableCell>
+                <asp:TableCell runat="server"></asp:TableCell>
+            </asp:TableHeaderRow>
+        </asp:Table>
+    </form>
 
 </body>

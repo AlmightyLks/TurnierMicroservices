@@ -26,7 +26,7 @@ namespace SharedTypes.Models
         {
             EigeneMannschaft = new Mannschaft();
         }
-        public Physiotherapeut(Mannschaft EM, string Name) : base(Name)
+        public Physiotherapeut(Mannschaft EM, string Name, int id) : base(Name, id)
         {
             EigeneMannschaft = EM;
         }

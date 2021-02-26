@@ -26,7 +26,7 @@ namespace SharedTypes.Models
         {
             JahreErfahrung = 0;
         }
-        public Tennisspieler(string N, int JE) : base("TennisSpieler", N)
+        public Tennisspieler(string N, int JE, int id) : base("TennisSpieler", N, id)
         {
             JahreErfahrung = JE;
         }

@@ -41,7 +41,16 @@ namespace MitgliederService.Controllers
 
         public void FetchMitglieder()
         {
-            Mitglieder = FetchData<List<Mitglied>>(Microservices.MitgliederServiceApi) ?? Mitglieder;
+            List<Mitglied> mitglieder = new List<Mitglied>();
+            mitglieder.AddRange(FetchData<List<Trainer>>($"{Microservices.MitgliederServiceApi}?type=Trainer") ?? new List<Trainer>());
+            mitglieder.AddRange(FetchData<List<Physiotherapeut>>($"{Microservices.MitgliederServiceApi}?type=Physiotherapeut") ?? new List<Physiotherapeut>());
+            mitglieder.AddRange(FetchData<List<Tennisspieler>>($"{Microservices.MitgliederServiceApi}?type=Tennis") ?? new List<Tennisspieler>());
+            mitglieder.AddRange(FetchData<List<Fussballspieler>>($"{Microservices.MitgliederServiceApi}?type=Fussball") ?? new List<Fussballspieler>());
+            mitglieder.AddRange(FetchData<List<Handballspieler>>($"{Microservices.MitgliederServiceApi}?type=Handball") ?? new List<Handballspieler>());
+            if (mitglieder.Count != 0)
+            {
+                Mitglieder = mitglieder;
+            }
         }
         private T FetchData<T>(string target) where T : class
         {
@@ -63,6 +72,21 @@ namespace MitgliederService.Controllers
 
             }
             return result;
+        }
+
+        public void DeleteMember(Mitglied mitglied)
+        {
+            mitglied.Delete();
+            Mitglieder.Remove(mitglied);
+        }
+        public void PutMember(Mitglied mitglied)
+        {
+            mitglied.Put();
+        }
+
+        internal void PostMember(Mitglied mitglied)
+        {
+            throw new NotImplementedException();
         }
     }
 }
