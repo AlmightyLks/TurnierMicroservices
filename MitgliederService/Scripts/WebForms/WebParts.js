@@ -624,7 +624,7 @@ function WebPartManager_ShowHelp(helpUrl, helpMode) {
     }
 }
 function WebPartManager_ExportWebPart(exportUrl, warn, confirmOnly) {
-    if (warn == true && __wpmExportWarning.length > 0 && this.personalizationScopeShared != true) {
+    if (warn == true && __wpmExportWarning.length > 0 && this.MitgliedalizationScopeShared != true) {
         if (confirm(__wpmExportWarning) == false) {
             return false;
         }

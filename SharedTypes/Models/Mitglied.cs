@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,34 +69,62 @@ namespace SharedTypes.Models
 
         public void Put()
         {
-            string type = "";
-            if (this is Fussballspieler)
-            {
-                type = "Fussball";
-            }
-            else if (this is Handballspieler)
-            {
-                type = "Handball";
-            }
-            else if (this is Tennisspieler)
-            {
-                type = "Tennis";
-            }
-            else if (this is Trainer)
-            {
-                type = "Trainer";
-            }
-            else if (this is Physiotherapeut)
-            {
-                type = "Physiotherapeut";
-            }
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    StringContent strCon = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = client.PutAsync($"{Microservices.MitgliederServiceApi}/{Id}?type={type}", strCon).GetAwaiter().GetResult();
-                    string jsonStr = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    try
+                    {
+                        string jsonStr = JsonConvert.SerializeObject(JsonConvert.SerializeObject(
+                                this,
+                                Formatting.None,
+                                settings: new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }
+                                ));
+
+                        StringContent strCon = new StringContent(
+                            jsonStr,
+                            Encoding.UTF8,
+                            "application/json");
+
+                        HttpResponseMessage response = client.PutAsync($"{Microservices.MitgliederServiceApi}/{Id}", strCon).GetAwaiter().GetResult();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        public void Post()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    try
+                    {
+                        string jsonStr = JsonConvert.SerializeObject(JsonConvert.SerializeObject(
+                                this,
+                                Formatting.None,
+                                settings: new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }
+                                ));
+
+                        StringContent strCon = new StringContent(
+                            jsonStr,
+                            Encoding.UTF8,
+                            "application/json"
+                            );
+
+                        HttpResponseMessage response = client.PostAsync($"{Microservices.MitgliederServiceApi}", strCon).GetAwaiter().GetResult();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                 }
             }
             catch (Exception e)

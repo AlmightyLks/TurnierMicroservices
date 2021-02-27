@@ -86,7 +86,7 @@ namespace MitgliederService.Controllers
 
         internal void PostMember(Mitglied mitglied)
         {
-            throw new NotImplementedException();
+            mitglied.Post();
         }
     }
 }

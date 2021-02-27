@@ -1,6 +1,7 @@
 ﻿using SharedTypes;
 using SharedTypes.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -24,7 +25,10 @@ namespace MitgliederService.Views
                 Verwalter = Session["Verwalter"] as Controllers.Controller;
             }
 
-            LoadSportarten();
+            if (!IsPostBack)
+            {
+                LoadSportarten();
+            }
             LoadMitglieder();
             RedirectUnauthenticatedUser();
         }
@@ -84,29 +88,9 @@ namespace MitgliederService.Views
                     TR.Cells.Add(new TableCell { Text = "-" });
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
-
-                bool inMannschaft = true;
-                /*
-                foreach (Mannschaft M in Verwalter.Mannschaften)
+                if (Mitglied is Spieler spieler)
                 {
-                    if (M.Mitglieden.Contains(Mitglied))
-                    {
-                        TR.Cells.Add(new TableCell { Text = M.Name });
-                        inMannschaft = true;
-                        break;
-                    }
-                    else
-                        inMannschaft = false;
-                }
-                */
-                if (!inMannschaft)
-                {
-                    TR.Cells.Add(new TableCell { Text = "-" });
-                }
-
-                if (Mitglied is Tennisspieler tennisSpieler)
-                {
-                    TR.Cells.Add(new TableCell { Text = tennisSpieler.AnzahlSpiele.ToString() });
+                    TR.Cells.Add(new TableCell { Text = spieler.AnzahlSpiele.ToString() });
                 }
                 else
                 {
@@ -219,6 +203,14 @@ namespace MitgliederService.Views
 
         protected void EditMemberConfirmButton_Click(object sender, EventArgs e)
         {
+            List<TextBox> textboxen = new List<TextBox>();
+            textboxen.Add(MitgliedNameTextBox);
+            textboxen.Add(MitgliedAnzahlSpieleTextBox);
+            textboxen.Add(MitgliedPositionTextBox);
+            textboxen.Add(MitgliedErfahrungTextBox);
+            if (textboxen.Any(_ => _.Enabled && string.IsNullOrWhiteSpace(_.Text)))
+                return;
+
             try
             {
                 Button button = sender as Button;
@@ -253,18 +245,32 @@ namespace MitgliederService.Views
                 }
 
                 Verwalter.PutMember(mitglied);
-                string gateSessionId = Request.Params["SessionID"];
-                Response.Redirect($"{Microservices.MitgliederServicePage}?SessionID={gateSessionId}");
                 EditMemberConfirmButton.Visible = false;
             }
             catch (Exception ex)
             {
 
             }
+
+            FormPanel.Visible = false;
+            AddMemberButton.Visible = true;
+            CancelButton.Visible = false;
+            AddMemberConfirmButton.Visible = false;
+            EditMemberConfirmButton.Visible = false;
+            string gateSessionId = Request.Params["SessionID"];
+            Response.Redirect($"{Microservices.MitgliederServicePage}?SessionID={gateSessionId}");
         }
 
         protected void AddMemberConfirmButton_Click(object sender, EventArgs e)
         {
+            List<TextBox> textboxen = new List<TextBox>();
+            textboxen.Add(MitgliedNameTextBox);
+            textboxen.Add(MitgliedAnzahlSpieleTextBox);
+            textboxen.Add(MitgliedPositionTextBox);
+            textboxen.Add(MitgliedErfahrungTextBox);
+            if (textboxen.Any(_ => _.Enabled && string.IsNullOrWhiteSpace(_.Text)))
+                return;
+
             Mitglied mitglied = null;
 
             switch (AddPersonTypeRadioButtons.SelectedValue)
@@ -285,7 +291,7 @@ namespace MitgliederService.Views
                         Name = MitgliedNameTextBox.Text
                     };
                     break;
-                case "Spieler" when SportArtenListe.SelectedValue == "Fussball":
+                case "Spieler" when SportArtenListe.SelectedItem.Value == "Fussball":
                     mitglied = new Fussballspieler()
                     {
                         Id = 0,
@@ -295,7 +301,7 @@ namespace MitgliederService.Views
                         Sportart = "Fussball"
                     };
                     break;
-                case "Spieler" when SportArtenListe.SelectedValue == "Tennis":
+                case "Spieler" when SportArtenListe.SelectedItem.Value == "Tennis":
                     mitglied = new Tennisspieler()
                     {
                         Id = 0,
@@ -305,7 +311,7 @@ namespace MitgliederService.Views
                         Sportart = "Tennis"
                     };
                     break;
-                case "Spieler" when SportArtenListe.SelectedValue == "Handball":
+                case "Spieler" when SportArtenListe.SelectedItem.Value == "Handball":
                     mitglied = new Handballspieler()
                     {
                         Id = 0,
@@ -321,6 +327,13 @@ namespace MitgliederService.Views
             {
                 Verwalter.PostMember(mitglied);
             }
+            FormPanel.Visible = false;
+            AddMemberButton.Visible = true;
+            CancelButton.Visible = false;
+            AddMemberConfirmButton.Visible = false;
+            EditMemberConfirmButton.Visible = false;
+            string gateSessionId = Request.Params["SessionID"];
+            Response.Redirect($"{Microservices.MitgliederServicePage}?SessionID={gateSessionId}");
         }
 
         private void PlaceEditInfo(Mitglied mitglied)
@@ -329,7 +342,7 @@ namespace MitgliederService.Views
             MitgliedNameTextBox.Text = mitglied.Name;
 
             if (mitglied is Fussballspieler fussballspieler)
-            { 
+            {
                 MitgliedAnzahlSpieleTextBox.Text = fussballspieler.AnzahlSpiele.ToString();
                 MitgliedPositionTextBox.Text = fussballspieler.Position;
                 MitgliedTypLabel.Text = "Fussballspieler";
