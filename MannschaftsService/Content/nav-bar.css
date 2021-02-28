@@ -1,0 +1,38 @@
+﻿.nav-bar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    height: 46px;
+}
+
+.nav-bar li {
+    float: left;
+    cursor: pointer;
+}
+
+.nav-bar li a {
+    display: block;
+    color: #DCDCDC;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: large;
+}
+
+.nav-bar li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.nav-bar .logout {
+    background-color: #a11a1a;
+    margin-left: 0px;
+    font-size: medium;
+}
+
+.nav-bar .active {
+    background-color: #206b34;
+    margin-left: 0px;
+    font-size: medium;
+}

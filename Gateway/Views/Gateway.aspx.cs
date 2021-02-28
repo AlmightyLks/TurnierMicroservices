@@ -34,7 +34,7 @@ namespace Gateway.Views
         {
             Verwalter.FetchUsers();
 
-            //If no User with that SessionID is known, redirect to login
+            //If no User with that SessionID is known
             if (!Verwalter.Users.Any(_ => _.SessionID == Session.SessionID))
                 Response.Redirect($"{Microservices.LoginServicePage}?SessionID={Session.SessionID}");
         }
@@ -49,5 +49,9 @@ namespace Gateway.Views
         }
         public string GetLoggedInUsername()
             => Verwalter.Users.Find(_ => _.SessionID == Session.SessionID)?.Username ?? "Unbekannt";
+        public string GetMitgliederverwaltungsLink()
+            => $"{Microservices.MitgliederServicePage}?SessionID={Session.SessionID}";
+        public string GetMannschaftsverwaltungsLink()
+            => $"{Microservices.MannschaftsServicePage}?SessionID={Session.SessionID}";
     }
 }

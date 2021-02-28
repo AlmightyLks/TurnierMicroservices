@@ -58,7 +58,7 @@ namespace LoginService.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    Task<HttpResponseMessage> response = client.GetAsync($"https://localhost:44315/api/Message?username={username}");
+                    Task<HttpResponseMessage> response = client.GetAsync($"{Microservices.LoginServiceApi}?username={username}");
                     response.Wait();
                     Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
                     jsonStr.Wait();

@@ -3,9 +3,11 @@
 //Dateiname: Mannschaft.cs
 //Beschreibung: Klasse Mannschaft
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,35 +16,39 @@ namespace SharedTypes.Models
     public class Mannschaft
     {
         #region Eigenschaften
-        private List<Mitglied> _Personen;
+        private int _Id;
+        private List<Mitglied> _Mitglieder;
         private string _Name;
         private string _SportArt;
         #endregion
 
         #region Accessoren/Modifier
-        public List<Mitglied> Personen { get => _Personen; set => _Personen = value; }
+        public List<Mitglied> Mitglieder { get => _Mitglieder; set => _Mitglieder = value; }
         public string Name { get => _Name; set => _Name = value; }
         public string SportArt { get => _SportArt; set => _SportArt = value; }
+        public int Id { get => _Id; set => _Id = value; }
         #endregion
 
         #region Konstruktoren
         public Mannschaft()
         {
-            Personen = new List<Mitglied>();
+            Mitglieder = new List<Mitglied>();
             Name = "";
             SportArt = "";
+            Id = 0;
         }
         public Mannschaft(Mitglied P)
         {
-            Personen.Add(P);
+            Mitglieder.Add(P);
             Name = "";
             SportArt = "";
+            Id = 0;
         }
         public Mannschaft(Mitglied[] PP)
         {
             foreach (Mitglied P in PP)
             {
-                Personen.Add(P);
+                Mitglieder.Add(P);
             }
             Name = "";
             SportArt = "";
@@ -57,15 +63,15 @@ namespace SharedTypes.Models
                 #region Bubble Sort
 
                 Mitglied TempPerson;
-                Mitglied[] TempPersonenArray = new Mitglied[Personen.Count];
+                Mitglied[] TempPersonenArray = new Mitglied[Mitglieder.Count];
 
                 if (Kriterium == 0) //Name
                 {
                     if (Richtung == 1) //Aufwärts
                     {
-                        for (int t = 0; t < Personen.Count; t++)
+                        for (int t = 0; t < Mitglieder.Count; t++)
                         {
-                            TempPersonenArray[t] = Personen[t];
+                            TempPersonenArray[t] = Mitglieder[t];
                         }
 
                         for (int i = 0; i < TempPersonenArray.Length; i++)
@@ -85,18 +91,18 @@ namespace SharedTypes.Models
                             }
                         }
 
-                        Personen.Clear();
+                        Mitglieder.Clear();
 
                         for (int b = 0; b < TempPersonenArray.Length; b++)
                         {
-                            Personen.Add(TempPersonenArray[b]);
+                            Mitglieder.Add(TempPersonenArray[b]);
                         }
                     }
                     else if (Richtung == 0) //Abwärts
                     {
-                        for (int t = 0; t < Personen.Count; t++)
+                        for (int t = 0; t < Mitglieder.Count; t++)
                         {
-                            TempPersonenArray[t] = Personen[t];
+                            TempPersonenArray[t] = Mitglieder[t];
                         }
 
                         for (int i = 0; i < TempPersonenArray.Length; i++)
@@ -116,11 +122,11 @@ namespace SharedTypes.Models
                             }
                         }
 
-                        Personen.Clear();
+                        Mitglieder.Clear();
 
                         for (int b = 0; b < TempPersonenArray.Length; b++)
                         {
-                            Personen.Add(TempPersonenArray[b]);
+                            Mitglieder.Add(TempPersonenArray[b]);
                         }
                     }
                     else
@@ -138,7 +144,7 @@ namespace SharedTypes.Models
             {
                 #region Merge Sort 
 
-                Mitglied[] ParaPerson = Personen.ToArray();
+                Mitglied[] ParaPerson = Mitglieder.ToArray();
                 bool aufwaerts = false;
                 if (Richtung == 1)
                 {
@@ -150,7 +156,7 @@ namespace SharedTypes.Models
                 }
                 Sort(ref ParaPerson, aufwaerts);
 
-                Personen = ParaPerson.ToList();
+                Mitglieder = ParaPerson.ToList();
 
                 #endregion
             }
@@ -248,6 +254,45 @@ namespace SharedTypes.Models
             }
 
             return neueArray;
+        }
+
+        public void Post()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent jsonContent = new StringContent(
+                        JsonConvert.SerializeObject(JsonConvert.SerializeObject(this, new JsonSerializerSettings()
+                        {
+                            TypeNameHandling = TypeNameHandling.All
+                        })),
+                        Encoding.UTF8,
+                        "application/json");
+
+                    HttpResponseMessage response = client.PostAsync($"{Microservices.MannschaftsServiceApi}", jsonContent).GetAwaiter().GetResult();
+                    _ = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        public void Delete()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = client.DeleteAsync($"{Microservices.MannschaftsServiceApi}/{Id}").GetAwaiter().GetResult();
+                    _ = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
         }
         #endregion
     }

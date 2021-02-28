@@ -9,8 +9,8 @@
         <nav class="nav-bar">
             <ul>
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="https://localhost:44366/Views/Verwaltung?SessionID=<%= Session.SessionID %>">Mitgliederverwaltung</a></li>
-                <li><a href="#">Mannschaftsverwaltung</a></li>
+                <li><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
+                <li><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li style="float: right">
                     <asp:Button CssClass="logout" ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" Height="47px" />
                 </li>

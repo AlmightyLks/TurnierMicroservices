@@ -25,12 +25,18 @@ namespace MitgliederService.Views
                 Verwalter = Session["Verwalter"] as Controllers.Controller;
             }
 
+            RedirectUnauthenticatedUser();
             if (!IsPostBack)
             {
                 LoadSportarten();
             }
             LoadMitglieder();
-            RedirectUnauthenticatedUser();
+
+            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() != "admin")
+            {
+                FormPanel.Visible = false;
+                AddMemberButton.Visible = false;
+            }
         }
 
         private void LoadMitglieder()
@@ -43,8 +49,12 @@ namespace MitgliederService.Views
             THR.Cells.Add(new TableCell { Text = "Position" });
             THR.Cells.Add(new TableCell { Text = "Erfahrung (in Jahren)" });
             THR.Cells.Add(new TableCell { Text = "Anzahl gespielter Spiele" });
-            THR.Cells.Add(new TableCell { Text = "" });
-            THR.Cells.Add(new TableCell { Text = "" });
+
+            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+            {
+                THR.Cells.Add(new TableCell { Text = "" });
+                THR.Cells.Add(new TableCell { Text = "" });
+            }
 
             MyTable.Rows.Add(THR);
 
@@ -96,23 +106,26 @@ namespace MitgliederService.Views
                 {
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
+                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+                {
+                    var editCell = new TableCell();
+                    var editButton = new Button();
+                    editButton.Text = "Edit";
+                    editButton.ID = "Edit " + MitgliedIndex;
+                    editButton.Click += EditButtonClick;
+                    editCell.Controls.Add(editButton);
 
-                var editCell = new TableCell();
-                var editButton = new Button();
-                editButton.Text = "Edit";
-                editButton.ID = "Edit " + MitgliedIndex;
-                editButton.Click += EditButtonClick;
-                editCell.Controls.Add(editButton);
+                    var deleteCell = new TableCell();
+                    var deleteButton = new Button();
+                    deleteButton.Text = "Delete";
+                    deleteButton.ID = "Delete " + MitgliedIndex;
+                    deleteButton.Click += DeleteButtonClick;
+                    deleteCell.Controls.Add(deleteButton);
 
-                var deleteCell = new TableCell();
-                var deleteButton = new Button();
-                deleteButton.Text = "Delete";
-                deleteButton.ID = "Delete " + MitgliedIndex;
-                deleteButton.Click += DeleteButtonClick;
-                deleteCell.Controls.Add(deleteButton);
+                    TR.Cells.Add(editCell);
+                    TR.Cells.Add(deleteCell);
+                }
 
-                TR.Cells.Add(editCell);
-                TR.Cells.Add(deleteCell);
 
                 MyTable.Rows.Add(TR);
                 MitgliedIndex++;
@@ -135,13 +148,14 @@ namespace MitgliederService.Views
             //If no User with that SessionID is known
             if (string.IsNullOrWhiteSpace(gateSessionId)) //redirect to gateway
             {
-                if (!Verwalter.Users.Any(_ => _.SessionID == gateSessionId))
-                    Response.Redirect($"{Microservices.LoginServicePage}?SessionID={gateSessionId}");
+                Response.Redirect($"{Microservices.GatewayPage}");
             }
-            else //redirect to login
+            else
             {
-                if (!Verwalter.Users.Any(_ => _.SessionID == gateSessionId))
+                if (!Verwalter.Users.Any(_ => _.SessionID == Request.Params["SessionID"]))
+                {
                     Response.Redirect($"{Microservices.GatewayPage}");
+                }
             }
         }
         protected void LogoutButton_Click(object sender, EventArgs e)
@@ -438,5 +452,11 @@ namespace MitgliederService.Views
                 MitgliedTypLabel.Text = "Tennisspieler";
             }
         }
+
+
+        public string GetMitgliederverwaltungsLink()
+            => $"#";
+        public string GetMannschaftsverwaltungsLink()
+            => $"{Microservices.MannschaftsServicePage}?SessionID={Request.Params["SessionID"]}";
     }
 }

@@ -12,8 +12,8 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="https://localhost:44338/Views/Gateway">Home</a></li>
-                <li class="active"><a href="#">Mitgliederverwaltung</a></li>
-                <li><a href="#">Mannschaftsverwaltung</a></li>
+                <li class="active"><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
+                <li><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li style="float: right;">
                     <asp:Button CssClass="logout" ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" Height="47px" />
                 </li>
@@ -73,6 +73,7 @@
             <br />
         </asp:Panel>
 
+        <br />
         <br />
         <asp:Label ID="Mitglieder" Font-Size="X-Large" Font-Bold="true" runat="server" Text="Mitglieder:"></asp:Label>
 

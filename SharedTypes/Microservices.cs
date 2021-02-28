@@ -15,5 +15,8 @@ namespace SharedTypes
 
         public const string MitgliederServicePage = "https://localhost:44366/Views/Verwaltung";
         public const string MitgliederServiceApi = "https://localhost:44366/api/Message";
+
+        public const string MannschaftsServicePage = "https://localhost:44335/Views/Verwaltung";
+        public const string MannschaftsServiceApi = "https://localhost:44335/api/Message";
     }
 }
