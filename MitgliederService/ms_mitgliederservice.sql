@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2021 at 10:27 AM
+-- Generation Time: Mar 01, 2021 at 07:20 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.2.34
 
@@ -38,7 +38,7 @@ CREATE TABLE `fussballspieler` (
 --
 
 INSERT INTO `fussballspieler` (`id`, `Position`, `Spieler_ID`) VALUES
-(4, 'Sturm', 4);
+(4, 'Verteidiger', 4);
 
 -- --------------------------------------------------------
 
@@ -78,7 +78,7 @@ INSERT INTO `mitglied` (`id`, `Name`) VALUES
 (6, 'Max Mustermann'),
 (7, 'Lukas Test'),
 (8, 'Tim Gabel'),
-(9, 'Vanessa Jank'),
+(9, 'Vanessa Bruchen'),
 (10, 'Lucas Elm');
 
 -- --------------------------------------------------------
@@ -117,8 +117,8 @@ CREATE TABLE `spieler` (
 --
 
 INSERT INTO `spieler` (`id`, `AnzahlSpiele`, `Sportart`, `Mitglied_ID`) VALUES
-(4, 10, 'Fussball', 8),
-(5, 250, 'Tennis', 9),
+(4, 25, 'Fussball', 8),
+(5, 235, 'Tennis', 9),
 (6, 3, 'Handball', 10);
 
 -- --------------------------------------------------------
@@ -138,7 +138,7 @@ CREATE TABLE `tennisspieler` (
 --
 
 INSERT INTO `tennisspieler` (`id`, `JahreErfahrung`, `Spieler_ID`) VALUES
-(2, 500, 5);
+(2, 7, 5);
 
 -- --------------------------------------------------------
 
@@ -218,31 +218,31 @@ ALTER TABLE `trainer`
 -- AUTO_INCREMENT for table `fussballspieler`
 --
 ALTER TABLE `fussballspieler`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `handballspieler`
 --
 ALTER TABLE `handballspieler`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `mitglied`
 --
 ALTER TABLE `mitglied`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `physiotherapeut`
 --
 ALTER TABLE `physiotherapeut`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `spieler`
 --
 ALTER TABLE `spieler`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tennisspieler`
@@ -254,7 +254,7 @@ ALTER TABLE `tennisspieler`
 -- AUTO_INCREMENT for table `trainer`
 --
 ALTER TABLE `trainer`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
