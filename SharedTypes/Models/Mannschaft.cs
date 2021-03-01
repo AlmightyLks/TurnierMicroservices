@@ -256,7 +256,7 @@ namespace SharedTypes.Models
             return neueArray;
         }
 
-        public void Post()
+        public bool Post()
         {
             try
             {
@@ -271,27 +271,58 @@ namespace SharedTypes.Models
                         "application/json");
 
                     HttpResponseMessage response = client.PostAsync($"{Microservices.MannschaftsServiceApi}", jsonContent).GetAwaiter().GetResult();
-                    _ = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    string result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                    return JsonConvert.DeserializeObject<bool>(result);
                 }
             }
             catch (Exception e)
             {
-
+                return false;
             }
         }
-        public void Delete()
+        public bool Delete()
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = client.DeleteAsync($"{Microservices.MannschaftsServiceApi}/{Id}").GetAwaiter().GetResult();
-                    _ = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    string result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                    return JsonConvert.DeserializeObject<bool>(result);
                 }
             }
             catch (Exception e)
             {
 
+                return false;
+            }
+        }
+
+        public bool Put()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent jsonContent = new StringContent(
+                        JsonConvert.SerializeObject(JsonConvert.SerializeObject(this, new JsonSerializerSettings()
+                        {
+                            TypeNameHandling = TypeNameHandling.All
+                        })),
+                        Encoding.UTF8,
+                        "application/json");
+
+                    HttpResponseMessage response = client.PutAsync($"{Microservices.MannschaftsServiceApi}/{Id}", jsonContent).GetAwaiter().GetResult();
+                    string result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                    return JsonConvert.DeserializeObject<bool>(result);
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
         #endregion

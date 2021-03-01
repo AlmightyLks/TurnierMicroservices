@@ -14,28 +14,35 @@ namespace LoginService.Controllers
         public IEnumerable<User> Get()
         {
             List<User> result = new List<User>();
-            MySqlDataReader dataReader;
-            MySqlConnection connection;
-
-            (dataReader, connection) = QueryDB($"select * from users;");
-
-            if ((dataReader, connection) == (null, null))
-                return result;
-
-            while (dataReader.Read())
+            try
             {
-                User user = new User()
-                {
-                    Id = (int)dataReader["id"],
-                    SessionID = (string)dataReader["SessionID"],
-                    Password = (string)dataReader["password"],
-                    Username = (string)dataReader["username"]
-                };
-                result.Add(user);
-            }
+                MySqlDataReader dataReader;
+                MySqlConnection connection;
 
-            dataReader.Close();
-            connection.Close();
+                (dataReader, connection) = QueryDB($"select * from users;");
+
+                if ((dataReader, connection) == (null, null))
+                    return result;
+
+                while (dataReader.Read())
+                {
+                    User user = new User()
+                    {
+                        Id = (int)dataReader["id"],
+                        SessionID = (string)dataReader["SessionID"],
+                        Password = (string)dataReader["password"],
+                        Username = (string)dataReader["username"]
+                    };
+                    result.Add(user);
+                }
+
+                dataReader.Close();
+                connection.Close();
+            }
+            catch
+            {
+
+            }
             return result;
         }
 
@@ -43,28 +50,35 @@ namespace LoginService.Controllers
         public IEnumerable<User> Get(string username)
         {
             List<User> result = new List<User>();
-            MySqlDataReader dataReader;
-            MySqlConnection connection;
-
-            (dataReader, connection) = QueryDB($"select * from users where username='{username}';");
-
-            if ((dataReader, connection) == (null, null))
-                return result;
-
-            while (dataReader.Read())
+            try
             {
-                User user = new User()
-                {
-                    Id = (int)dataReader["id"],
-                    SessionID = (string)dataReader["SessionID"],
-                    Password = (string)dataReader["password"],
-                    Username = (string)dataReader["username"]
-                };
-                result.Add(user);
-            }
+                MySqlDataReader dataReader;
+                MySqlConnection connection;
 
-            dataReader.Close();
-            connection.Close();
+                (dataReader, connection) = QueryDB($"select * from users where username='{username}';");
+
+                if ((dataReader, connection) == (null, null))
+                    return result;
+
+                while (dataReader.Read())
+                {
+                    User user = new User()
+                    {
+                        Id = (int)dataReader["id"],
+                        SessionID = (string)dataReader["SessionID"],
+                        Password = (string)dataReader["password"],
+                        Username = (string)dataReader["username"]
+                    };
+                    result.Add(user);
+                }
+
+                dataReader.Close();
+                connection.Close();
+            }
+            catch
+            {
+
+            }
             return result;
         }
 
@@ -82,18 +96,6 @@ namespace LoginService.Controllers
             }
             return affectedRows != 0;
         }
-
-        #region Nicht in Benutzung
-        // POST: api/Message
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        // DELETE: api/Message/5
-        //public void Delete(int id)
-        //{
-        //}
-        #endregion
 
         private (MySqlDataReader DataReader, MySqlConnection Connection) QueryDB(string sqlStr)
         {

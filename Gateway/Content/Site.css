@@ -1,10 +1,4 @@
-﻿/* Move down content because we have a fixed navbar that is 50px tall */
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Wrapping element */
+﻿/* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -28,4 +22,33 @@ textarea {
     .body-content {
         padding: 0;
     }
+}
+
+.dev-note-table {
+    text-align: center;
+    border: 1px solid black;
+}
+
+    .dev-note-table th {
+        border: 1px solid black;
+        width: 125px;
+    }
+
+    .dev-note-table tr th {
+        border: 1px solid black;
+        width: 125px;
+    }
+
+    .dev-note-table td {
+        border: 1px solid black;
+        width: 125px;
+    }
+
+    .dev-note-table tr td {
+        border: 1px solid black;
+        width: 125px;
+    }
+
+#note {
+    width: 375px;
 }

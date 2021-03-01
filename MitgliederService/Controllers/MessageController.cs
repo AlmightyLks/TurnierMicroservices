@@ -17,210 +17,217 @@ namespace MitgliederService.Controllers
         // GET: api/Message?type=fussball
         public IEnumerable<Mitglied> Get(string type)
         {
-            var newMembers = new List<KeyValuePair<int, Mitglied>>();                           //Alle Leute
-
-            switch (type)
+            IEnumerable<Mitglied> mitglieder = new List<Mitglied>();
+            try
             {
-                case "Fussball":
-                    {
-                        Dictionary<int, string> dbFussballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
-                        Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();                      //ID <Mitglied_ID & AnzahlSpiele>
-                        Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
-
-                        //Query Fussballspieler
-                        (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `fussballspieler`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbFussballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
-
-
-                        //Query Spieler
-                        sqlRdr = QueryDB($"Select * from `spieler`");
-
-                        while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
-                            dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
-
-
-                        //Query Mitglied
-                        sqlRdr = QueryDB($"Select * from `mitglied`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
-
-                        foreach (KeyValuePair<int, string> fussballspieler in dbFussballspieler)
+                var newMembers = new List<KeyValuePair<int, Mitglied>>();                           //Alle Leute
+                switch (type)
+                {
+                    case "Fussball":
                         {
-                            newMembers.Add(new KeyValuePair<int, Mitglied>(fussballspieler.Key, new Fussballspieler()
+                            Dictionary<int, string> dbFussballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
+                            Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();                      //ID <Mitglied_ID & AnzahlSpiele>
+                            Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
+
+                            //Query Fussballspieler
+                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `fussballspieler`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbFussballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
+
+
+                            //Query Spieler
+                            sqlRdr = QueryDB($"Select * from `spieler`");
+
+                            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+
+
+                            //Query Mitglied
+                            sqlRdr = QueryDB($"Select * from `mitglied`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+
+                            foreach (KeyValuePair<int, string> fussballspieler in dbFussballspieler)
                             {
-                                Position = fussballspieler.Value,
-                                Sportart = "Fussball",
-                                AnzahlSpiele = dbSpieler.First(e => e.Key == fussballspieler.Key).Value.Value,
-                                Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == fussballspieler.Key).Value.Key).Value,
-                                Id = dbSpieler.First(_ => _.Key == fussballspieler.Key).Value.Key
-                            }));
+                                newMembers.Add(new KeyValuePair<int, Mitglied>(fussballspieler.Key, new Fussballspieler()
+                                {
+                                    Position = fussballspieler.Value,
+                                    Sportart = "Fussball",
+                                    AnzahlSpiele = dbSpieler.First(e => e.Key == fussballspieler.Key).Value.Value,
+                                    Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == fussballspieler.Key).Value.Key).Value,
+                                    Id = dbSpieler.First(_ => _.Key == fussballspieler.Key).Value.Key
+                                }));
+                            }
+
+                            sqlRdr.DataReader.Close();
+                            sqlRdr.Connection.Close();
+                            break;
                         }
 
-                        sqlRdr.DataReader.Close();
-                        sqlRdr.Connection.Close();
-                        break;
-                    }
-
-                case "Handball":
-                    {
-                        Dictionary<int, string> dbHandballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
-                        Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();      //ID <Mitglied_ID & AnzahlSpiele>
-                        Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
-
-                        //Query Handballspieler
-                        (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `handballspieler`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbHandballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
-
-
-                        //Query Spieler
-                        sqlRdr = QueryDB($"Select * from `spieler`");
-
-                        while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
-                            dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
-
-
-                        //Query Mitglied
-                        sqlRdr = QueryDB($"Select * from `mitglied`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
-
-
-                        foreach (KeyValuePair<int, string> handballspieler in dbHandballspieler)
+                    case "Handball":
                         {
-                            newMembers.Add(new KeyValuePair<int, Mitglied>(handballspieler.Key, new Handballspieler()
+                            Dictionary<int, string> dbHandballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
+                            Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();      //ID <Mitglied_ID & AnzahlSpiele>
+                            Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
+
+                            //Query Handballspieler
+                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `handballspieler`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbHandballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
+
+
+                            //Query Spieler
+                            sqlRdr = QueryDB($"Select * from `spieler`");
+
+                            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+
+
+                            //Query Mitglied
+                            sqlRdr = QueryDB($"Select * from `mitglied`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+
+
+                            foreach (KeyValuePair<int, string> handballspieler in dbHandballspieler)
                             {
-                                Position = handballspieler.Value,
-                                Sportart = "Handball",
-                                AnzahlSpiele = dbSpieler.First(e => e.Key == handballspieler.Key).Value.Value,
-                                Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == handballspieler.Key).Value.Key).Value,
-                                Id = dbSpieler.First(_ => _.Key == handballspieler.Key).Value.Key
-                            }));
+                                newMembers.Add(new KeyValuePair<int, Mitglied>(handballspieler.Key, new Handballspieler()
+                                {
+                                    Position = handballspieler.Value,
+                                    Sportart = "Handball",
+                                    AnzahlSpiele = dbSpieler.First(e => e.Key == handballspieler.Key).Value.Value,
+                                    Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == handballspieler.Key).Value.Key).Value,
+                                    Id = dbSpieler.First(_ => _.Key == handballspieler.Key).Value.Key
+                                }));
+                            }
+
+                            sqlRdr.DataReader.Close();
+                            sqlRdr.Connection.Close();
+                            break;
                         }
 
-                        sqlRdr.DataReader.Close();
-                        sqlRdr.Connection.Close();
-                        break;
-                    }
-
-                case "Tennis":
-                    {
-                        Dictionary<int, int> dbTennisspieler = new Dictionary<int, int>();                                   //Spieler_ID & JahreErfahrung
-                        Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();   //ID <Mitglied_ID & AnzahlSpiele>
-                        Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                  //ID <Mitglied_ID & AnzahlSpiele>
-
-                        //Query Tennisspieler
-                        (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `tennisspieler`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbTennisspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], (int)sqlRdr.DataReader["JahreErfahrung"]);
-
-
-                        //Query Spieler
-                        sqlRdr = QueryDB($"Select * from `spieler`");
-
-                        while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
-                            dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
-
-
-                        //Query Mitglied
-                        sqlRdr = QueryDB($"Select * from `mitglied`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
-
-                        foreach (KeyValuePair<int, int> tennisspieler in dbTennisspieler)
+                    case "Tennis":
                         {
-                            newMembers.Add(new KeyValuePair<int, Mitglied>(tennisspieler.Key, new Tennisspieler()
+                            Dictionary<int, int> dbTennisspieler = new Dictionary<int, int>();                                   //Spieler_ID & JahreErfahrung
+                            Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();   //ID <Mitglied_ID & AnzahlSpiele>
+                            Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                  //ID <Mitglied_ID & AnzahlSpiele>
+
+                            //Query Tennisspieler
+                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `tennisspieler`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbTennisspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], (int)sqlRdr.DataReader["JahreErfahrung"]);
+
+
+                            //Query Spieler
+                            sqlRdr = QueryDB($"Select * from `spieler`");
+
+                            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+
+
+                            //Query Mitglied
+                            sqlRdr = QueryDB($"Select * from `mitglied`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+
+                            foreach (KeyValuePair<int, int> tennisspieler in dbTennisspieler)
                             {
-                                JahreErfahrung = tennisspieler.Value,
-                                Sportart = "Tennis",
-                                AnzahlSpiele = dbSpieler.First(e => e.Key == tennisspieler.Key).Value.Value,
-                                Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == tennisspieler.Key).Value.Key).Value,
-                                Id = dbSpieler.First(_ => _.Key == tennisspieler.Key).Value.Key
-                            }));
+                                newMembers.Add(new KeyValuePair<int, Mitglied>(tennisspieler.Key, new Tennisspieler()
+                                {
+                                    JahreErfahrung = tennisspieler.Value,
+                                    Sportart = "Tennis",
+                                    AnzahlSpiele = dbSpieler.First(e => e.Key == tennisspieler.Key).Value.Value,
+                                    Name = dbMitglied.First(e => e.Key == dbSpieler.First(el => el.Key == tennisspieler.Key).Value.Key).Value,
+                                    Id = dbSpieler.First(_ => _.Key == tennisspieler.Key).Value.Key
+                                }));
+                            }
+
+                            sqlRdr.DataReader.Close();
+                            sqlRdr.Connection.Close();
+                            break;
                         }
 
-                        sqlRdr.DataReader.Close();
-                        sqlRdr.Connection.Close();
-                        break;
-                    }
-
-                case "Trainer":
-                    {
-                        List<int> dbTrainer = new List<int>();                                                    //Mitglied_ID
-                        Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
-
-                        //Query Mitglied
-                        (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `mitglied`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
-
-
-                        //Query 
-                        sqlRdr = QueryDB($"Select * from `trainer`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbTrainer.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
-
-                        foreach (int trainer in dbTrainer)
+                    case "Trainer":
                         {
-                            newMembers.Add(new KeyValuePair<int, Mitglied>(trainer, new Trainer()
+                            List<int> dbTrainer = new List<int>();                                                    //Mitglied_ID
+                            Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
+
+                            //Query Mitglied
+                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `mitglied`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+
+
+                            //Query 
+                            sqlRdr = QueryDB($"Select * from `trainer`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbTrainer.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
+
+                            foreach (int trainer in dbTrainer)
                             {
-                                Name = dbMitglied.First(_ => _.Key == trainer).Value,
-                                EigeneMannschaft = null,
-                                Id = trainer
-                            }));
+                                newMembers.Add(new KeyValuePair<int, Mitglied>(trainer, new Trainer()
+                                {
+                                    Name = dbMitglied.First(_ => _.Key == trainer).Value,
+                                    EigeneMannschaft = null,
+                                    Id = trainer
+                                }));
+                            }
+
+                            sqlRdr.DataReader.Close();
+                            sqlRdr.Connection.Close();
+                            break;
                         }
 
-                        sqlRdr.DataReader.Close();
-                        sqlRdr.Connection.Close();
-                        break;
-                    }
-
-                case "Physiotherapeut":
-                    {
-                        List<int> dbPhysiotherapeut = new List<int>();                                            //Mitglied_ID
-                        Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
-
-                        //Query Tennisspieler
-                        (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `mitglied`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
-
-                        //Query Physiotherapeut
-                        sqlRdr = QueryDB($"Select * from `physiotherapeut`");
-
-                        while (sqlRdr.DataReader.Read())
-                            dbPhysiotherapeut.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
-
-
-                        foreach (int physiotherapeut in dbPhysiotherapeut)
+                    case "Physiotherapeut":
                         {
-                            newMembers.Add(new KeyValuePair<int, Mitglied>(physiotherapeut, new Physiotherapeut()
-                            {
-                                Name = dbMitglied.First(_ => _.Key == physiotherapeut).Value,
-                                EigeneMannschaft = null,
-                                Id = physiotherapeut
-                            }));
-                        }
+                            List<int> dbPhysiotherapeut = new List<int>();                                            //Mitglied_ID
+                            Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
-                        sqlRdr.DataReader.Close();
-                        sqlRdr.Connection.Close();
-                        break;
-                    }
+                            //Query Tennisspieler
+                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `mitglied`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+
+                            //Query Physiotherapeut
+                            sqlRdr = QueryDB($"Select * from `physiotherapeut`");
+
+                            while (sqlRdr.DataReader.Read())
+                                dbPhysiotherapeut.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
+
+
+                            foreach (int physiotherapeut in dbPhysiotherapeut)
+                            {
+                                newMembers.Add(new KeyValuePair<int, Mitglied>(physiotherapeut, new Physiotherapeut()
+                                {
+                                    Name = dbMitglied.First(_ => _.Key == physiotherapeut).Value,
+                                    EigeneMannschaft = null,
+                                    Id = physiotherapeut
+                                }));
+                            }
+
+                            sqlRdr.DataReader.Close();
+                            sqlRdr.Connection.Close();
+                            break;
+                        }
+                }
+
+                mitglieder = newMembers.Select((e) => e.Value);
+
+                return mitglieder;
             }
-
-            IEnumerable<Mitglied> mitglieder = newMembers.Select((e) => e.Value);
-
-            return mitglieder;
+            catch
+            {
+                return mitglieder;
+            }
         }
 
         // POST: api/Message

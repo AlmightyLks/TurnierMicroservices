@@ -4,6 +4,7 @@ using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -28,13 +29,18 @@ namespace MannschaftsService.Views
             }
             Verwalter.FetchMannschaften();
             Verwalter.FetchMitglieder();
+            RedirectUnauthenticatedUser();
 
             if (!IsPostBack)
             {
                 LoadSportarten();
+                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+                {
+                    AddMannschaftButton.Visible = true;
+                }
             }
             LoadMannschaften();
-            RedirectUnauthenticatedUser();
+
         }
         public string GetLoggedInUsername()
             => Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Username ?? "Unbekannt";
@@ -47,8 +53,12 @@ namespace MannschaftsService.Views
             THR.Cells.Add(new TableCell { Text = "Name" });
             THR.Cells.Add(new TableCell { Text = "Sportart" });
             THR.Cells.Add(new TableCell { Text = "Mitglieder" });
-            THR.Cells.Add(new TableCell { Text = "" });
-            THR.Cells.Add(new TableCell { Text = "" });
+
+            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Username.ToLower() == "admin")
+            {
+                THR.Cells.Add(new TableCell { Text = "" });
+                THR.Cells.Add(new TableCell { Text = "" });
+            }
 
             MannschaftsTable.Rows.Add(THR);
 
@@ -69,22 +79,25 @@ namespace MannschaftsService.Views
                 TC.Controls.Add(DDL);
                 TR.Cells.Add(TC);
 
-                var editCell = new TableCell();
-                var editButton = new Button();
-                editButton.Text = "Edit";
-                editButton.ID = "Edit " + personIndex;
-                editButton.Click += EditButton_Click;
-                editCell.Controls.Add(editButton);
+                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+                {
+                    var editCell = new TableCell();
+                    var editButton = new Button();
+                    editButton.Text = "Edit";
+                    editButton.ID = "Edit " + personIndex;
+                    editButton.Click += EditButton_Click;
+                    editCell.Controls.Add(editButton);
 
-                var deleteCell = new TableCell();
-                var deleteButton = new Button();
-                deleteButton.Text = "Delete";
-                deleteButton.ID = "Delete " + personIndex;
-                deleteButton.Click += DeleteButton_Click;
-                deleteCell.Controls.Add(deleteButton);
+                    var deleteCell = new TableCell();
+                    var deleteButton = new Button();
+                    deleteButton.Text = "Delete";
+                    deleteButton.ID = "Delete " + personIndex;
+                    deleteButton.Click += DeleteButton_Click;
+                    deleteCell.Controls.Add(deleteButton);
 
-                TR.Cells.Add(editCell);
-                TR.Cells.Add(deleteCell);
+                    TR.Cells.Add(editCell);
+                    TR.Cells.Add(deleteCell);
+                }
 
                 MannschaftsTable.Rows.Add(TR);
                 personIndex++;
@@ -93,10 +106,9 @@ namespace MannschaftsService.Views
         private void LoadSportarten()
         {
             MannschaftSportArtenDropDownList.Items.Clear();
-            foreach (string SP in Verwalter.Sportarten)
-            {
-                MannschaftSportArtenDropDownList.Items.Add(SP);
-            }
+            MannschaftSportArtenDropDownList.Items.AddRange(
+                Verwalter.Sportarten.Select(_ => new ListItem(_)).ToArray()
+                );
         }
         private void EditButton_Click(object sender, EventArgs e)
         {
@@ -117,6 +129,10 @@ namespace MannschaftsService.Views
             }
 
             MannschaftSportArtenDropDownList.SelectedValue = mannschaft.SportArt;
+            EditConfirmButton.Visible = true;
+            AddMannschaftButton.Visible = false;
+            CancelButton.Visible = true;
+            FormPanel.Visible = true;
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -195,14 +211,6 @@ namespace MannschaftsService.Views
             }
 
             VerfuegbareMitgliederListBox.Items.AddRange(tempList.Select((e) => new ListItem(e.Name)).ToArray());
-        }
-        private void LoadSportArten()
-        {
-            MannschaftSportArtenDropDownList.Items.Clear();
-            MannschaftSportArtenDropDownList.Items.Clear();
-            MannschaftSportArtenDropDownList.Items.AddRange(
-                Verwalter.Sportarten.Select(_ => new ListItem(_)).ToArray()
-                );
         }
         private Mannschaft ValidationCheck()
         {
@@ -301,7 +309,7 @@ namespace MannschaftsService.Views
             Mannschaft mannschaft = ValidationCheck();
             if (mannschaft == null)
                 return;
-            mannschaft.Post();
+            StatusLabel.Text = mannschaft.Post() ? "Erfolgreich" : "Fehlgeschlagen";
         }
         protected void SportartBestaetigenButton_Click(object sender, EventArgs e)
         {
@@ -318,11 +326,35 @@ namespace MannschaftsService.Views
             Verwalter.MannschaftEdit.Mitglieder = Verwalter.Mitglieder
                 .Where(_ => AusgewaehlteMitgliederListBox.Items.Contains(new ListItem(_.Id.ToString())))
                 .ToList();
+            if (Verwalter.MannschaftEdit.Put())
+            {
+                StatusLabel.Text = "Erfolgreich";
+            }
+            else
+            {
+                StatusLabel.Text = "Erfolgreich";
+            }
+            Verwalter.MannschaftEdit = null;
         }
 
         public string GetMitgliederverwaltungsLink()
             => $"{Microservices.MitgliederServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetMannschaftsverwaltungsLink()
             => $"#";
+
+        protected void AddMannschaftButton_Click(object sender, EventArgs e)
+        {
+            FormPanel.Visible = true;
+            AddMannschaftButton.Visible = false;
+            CancelButton.Visible = true;
+        }
+
+        protected void CancelButton_Click(object sender, EventArgs e)
+        {
+            FormPanel.Visible = false;
+            AddMannschaftButton.Visible = true;
+            CancelButton.Visible = false;
+            Verwalter.MannschaftEdit = null;
+        }
     }
 }
