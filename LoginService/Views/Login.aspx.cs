@@ -39,5 +39,7 @@ namespace LoginService.Views
                 Response.Redirect($"{Microservices.GatewayPage}");
             }
         }
+        public string GetLoggedInUsername()
+            => Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Username ?? "Unbekannt";
     }
 }

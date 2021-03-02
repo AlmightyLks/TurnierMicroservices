@@ -21,7 +21,7 @@ namespace LoginService.Controllers
 
                 (dataReader, connection) = QueryDB($"select * from users;");
 
-                if ((dataReader, connection) == (null, null))
+                if (dataReader == null || connection == null)
                     return result;
 
                 while (dataReader.Read())
@@ -57,7 +57,7 @@ namespace LoginService.Controllers
 
                 (dataReader, connection) = QueryDB($"select * from users where username='{username}';");
 
-                if ((dataReader, connection) == (null, null))
+                if (dataReader == null || connection == null)
                     return result;
 
                 while (dataReader.Read())
