@@ -13,6 +13,7 @@ namespace SharedTypes.Models
     {
         #region Eigenschaften
         private int _id;
+        private UserType _type;
         private string _username;
         private string _password;
         private string _sessionID;
@@ -23,6 +24,7 @@ namespace SharedTypes.Models
         public string Username { get => _username; set => _username = value; }
         public string Password { get => _password; set => _password = value; }
         public string SessionID { get => _sessionID; set => _sessionID = value; }
+        public UserType Type { get => _type; set => _type = value; }
         #endregion
 
         #region Konstruktoren
@@ -66,7 +68,6 @@ namespace SharedTypes.Models
                     "application/json");
                 Task<HttpResponseMessage> response = client.PutAsync($"{Microservices.LoginServiceApi}/{Id}", jsonContent);
                 response.Wait();
-                Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
             }
         }
         public void LogOut()
@@ -85,7 +86,24 @@ namespace SharedTypes.Models
                     "application/json");
                 Task<HttpResponseMessage> response = client.PutAsync($"{Microservices.LoginServiceApi}/{Id}", jsonContent);
                 response.Wait();
-                Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
+            }
+        }
+
+        public void Post()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(
+                    this,
+                    Formatting.None,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    }),
+                    Encoding.UTF8,
+                    "application/json");
+                Task<HttpResponseMessage> response = client.PostAsync($"{Microservices.LoginServiceApi}", jsonContent);
+                response.Wait();
             }
         }
         #endregion

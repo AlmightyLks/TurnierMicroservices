@@ -337,6 +337,8 @@ namespace MannschaftsService.Views
             Verwalter.MannschaftEdit = null;
         }
 
+        public string GetUserverwaltungsLink()
+            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
         public string GetMitgliederverwaltungsLink()
             => $"{Microservices.MitgliederServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetMannschaftsverwaltungsLink()

@@ -36,7 +36,7 @@ namespace Gateway.Views
 
             //If no User with that SessionID is known
             if (!Verwalter.Users.Any(_ => _.SessionID == Session.SessionID))
-                Response.Redirect($"{Microservices.LoginServicePage}?SessionID={Session.SessionID}");
+                Response.Redirect($"{Microservices.LoginServiceLoginPage}?SessionID={Session.SessionID}");
         }
         protected void LogoutButton_Click(object sender, EventArgs e)
         {
@@ -47,6 +47,8 @@ namespace Gateway.Views
 
             RedirectUnauthenticatedUser();
         }
+        public string GetUserverwaltungsLink()
+            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
         public string GetLoggedInUsername()
             => Verwalter.Users.Find(_ => _.SessionID == Session.SessionID)?.Username ?? "Unbekannt";
         public string GetMitgliederverwaltungsLink()

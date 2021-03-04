@@ -195,6 +195,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Views\Login.aspx" />
+    <Content Include="Views\Verwaltung.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Views\web.config" />
@@ -215,6 +216,13 @@
     </Compile>
     <Compile Include="Views\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Verwaltung.aspx.cs">
+      <DependentUpon>Verwaltung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Verwaltung.aspx.designer.cs">
+      <DependentUpon>Verwaltung.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

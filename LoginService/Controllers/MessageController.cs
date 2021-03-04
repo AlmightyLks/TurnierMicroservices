@@ -31,7 +31,8 @@ namespace LoginService.Controllers
                         Id = (int)dataReader["id"],
                         SessionID = (string)dataReader["SessionID"],
                         Password = (string)dataReader["password"],
-                        Username = (string)dataReader["username"]
+                        Username = (string)dataReader["username"],
+                        Type = (UserType)dataReader["typ"]
                     };
                     result.Add(user);
                 }
@@ -89,6 +90,21 @@ namespace LoginService.Controllers
             try
             {
                 affectedRows = NonQueryDB($"update users set `sessionId`='{user.SessionID}' where id='{id}';");
+            }
+            catch (Exception e)
+            {
+
+            }
+            return affectedRows != 0;
+        }
+
+        // PUT: api/Message
+        public bool Post([FromBody] User user)
+        {
+            int affectedRows = 0;
+            try
+            {
+                affectedRows = NonQueryDB($"INSERT INTO `users`( `username`, `password`, `sessionId`, `typ`) VALUES ('{user.Username}','{user.Password}','',{(int)user.Type});");
             }
             catch (Exception e)
             {

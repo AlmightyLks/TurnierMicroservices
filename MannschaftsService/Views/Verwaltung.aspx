@@ -11,6 +11,7 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="https://localhost:44338/Views/Gateway">Home</a></li>
+                <li><a href="<%= GetUserverwaltungsLink() %>">Userverwaltung</a></li>
                 <li><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
                 <li class="active"><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li style="float: right;">

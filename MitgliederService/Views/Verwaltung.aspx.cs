@@ -454,6 +454,8 @@ namespace MitgliederService.Views
         }
 
 
+        public string GetUserverwaltungsLink()
+            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
         public string GetMitgliederverwaltungsLink()
             => $"#";
         public string GetMannschaftsverwaltungsLink()

@@ -10,6 +10,7 @@
         <nav class="nav-bar">
             <ul>
                 <li class="active"><a href="#">Home</a></li>
+                <li><a href="<%= GetUserverwaltungsLink() %>">Userverwaltung</a></li>
                 <li><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
                 <li><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li style="float: right">

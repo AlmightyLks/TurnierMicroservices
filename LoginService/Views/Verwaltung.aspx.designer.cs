@@ -11,17 +11,26 @@ namespace LoginService.Views
 {
 
 
-    public partial class Login
+    public partial class Verwaltung
     {
 
         /// <summary>
-        /// LoginForm control.
+        /// DingDaForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm LoginForm;
+        protected global::System.Web.UI.HtmlControls.HtmlForm DingDaForm;
+
+        /// <summary>
+        /// LogoutButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button LogoutButton;
 
         /// <summary>
         /// UsernameTextBox control.
@@ -42,21 +51,30 @@ namespace LoginService.Views
         protected global::System.Web.UI.WebControls.TextBox PasswordTextBox;
 
         /// <summary>
-        /// LoginButton control.
+        /// UserTypDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button LoginButton;
+        protected global::System.Web.UI.WebControls.DropDownList UserTypDropDown;
 
         /// <summary>
-        /// ErrorLabel control.
+        /// AddUserButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ErrorLabel;
+        protected global::System.Web.UI.WebControls.Button AddUserButton;
+
+        /// <summary>
+        /// UserTable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table UserTable;
     }
 }

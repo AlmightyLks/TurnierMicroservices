@@ -10,7 +10,8 @@ namespace SharedTypes
     {
         public const string GatewayPage = "https://localhost:44338/Views/Gateway";
 
-        public const string LoginServicePage = "https://localhost:44315/Views/Login";
+        public const string LoginServiceLoginPage = "https://localhost:44315/Views/Login";
+        public const string LoginServiceVerwalterPage = "https://localhost:44315/Views/Verwaltung";
         public const string LoginServiceApi = "https://localhost:44315/api/Message";
 
         public const string MitgliederServicePage = "https://localhost:44366/Views/Verwaltung";
