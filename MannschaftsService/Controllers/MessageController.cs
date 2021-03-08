@@ -23,6 +23,8 @@ namespace MannschaftsService.Controllers
             {
                 List<Mannschaft> result = new List<Mannschaft>();
 
+                //Why this mess?
+                //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
                 var newMannschaften = new List<Mannschaft>();                                       //Alle Mannschaften
                 var dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
                 var dbMannschaften = new List<KeyValuePair<int, KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>>>();           //ID, <Name, Sportart>

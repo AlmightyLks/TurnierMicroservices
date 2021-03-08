@@ -55,24 +55,16 @@ namespace SharedTypes.Models
         public void LogIn(string sessionId)
         {
             SessionID = sessionId;
-            using (HttpClient client = new HttpClient())
-            {
-                StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(
-                    this,
-                    Formatting.None,
-                    new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    }), 
-                    Encoding.UTF8, 
-                    "application/json");
-                Task<HttpResponseMessage> response = client.PutAsync($"{Microservices.LoginServiceApi}/{Id}", jsonContent);
-                response.Wait();
-            }
+            Put();
         }
         public void LogOut()
         {
             SessionID = string.Empty;
+            Put();
+        }
+
+        public void Put()
+        {
             using (HttpClient client = new HttpClient())
             {
                 StringContent jsonContent = new StringContent(JsonConvert.SerializeObject(
@@ -85,6 +77,15 @@ namespace SharedTypes.Models
                     Encoding.UTF8,
                     "application/json");
                 Task<HttpResponseMessage> response = client.PutAsync($"{Microservices.LoginServiceApi}/{Id}", jsonContent);
+                response.Wait();
+            }
+        }
+
+        public void Delete()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                Task<HttpResponseMessage> response = client.DeleteAsync($"{Microservices.LoginServiceApi}/{Id}");
                 response.Wait();
             }
         }

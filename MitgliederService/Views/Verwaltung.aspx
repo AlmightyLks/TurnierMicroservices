@@ -80,12 +80,6 @@
 
         <br />
         <br />
-        <asp:Label ID="Label1" runat="server" Font-Bold="True" Text="Sortieren:"></asp:Label>
-        <br />
-        <br />
-        <asp:Label ID="AlphabetischLabel" runat="server" Text="Aufwärts"></asp:Label>
-        <br />
-        <br />
         <br />
 
         <asp:Table ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">

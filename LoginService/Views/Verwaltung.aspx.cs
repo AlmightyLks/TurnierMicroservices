@@ -1,6 +1,7 @@
 ﻿using SharedTypes;
 using SharedTypes.Models;
 using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace LoginService.Views
@@ -37,6 +38,8 @@ namespace LoginService.Views
                 UserTable.Rows.RemoveAt(i);
             }
 
+            bool oneOrNoAdmin = Verwalter.Users.Where(_ => _.Type == UserType.Admin).Count() <= 1;
+            User loggedInUser = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
             int userIndex = 0;
             foreach (User user in Verwalter.Users)
             {
@@ -50,6 +53,10 @@ namespace LoginService.Views
                 editButton.Text = "Edit";
                 editButton.ID = "Edit " + userIndex;
                 editButton.Click += EditButtonClick;
+                if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == loggedInUser.Id)
+                {
+                    editButton.Enabled = false;
+                }
                 editCell.Controls.Add(editButton);
 
                 var deleteCell = new TableCell();
@@ -57,6 +64,10 @@ namespace LoginService.Views
                 deleteButton.Text = "Delete";
                 deleteButton.ID = "Delete " + userIndex;
                 deleteButton.Click += DeleteButtonClick;
+                if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == loggedInUser.Id)
+                {
+                    deleteButton.Enabled = false;
+                }
                 deleteCell.Controls.Add(deleteButton);
 
                 row.Cells.Add(editCell);
@@ -67,12 +78,29 @@ namespace LoginService.Views
 
         private void DeleteButtonClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Button button = sender as Button;
+            int index = int.Parse(button.ID.Split(' ')[1]);
+            User user = Verwalter.Users[index];
+            user.Delete();
+            string gateSessionId = Request.Params["SessionID"];
+            Response.Redirect($"{Microservices.LoginServiceVerwalterPage}?SessionID={gateSessionId}");
         }
 
         private void EditButtonClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordTextBox.Text))
+                return;
+            Button button = sender as Button;
+            int index = int.Parse(button.ID.Split(' ')[1]);
+            User user = Verwalter.Users[index];
+            if (user.Username != UsernameTextBox.Text && Verwalter.Users.Any(_ => _.Username == UsernameTextBox.Text))
+                return;
+            user.Username = UsernameTextBox.Text;
+            user.Password = PasswordTextBox.Text;
+            user.Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User;
+            user.Put();
+            string gateSessionId = Request.Params["SessionID"];
+            Response.Redirect($"{Microservices.LoginServiceVerwalterPage}?SessionID={gateSessionId}");
         }
 
         protected void LogoutButton_Click(object sender, EventArgs e)
@@ -115,11 +143,13 @@ namespace LoginService.Views
         {
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordTextBox.Text))
                 return;
+            if (Verwalter.Users.Any(_ => _.Username == UsernameTextBox.Text))
+                return;
             User user = new User
             {
                 Username = UsernameTextBox.Text,
                 Password = PasswordTextBox.Text,
-                Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User 
+                Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User
             };
             user.Post();
             string gateSessionId = Request.Params["SessionID"];

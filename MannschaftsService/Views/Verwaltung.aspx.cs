@@ -34,7 +34,7 @@ namespace MannschaftsService.Views
             if (!IsPostBack)
             {
                 LoadSportarten();
-                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type == UserType.Admin)
                 {
                     AddMannschaftButton.Visible = true;
                 }
@@ -54,7 +54,7 @@ namespace MannschaftsService.Views
             THR.Cells.Add(new TableCell { Text = "Sportart" });
             THR.Cells.Add(new TableCell { Text = "Mitglieder" });
 
-            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Username.ToLower() == "admin")
+            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Type == UserType.Admin)
             {
                 THR.Cells.Add(new TableCell { Text = "" });
                 THR.Cells.Add(new TableCell { Text = "" });
@@ -79,7 +79,7 @@ namespace MannschaftsService.Views
                 TC.Controls.Add(DDL);
                 TR.Cells.Add(TC);
 
-                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type == UserType.Admin)
                 {
                     var editCell = new TableCell();
                     var editButton = new Button();

@@ -50,7 +50,7 @@ namespace MitgliederService.Views
             THR.Cells.Add(new TableCell { Text = "Erfahrung (in Jahren)" });
             THR.Cells.Add(new TableCell { Text = "Anzahl gespielter Spiele" });
 
-            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type == UserType.Admin)
             {
                 THR.Cells.Add(new TableCell { Text = "" });
                 THR.Cells.Add(new TableCell { Text = "" });
@@ -106,7 +106,7 @@ namespace MitgliederService.Views
                 {
                     TR.Cells.Add(new TableCell { Text = "-" });
                 }
-                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() == "admin")
+                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type == UserType.Admin)
                 {
                     var editCell = new TableCell();
                     var editButton = new Button();

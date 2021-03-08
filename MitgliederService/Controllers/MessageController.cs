@@ -25,6 +25,8 @@ namespace MitgliederService.Controllers
                 {
                     case "Fussball":
                         {
+                            //Why this mess?
+                            //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
                             Dictionary<int, string> dbFussballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
                             Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();                      //ID <Mitglied_ID & AnzahlSpiele>
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
@@ -68,6 +70,8 @@ namespace MitgliederService.Controllers
 
                     case "Handball":
                         {
+                            //Why this mess?
+                            //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
                             Dictionary<int, string> dbHandballspieler = new Dictionary<int, string>();                              //Spieler_ID & Position
                             Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();      //ID <Mitglied_ID & AnzahlSpiele>
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
@@ -112,6 +116,8 @@ namespace MitgliederService.Controllers
 
                     case "Tennis":
                         {
+                            //Why this mess?
+                            //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
                             Dictionary<int, int> dbTennisspieler = new Dictionary<int, int>();                                   //Spieler_ID & JahreErfahrung
                             Dictionary<int, KeyValuePair<int, int>> dbSpieler = new Dictionary<int, KeyValuePair<int, int>>();   //ID <Mitglied_ID & AnzahlSpiele>
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                  //ID <Mitglied_ID & AnzahlSpiele>
@@ -155,6 +161,8 @@ namespace MitgliederService.Controllers
 
                     case "Trainer":
                         {
+                            //Why this mess?
+                            //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
                             List<int> dbTrainer = new List<int>();                                                    //Mitglied_ID
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
@@ -188,6 +196,8 @@ namespace MitgliederService.Controllers
 
                     case "Physiotherapeut":
                         {
+                            //Why this mess?
+                            //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
                             List<int> dbPhysiotherapeut = new List<int>();                                            //Mitglied_ID
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
