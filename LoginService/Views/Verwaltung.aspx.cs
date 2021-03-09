@@ -44,6 +44,8 @@ namespace LoginService.Views
             foreach (User user in Verwalter.Users)
             {
                 TableRow row = new TableRow();
+                row.Cells.Add(new TableCell() { Text = $"{userIndex + 1}." });
+                row.Cells.Add(new TableCell() { Text = user.Id.ToString() });
                 row.Cells.Add(new TableCell() { Text = user.Username });
                 row.Cells.Add(new TableCell() { Text = user.Type.ToString() });
                 UserTable.Rows.Add(row);
@@ -88,19 +90,17 @@ namespace LoginService.Views
 
         private void EditButtonClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordTextBox.Text))
-                return;
             Button button = sender as Button;
             int index = int.Parse(button.ID.Split(' ')[1]);
             User user = Verwalter.Users[index];
-            if (user.Username != UsernameTextBox.Text && Verwalter.Users.Any(_ => _.Username == UsernameTextBox.Text))
-                return;
-            user.Username = UsernameTextBox.Text;
-            user.Password = PasswordTextBox.Text;
-            user.Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User;
-            user.Put();
-            string gateSessionId = Request.Params["SessionID"];
-            Response.Redirect($"{Microservices.LoginServiceVerwalterPage}?SessionID={gateSessionId}");
+            UsernameTextBox.Text = user.Username;
+            PasswordTextBox.Text = user.Password;
+            UserTypDropDown.Text = user.Type.ToString();
+            
+            EditConfirmButton.Text = $"Bearbeite User {index + 1}";
+
+            EditConfirmButton.Visible = true;
+            AddUserButton.Visible = false;
         }
 
         protected void LogoutButton_Click(object sender, EventArgs e)
@@ -152,6 +152,27 @@ namespace LoginService.Views
                 Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User
             };
             user.Post();
+            string gateSessionId = Request.Params["SessionID"];
+            Response.Redirect($"{Microservices.LoginServiceVerwalterPage}?SessionID={gateSessionId}");
+        }
+
+        protected void EditConfirmButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordTextBox.Text))
+                return;
+            Button button = sender as Button;
+            int index = int.Parse(button.Text.Split(' ')[2]) - 1;
+            User user = Verwalter.Users[index];
+            if (user.Username != UsernameTextBox.Text && Verwalter.Users.Any(_ => _.Username == UsernameTextBox.Text))
+                return;
+            user.Username = UsernameTextBox.Text;
+            user.Password = PasswordTextBox.Text;
+            user.Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User;
+            user.Put();
+            
+            EditConfirmButton.Visible = false;
+            AddUserButton.Visible = true;
+
             string gateSessionId = Request.Params["SessionID"];
             Response.Redirect($"{Microservices.LoginServiceVerwalterPage}?SessionID={gateSessionId}");
         }

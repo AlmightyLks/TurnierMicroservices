@@ -40,10 +40,14 @@
         <br />
         <asp:Button ID="AddUserButton" runat="server" Text="Hinzufügen" OnClick="AddUserButton_Click" />
         <br />
+        <asp:Button ID="EditConfirmButton" runat="server" Text="Bearbeiten bestätigen" OnClick="EditConfirmButton_Click" Visible="False" />
+        <br />
         <br />
 
         <asp:Table ID="UserTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
             <asp:TableHeaderRow runat="server">
+                <asp:TableCell runat="server"></asp:TableCell>
+                <asp:TableCell runat="server">Database-ID</asp:TableCell>
                 <asp:TableCell runat="server">Username</asp:TableCell>
                 <asp:TableCell runat="server">Typ</asp:TableCell>
                 <asp:TableCell runat="server"></asp:TableCell>
