@@ -5,6 +5,7 @@
 <head>
     <link href="../Content/nav-bar.css" type="text/css" rel="stylesheet" />
     <link href="../Content/Site.css" type="text/css" rel="stylesheet" />
+    <link href="../Content/Table-Style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -80,7 +81,7 @@
         <br />
         <br />
 
-        <asp:Table ID="MannschaftsTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
+        <asp:Table CssClass="datatable" ID="MannschaftsTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
             <asp:TableHeaderRow runat="server">
                 <asp:TableCell runat="server">Name</asp:TableCell>
                 <asp:TableCell runat="server">Sportart</asp:TableCell>

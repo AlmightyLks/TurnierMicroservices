@@ -5,6 +5,7 @@
 <head>
     <link href="../Content/nav-bar.css" type="text/css" rel="stylesheet" />
     <link href="../Content/Site.css" type="text/css" rel="stylesheet" />
+    <link href="../Content/Table-Style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
     <form id="LogoutForm" runat="server">
@@ -82,7 +83,7 @@
         <br />
         <br />
 
-        <asp:Table ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
+        <asp:Table CssClass="datatable" ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
             <asp:TableHeaderRow runat="server">
                 <asp:TableCell runat="server">Name</asp:TableCell>
                 <asp:TableCell runat="server">Typ</asp:TableCell>

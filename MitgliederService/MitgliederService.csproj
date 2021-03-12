@@ -226,6 +226,7 @@
     <Content Include="Content\Mitgliederverwaltung.css" />
     <Content Include="Content\nav-bar.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Table-Style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

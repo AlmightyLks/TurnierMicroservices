@@ -1,6 +1,7 @@
 ﻿using SharedTypes;
 using SharedTypes.Models;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -54,10 +55,14 @@ namespace LoginService.Views
                 var editButton = new Button();
                 editButton.Text = "Edit";
                 editButton.ID = "Edit " + userIndex;
+                editButton.Font.Size = FontUnit.Medium;
+                editButton.BackColor = Color.LightBlue;
+                editButton.CssClass = "BasicButton";
                 editButton.Click += EditButtonClick;
                 if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == loggedInUser.Id)
                 {
                     editButton.Enabled = false;
+                    editButton.BackColor = Color.DarkGray;
                 }
                 editCell.Controls.Add(editButton);
 
@@ -65,10 +70,14 @@ namespace LoginService.Views
                 var deleteButton = new Button();
                 deleteButton.Text = "Delete";
                 deleteButton.ID = "Delete " + userIndex;
+                deleteButton.BackColor = Color.IndianRed;
+                deleteButton.Font.Size = FontUnit.Medium;
+                deleteButton.CssClass = "BasicButton";
                 deleteButton.Click += DeleteButtonClick;
                 if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == loggedInUser.Id)
                 {
                     deleteButton.Enabled = false;
+                    deleteButton.BackColor = Color.DarkGray;
                 }
                 deleteCell.Controls.Add(deleteButton);
 
