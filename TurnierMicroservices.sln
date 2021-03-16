@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{F54C582C-42C5-4242-B717-BDEC1FA88AB9}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedTypes", "SharedTypes\SharedTypes.csproj", "{F7D14449-00A5-42DA-96B4-112F7A179404}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MannschaftsService", "MannschaftsService\MannschaftsService.csproj", "{257A470F-8AA0-4060-8BEB-BEAFFC2AFD05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurnierService", "TurnierService\TurnierService.csproj", "{5A0BA26C-DC6E-4449-8186-09BF328F785D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{257A470F-8AA0-4060-8BEB-BEAFFC2AFD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{257A470F-8AA0-4060-8BEB-BEAFFC2AFD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{257A470F-8AA0-4060-8BEB-BEAFFC2AFD05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A0BA26C-DC6E-4449-8186-09BF328F785D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A0BA26C-DC6E-4449-8186-09BF328F785D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A0BA26C-DC6E-4449-8186-09BF328F785D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A0BA26C-DC6E-4449-8186-09BF328F785D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

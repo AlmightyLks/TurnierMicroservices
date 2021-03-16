@@ -1,0 +1,41 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+body, html {
+    height: 100%;
+    font-family: sans-serif;
+}
+
+.datatable {
+    text-align: center;
+    width: 100% !important;
+}
+
+    .datatable td {
+        padding: 10px 12.5px 10px 12.5px;
+        height: 15px;
+        font-family: Lato-Regular;
+        font-size: 20px;
+        color: #DCDCDC;
+        font-weight: 500;
+        line-height: 1.5;
+        background-color: #333;
+    }
+
+        .datatable td input {
+            height: 100%;
+            width: 80%;
+        }
+
+.BasicButton {
+    min-width: 125px;
+    min-height: 35px;
+    border-radius: 10px;
+}
+    .BasicButton:hover {
+        border-radius: 15px;
+    }

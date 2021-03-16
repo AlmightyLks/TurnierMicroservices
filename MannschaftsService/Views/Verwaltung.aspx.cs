@@ -337,8 +337,10 @@ namespace MannschaftsService.Views
             Verwalter.MannschaftEdit = null;
         }
 
+        public string GetTurnierverwaltungsLink()
+            => $"{Microservices.TurnierServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetUserverwaltungsLink()
-            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
+            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Request.Params["SessionID"]}";
         public string GetMitgliederverwaltungsLink()
             => $"{Microservices.MitgliederServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetMannschaftsverwaltungsLink()

@@ -47,13 +47,15 @@ namespace Gateway.Views
 
             RedirectUnauthenticatedUser();
         }
-        public string GetUserverwaltungsLink()
-            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
         public string GetLoggedInUsername()
             => Verwalter.Users.Find(_ => _.SessionID == Session.SessionID)?.Username ?? "Unbekannt";
+        public string GetUserverwaltungsLink()
+            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
         public string GetMitgliederverwaltungsLink()
             => $"{Microservices.MitgliederServicePage}?SessionID={Session.SessionID}";
         public string GetMannschaftsverwaltungsLink()
             => $"{Microservices.MannschaftsServicePage}?SessionID={Session.SessionID}";
+        public string GetTurnierverwaltungsLink()
+            => $"{Microservices.TurnierServicePage}?SessionID={Session.SessionID}";
     }
 }

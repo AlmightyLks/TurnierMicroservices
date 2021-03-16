@@ -32,7 +32,7 @@ namespace MitgliederService.Views
             }
             LoadMitglieder();
 
-            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Username.ToLower() != "admin")
+            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type != UserType.Admin)
             {
                 FormPanel.Visible = false;
                 AddMemberButton.Visible = false;
@@ -454,8 +454,10 @@ namespace MitgliederService.Views
         }
 
 
+        public string GetTurnierverwaltungsLink()
+            => $"{Microservices.TurnierServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetUserverwaltungsLink()
-            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Session.SessionID}";
+            => $"{Microservices.LoginServiceVerwalterPage}?SessionID={Request.Params["SessionID"]}";
         public string GetMitgliederverwaltungsLink()
             => $"#";
         public string GetMannschaftsverwaltungsLink()
