@@ -18,6 +18,7 @@ namespace MannschaftsService.Controllers
         private List<Mitglied> _mitglieder;
         private List<string> _sportarten;
         private Mannschaft _mannschaftEdit;
+        private User _loggedInUser;
         #endregion
 
         #region Accessoren/Modifier
@@ -26,6 +27,7 @@ namespace MannschaftsService.Controllers
         public List<Mitglied> Mitglieder { get => _mitglieder; set => _mitglieder = value; }
         public List<string> Sportarten { get => _sportarten; set => _sportarten = value; }
         public Mannschaft MannschaftEdit { get => _mannschaftEdit; set => _mannschaftEdit = value; }
+        public User LoggedInUser { get => _loggedInUser; set => _loggedInUser = value; }
         #endregion
 
         #region Konstruktoren
@@ -41,6 +43,7 @@ namespace MannschaftsService.Controllers
                 "Handball",
                 "Tennis"
             };
+            LoggedInUser = null;
         }
         public Controller(Controller C)
         {
@@ -49,6 +52,7 @@ namespace MannschaftsService.Controllers
             Mitglieder = C.Mitglieder;
             Sportarten = C.Sportarten;
             MannschaftEdit = C.MannschaftEdit;
+            LoggedInUser = C.LoggedInUser;
         }
         #endregion
 

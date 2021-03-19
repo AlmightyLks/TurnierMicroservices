@@ -11,26 +11,39 @@ namespace TurnierService.Controllers
 {
     public class Controller
     {
+        private List<Turnier> _turniere;
         private List<User> _users;
+        private User _loggedInUser;
 
         public List<User> Users { get => _users; set => _users = value; }
+        public User LoggedInUser { get => _loggedInUser; set => _loggedInUser = value; }
+        public List<Turnier> Turniere { get => _turniere; set => _turniere = value; }
 
         public Controller()
         {
+            Turniere = new List<Turnier>();
             Users = new List<User>();
+            LoggedInUser = null;
         }
         public Controller(Controller c)
         {
+            Turniere = c.Turniere;
             Users = c.Users;
+            LoggedInUser = c.LoggedInUser;
         }
         public void FetchUsers()
         {
             Users = FetchData<List<User>>(Microservices.LoginServiceApi) ?? Users;
         }
-        
-        private T FetchData<T>(string target) where T : class
+
+        public void FetchTurniere()
         {
-            T result = null;
+            Turniere = FetchData<List<Turnier>>(Microservices.TurnierServiceApi) ?? Turniere;
+        }
+
+        private T FetchData<T>(string target) 
+        {
+            T result = default(T);
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -50,5 +63,17 @@ namespace TurnierService.Controllers
             return result;
         }
 
+        public void DeleteTurnier(Turnier turnier)
+        {
+            turnier.Delete();
+        }
+        public void PostTurnier(Turnier turnier)
+        {
+            turnier.Post();
+        }
+        public void PutTurnier(Turnier turnier)
+        {
+            turnier.Put();
+        }
     }
 }

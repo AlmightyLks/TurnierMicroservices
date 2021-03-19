@@ -28,25 +28,70 @@ namespace TurnierService.Views
             }
 
             RedirectUnauthenticatedUser();
+            Verwalter.FetchTurniere();
             LoadTurniere();
 
-            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type != UserType.Admin)
+            if (Verwalter.LoggedInUser?.Type != UserType.Admin)
             {
-
+                DeleteButton.Visible = false;
             }
         }
 
         private void LoadTurniere()
+        {
+            for (int i = TurnierTable.Rows.Count; i > 1; i--)
+            {
+                TurnierTable.Rows.RemoveAt(i);
+            }
+
+            int turnierIndex = 0;
+            foreach (Turnier turnier in Verwalter.Turniere)
+            {
+                foreach (Spiel spiel in turnier.Spiele)
+                {
+                    TableRow TR = new TableRow();
+
+                    TR.Cells.Add(new TableCell { Text = spiel.Punktestand.Mannschaft[0].Name });
+                    TR.Cells.Add(new TableCell { Text = spiel.Punktestand.Mannschaft[1].Name });
+                    TR.Cells.Add(new TableCell { Text = $"{spiel.Punktestand.Punkte[0]}:{spiel.Punktestand.Punkte[1]}" });
+
+                    if (Verwalter.LoggedInUser?.Type == UserType.Admin)
+                    {
+                        var editCell = new TableCell();
+                        var editButton = new Button();
+                        editButton.Text = "Edit";
+                        editButton.ID = "Edit " + turnierIndex;
+                        editButton.Click += EditSpielButton_Click;
+                        editCell.Controls.Add(editButton);
+
+                        var deleteCell = new TableCell();
+                        var deleteButton = new Button();
+                        deleteButton.Text = "Delete";
+                        deleteButton.ID = "Delete " + turnierIndex;
+                        deleteButton.Click += DeleteSpielButton_Click;
+                        deleteCell.Controls.Add(deleteButton);
+
+                        TR.Cells.Add(editCell);
+                        TR.Cells.Add(deleteCell);
+                    }
+
+                    TurnierTable.Rows.Add(TR);
+                }
+                turnierIndex++;
+            }
+        }
+
+        private void EditSpielButton_Click(object sender, EventArgs e)
         {
 
         }
 
         protected void LogoutButton_Click(object sender, EventArgs e)
         {
-            User user = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
-
-            if (user != null)
-                user.LogOut();
+            if (Verwalter.LoggedInUser != null)
+            {
+                Verwalter.LoggedInUser.LogOut();
+            }
 
             RedirectUnauthenticatedUser();
         }
@@ -62,7 +107,8 @@ namespace TurnierService.Views
             }
             else
             {
-                if (!Verwalter.Users.Any(_ => _.SessionID == Request.Params["SessionID"]))
+                Verwalter.LoggedInUser = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
+                if (Verwalter.LoggedInUser != null)
                 {
                     Response.Redirect($"{Microservices.GatewayPage}");
                 }
@@ -78,5 +124,15 @@ namespace TurnierService.Views
             => $"{Microservices.MitgliederServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetMannschaftsverwaltungsLink()
             => $"{Microservices.MannschaftsServicePage}?SessionID={Request.Params["SessionID"]}";
+
+        protected void DeleteSpielButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        protected void DeleteTurnierButton_Click(object sender, EventArgs e)
+        {
+            Turnier turnier = Verwalter.Turniere.Find(_ => _.Titel == TurnierDropDownList.SelectedValue);
+            Verwalter.DeleteTurnier(turnier);
+        }
     }
 }

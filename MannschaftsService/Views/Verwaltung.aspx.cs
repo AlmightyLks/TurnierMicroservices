@@ -34,7 +34,7 @@ namespace MannschaftsService.Views
             if (!IsPostBack)
             {
                 LoadSportarten();
-                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type == UserType.Admin)
+                if (Verwalter.LoggedInUser?.Type == UserType.Admin)
                 {
                     AddMannschaftButton.Visible = true;
                 }
@@ -47,20 +47,10 @@ namespace MannschaftsService.Views
 
         private void LoadMannschaften()
         {
-            MannschaftsTable.Rows.Clear();
-
-            TableHeaderRow THR = new TableHeaderRow();
-            THR.Cells.Add(new TableCell { Text = "Name" });
-            THR.Cells.Add(new TableCell { Text = "Sportart" });
-            THR.Cells.Add(new TableCell { Text = "Mitglieder" });
-
-            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Type == UserType.Admin)
+            for (int i = MannschaftsTable.Rows.Count; i > 1; i--)
             {
-                THR.Cells.Add(new TableCell { Text = "" });
-                THR.Cells.Add(new TableCell { Text = "" });
+                MannschaftsTable.Rows.RemoveAt(i);
             }
-
-            MannschaftsTable.Rows.Add(THR);
 
             int personIndex = 0;
             foreach (Mannschaft mannschaft in Verwalter.Mannschaften)
@@ -79,7 +69,7 @@ namespace MannschaftsService.Views
                 TC.Controls.Add(DDL);
                 TR.Cells.Add(TC);
 
-                if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type == UserType.Admin)
+                if (Verwalter.LoggedInUser?.Type == UserType.Admin)
                 {
                     var editCell = new TableCell();
                     var editButton = new Button();
@@ -149,10 +139,8 @@ namespace MannschaftsService.Views
 
         protected void LogoutButton_Click(object sender, EventArgs e)
         {
-            User user = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
-
-            if (user != null)
-                user.LogOut();
+            if (Verwalter.LoggedInUser != null)
+                Verwalter.LoggedInUser.LogOut();
 
             RedirectUnauthenticatedUser();
         }
@@ -168,7 +156,8 @@ namespace MannschaftsService.Views
             }
             else
             {
-                if (!Verwalter.Users.Any(_ => _.SessionID == gateSessionId))
+                Verwalter.LoggedInUser = Verwalter.Users.Find(_ => _.SessionID == gateSessionId);
+                if (Verwalter.LoggedInUser == null)
                 {
                     Response.Redirect($"{Microservices.GatewayPage}");
                 }

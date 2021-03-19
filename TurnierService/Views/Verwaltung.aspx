@@ -29,14 +29,17 @@
         <asp:Label ID="Turniere" Font-Size="X-Large" Font-Bold="true" runat="server" Text="Turniere:"></asp:Label>
         <br />
         <br />
-        <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
+        <asp:DropDownList ID="TurnierDropDownList" runat="server" AutoPostBack="True"></asp:DropDownList>
+        <br />
+        <br />
+        <asp:Button ID="DeleteButton" runat="server" OnClick="DeleteTurnierButton_Click" Text="Delete" />
         <br />
         <br />
 
-        <asp:Table CssClass="datatable" ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
+        <asp:Table CssClass="datatable" ID="TurnierTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
             <asp:TableHeaderRow runat="server">
-                <asp:TableCell runat="server">Mannschaft 1</asp:TableCell>
-                <asp:TableCell runat="server">Mannschaft 2</asp:TableCell>
+                <asp:TableCell runat="server">Teilnehmer 1</asp:TableCell>
+                <asp:TableCell runat="server">Teilnehmer 2</asp:TableCell>
                 <asp:TableCell runat="server">Punktestand</asp:TableCell>
                 <asp:TableCell runat="server"></asp:TableCell>
                 <asp:TableCell runat="server"></asp:TableCell>

@@ -14,19 +14,23 @@ namespace Gateway.Controllers
     {
         #region Eigenschaften
         private List<User> _sessionUsers;
+        private User _loggedInUser;
         #endregion
 
         #region Accessoren/Modifier
         public List<User> Users { get => _sessionUsers; set => _sessionUsers = value; }
+        public User LoggedInUser { get => _loggedInUser; set => _loggedInUser = value; }
         #endregion
 
         #region Konstruktoren
         public Controller()
         {
+            LoggedInUser = null;
             Users = new List<User>();
         }
         public Controller(Controller controller)
         {
+            LoggedInUser = controller.LoggedInUser;
             Users = controller.Users;
         }
         #endregion

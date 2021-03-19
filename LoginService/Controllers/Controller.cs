@@ -12,19 +12,23 @@ namespace LoginService.Controllers
     {
         #region Eigenschaften
         private List<User> _users;
+        private User _loggedInUser;
         #endregion
 
         #region Accessoren/Modifier
         public List<User> Users { get => _users; set => _users = value; }
+        public User LoggedInUser { get => _loggedInUser; set => _loggedInUser = value; }
         #endregion
 
         #region Konstruktoren
         public Controller()
         {
+            LoggedInUser = null;
             Users = new List<User>();
         }
         public Controller(Controller controller)
         {
+            LoggedInUser = controller.LoggedInUser;
             Users = controller.Users;
         }
         #endregion

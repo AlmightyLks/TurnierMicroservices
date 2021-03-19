@@ -33,17 +33,20 @@ namespace Gateway.Views
         private void RedirectUnauthenticatedUser()
         {
             Verwalter.FetchUsers();
+            Verwalter.LoggedInUser = Verwalter.Users.Find(_ => _.SessionID == Session.SessionID);
 
             //If no User with that SessionID is known
-            if (!Verwalter.Users.Any(_ => _.SessionID == Session.SessionID))
+            if (Verwalter.LoggedInUser == null)
+            {
                 Response.Redirect($"{Microservices.LoginServiceLoginPage}?SessionID={Session.SessionID}");
+            }
         }
         protected void LogoutButton_Click(object sender, EventArgs e)
         {
-            User user = Verwalter.Users.Find(_ => _.SessionID == Session.SessionID);
-
-            if (user != null)
-                user.LogOut();
+            if (Verwalter.LoggedInUser != null)
+            {
+                Verwalter.LoggedInUser.LogOut();
+            }
 
             RedirectUnauthenticatedUser();
         }

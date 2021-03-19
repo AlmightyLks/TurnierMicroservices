@@ -11,11 +11,13 @@ namespace MitgliederService.Controllers
     {
         private List<User> _users;
         private List<Mitglied> _mitglieder;
-        private List<string> _sportarten; 
+        private List<string> _sportarten;
+        private User _loggedInUser;
 
         public List<User> Users { get => _users; set => _users = value; }
         public List<string> Sportarten { get => _sportarten; set => _sportarten = value; }
         public List<Mitglied> Mitglieder { get => _mitglieder; set => _mitglieder = value; }
+        public User LoggedInUser { get => _loggedInUser; set => _loggedInUser = value; }
 
         public Controller()
         {

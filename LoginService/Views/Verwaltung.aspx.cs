@@ -40,7 +40,6 @@ namespace LoginService.Views
             }
 
             bool oneOrNoAdmin = Verwalter.Users.Where(_ => _.Type == UserType.Admin).Count() <= 1;
-            User loggedInUser = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
             int userIndex = 0;
             foreach (User user in Verwalter.Users)
             {
@@ -59,7 +58,7 @@ namespace LoginService.Views
                 editButton.BackColor = Color.LightBlue;
                 editButton.CssClass = "BasicButton";
                 editButton.Click += EditButtonClick;
-                if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == loggedInUser.Id)
+                if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == Verwalter.LoggedInUser?.Id)
                 {
                     editButton.Enabled = false;
                     editButton.BackColor = Color.DarkGray;
@@ -74,7 +73,7 @@ namespace LoginService.Views
                 deleteButton.Font.Size = FontUnit.Medium;
                 deleteButton.CssClass = "BasicButton";
                 deleteButton.Click += DeleteButtonClick;
-                if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == loggedInUser.Id)
+                if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == Verwalter.LoggedInUser?.Id)
                 {
                     deleteButton.Enabled = false;
                     deleteButton.BackColor = Color.DarkGray;
@@ -114,10 +113,8 @@ namespace LoginService.Views
 
         protected void LogoutButton_Click(object sender, EventArgs e)
         {
-            User user = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
-
-            if (user != null)
-                user.LogOut();
+            if (Verwalter.LoggedInUser != null)
+                Verwalter.LoggedInUser.LogOut();
 
             RedirectUnauthenticatedUser();
         }
@@ -125,6 +122,7 @@ namespace LoginService.Views
         {
             Verwalter.FetchUsers();
             string sessionId = Request.Params["SessionID"];
+
             if (string.IsNullOrWhiteSpace(sessionId))
             {
                 Response.Redirect($"{Microservices.GatewayPage}");
@@ -132,8 +130,8 @@ namespace LoginService.Views
             else
             {
                 //If no User with that SessionID is known or if the user is not an admin.
-                User user = Verwalter.Users.Find(_ => _.SessionID == sessionId);
-                if (user == null || user.Type == UserType.User)
+                Verwalter.LoggedInUser = Verwalter.Users.Find(_ => _.SessionID == sessionId);
+                if (Verwalter.LoggedInUser == null || Verwalter.LoggedInUser.Type != UserType.Admin)
                 {
                     Response.Redirect($"{Microservices.GatewayPage}");
                 }

@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 
 namespace SharedTypes.Models
@@ -8,35 +11,123 @@ namespace SharedTypes.Models
     public class Turnier
     {
         #region Eigenschaften
-        private string _TurnierTitel;
-        private List<Spiel> _Spiele;
+        private int _id;
+        private string _titel;
+        private List<Spiel> _spiele;
         #endregion
 
         #region Accessoren/Modifier
-        public List<Spiel> Spiele { get => _Spiele; set => _Spiele = value; }
-        public string TurnierTitel { get => _TurnierTitel; set => _TurnierTitel = value; }
+        public List<Spiel> Spiele { get => _spiele; set => _spiele = value; }
+        public string Titel { get => _titel; set => _titel = value; }
+        public int Id { get => _id; set => _id = value; }
         #endregion
 
         #region Konstruktoren
         public Turnier()
         {
-            TurnierTitel = "";
+            Id = 0;
+            Titel = "";
             Spiele = new List<Spiel>();
         }
-        public Turnier(List<Spiel> mySpiele, string myTitel)
+        public Turnier(int id, List<Spiel> mySpiele, string myTitel)
         {
-            TurnierTitel = myTitel;
+            Id = id;
+            Titel = myTitel;
             Spiele = mySpiele;
         }
-        public Turnier(Turnier Turn)
+        public Turnier(Turnier turn)
         {
-            TurnierTitel = Turn.TurnierTitel;
-            Spiele = Turn.Spiele;
+            Id = turn.Id;
+            Titel = turn.Titel;
+            Spiele = turn.Spiele;
         }
         #endregion
 
         #region Worker
         //idk
+
+        public void Post()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    try
+                    {
+                        string jsonStr = JsonConvert.SerializeObject(JsonConvert.SerializeObject(
+                                this,
+                                Formatting.None,
+                                settings: new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }
+                                ));
+                        
+                        StringContent strCon = new StringContent(
+                            jsonStr,
+                            Encoding.UTF8,
+                            "application/json"
+                            );
+
+                        HttpResponseMessage response = client.PostAsync($"{Microservices.MitgliederServiceApi}", strCon).GetAwaiter().GetResult();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public void Put()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    try
+                    {
+                        string jsonStr = JsonConvert.SerializeObject(JsonConvert.SerializeObject(
+                                this,
+                                Formatting.None,
+                                settings: new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }
+                                ));
+
+                        StringContent strCon = new StringContent(
+                            jsonStr,
+                            Encoding.UTF8,
+                            "application/json");
+
+                        HttpResponseMessage response = client.PutAsync($"{Microservices.MitgliederServiceApi}/{Id}", strCon).GetAwaiter().GetResult();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public void Delete()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = client.DeleteAsync($"{Microservices.MitgliederServiceApi}/{Id}").GetAwaiter().GetResult();
+                    string jsonStr = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
         #endregion
     }
 }

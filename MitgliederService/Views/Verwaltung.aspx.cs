@@ -32,7 +32,7 @@ namespace MitgliederService.Views
             }
             LoadMitglieder();
 
-            if (Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]).Type != UserType.Admin)
+            if (Verwalter.LoggedInUser?.Type != UserType.Admin)
             {
                 FormPanel.Visible = false;
                 AddMemberButton.Visible = false;
@@ -152,7 +152,8 @@ namespace MitgliederService.Views
             }
             else
             {
-                if (!Verwalter.Users.Any(_ => _.SessionID == Request.Params["SessionID"]))
+                Verwalter.LoggedInUser = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
+                if (Verwalter.LoggedInUser == null)
                 {
                     Response.Redirect($"{Microservices.GatewayPage}");
                 }
