@@ -62,7 +62,6 @@ namespace SharedTypes.Models
             SessionID = string.Empty;
             Put();
         }
-
         public void Put()
         {
             using (HttpClient client = new HttpClient())
@@ -80,7 +79,6 @@ namespace SharedTypes.Models
                 response.Wait();
             }
         }
-
         public void Delete()
         {
             using (HttpClient client = new HttpClient())
@@ -89,7 +87,6 @@ namespace SharedTypes.Models
                 response.Wait();
             }
         }
-
         public void Post()
         {
             using (HttpClient client = new HttpClient())
