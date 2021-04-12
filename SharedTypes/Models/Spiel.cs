@@ -8,30 +8,40 @@ namespace SharedTypes.Models
     public class Spiel
     {
         #region Eigenschaften
-        private Punktestand _Punktestand;
+        private TurnierTeilnehmer _ersterTeilnehmer;
+        private TurnierTeilnehmer _zweiterTeilnehmer;
         #endregion
 
         #region Accessoren/Modifier
-        public Punktestand Punktestand { get => _Punktestand; set => _Punktestand = value; }
+        public TurnierTeilnehmer ErsterTeilnehmer { get => _ersterTeilnehmer; set => _ersterTeilnehmer = value; }
+        public TurnierTeilnehmer ZweiterTeilnehmer { get => _zweiterTeilnehmer; set => _zweiterTeilnehmer = value; }
         #endregion
 
         #region Konstruktoren
         public Spiel()
         {
-            Punktestand = new Punktestand()
+            ErsterTeilnehmer = new TurnierTeilnehmer();
+            ZweiterTeilnehmer = new TurnierTeilnehmer();
+        }
+        public Spiel(object teilnehmer1, object teilnehmer2)
+        {
+            ErsterTeilnehmer = new TurnierTeilnehmer()
             {
-                Mannschaft = new Mannschaft[2],
-                Punkte = new int[2]
+                Punkte = 0,
+                Teilnehmer = teilnehmer1
+            };
+            ZweiterTeilnehmer = new TurnierTeilnehmer()
+            {
+                Punkte = 0,
+                Teilnehmer = teilnehmer2
             };
         }
-        public Spiel(Punktestand myStand)
+        public Spiel(Spiel spiel)
         {
-            Punktestand = myStand;
+            ErsterTeilnehmer = spiel.ErsterTeilnehmer;
+            ZweiterTeilnehmer = spiel.ZweiterTeilnehmer;
         }
-        public Spiel(Spiel mySpiel)
-        {
-            Punktestand = mySpiel.Punktestand;
-        }
+
         #endregion
 
         #region Worker

@@ -32,24 +32,26 @@ namespace MitgliederService.Controllers
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
                             //Query Fussballspieler
-                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `fussballspieler`");
+                            MySqlDataReader reader = QueryDB($"Select * from `fussballspieler`", out MySqlConnection connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbFussballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
+                            while (reader.Read())
+                                dbFussballspieler.Add((int)reader["Spieler_ID"], reader["Position"].ToString());
 
+                            connection.Close();
 
                             //Query Spieler
-                            sqlRdr = QueryDB($"Select * from `spieler`");
+                            reader = QueryDB($"Select * from `spieler`", out connection);
 
-                            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
-                                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+                            while (reader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                                dbSpieler.Add((int)reader["ID"], new KeyValuePair<int, int>((int)reader["Mitglied_ID"], (int)reader["AnzahlSpiele"]));
 
 
+                            connection.Close();
                             //Query Mitglied
-                            sqlRdr = QueryDB($"Select * from `mitglied`");
+                            reader = QueryDB($"Select * from `mitglied`", out connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+                            while (reader.Read())
+                                dbMitglied.Add((int)reader["ID"], reader["Name"].ToString());
 
                             foreach (KeyValuePair<int, string> fussballspieler in dbFussballspieler)
                             {
@@ -63,8 +65,8 @@ namespace MitgliederService.Controllers
                                 }));
                             }
 
-                            sqlRdr.DataReader.Close();
-                            sqlRdr.Connection.Close();
+                            reader.Close();
+                            connection.Close();
                             break;
                         }
 
@@ -77,24 +79,26 @@ namespace MitgliederService.Controllers
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
                             //Query Handballspieler
-                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `handballspieler`");
+                            MySqlDataReader reader = QueryDB($"Select * from `handballspieler`", out MySqlConnection connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbHandballspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], sqlRdr.DataReader["Position"].ToString());
+                            while (reader.Read())
+                                dbHandballspieler.Add((int)reader["Spieler_ID"], reader["Position"].ToString());
 
+                            connection.Close();
 
                             //Query Spieler
-                            sqlRdr = QueryDB($"Select * from `spieler`");
+                            reader = QueryDB($"Select * from `spieler`", out connection);
 
-                            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
-                                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+                            while (reader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                                dbSpieler.Add((int)reader["ID"], new KeyValuePair<int, int>((int)reader["Mitglied_ID"], (int)reader["AnzahlSpiele"]));
 
+                            connection.Close();
 
                             //Query Mitglied
-                            sqlRdr = QueryDB($"Select * from `mitglied`");
+                            reader = QueryDB($"Select * from `mitglied`", out connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+                            while (reader.Read())
+                                dbMitglied.Add((int)reader["ID"], reader["Name"].ToString());
 
 
                             foreach (KeyValuePair<int, string> handballspieler in dbHandballspieler)
@@ -109,8 +113,8 @@ namespace MitgliederService.Controllers
                                 }));
                             }
 
-                            sqlRdr.DataReader.Close();
-                            sqlRdr.Connection.Close();
+                            reader.Close();
+                            connection.Close();
                             break;
                         }
 
@@ -123,24 +127,26 @@ namespace MitgliederService.Controllers
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                  //ID <Mitglied_ID & AnzahlSpiele>
 
                             //Query Tennisspieler
-                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `tennisspieler`");
+                            MySqlDataReader reader = QueryDB($"Select * from `tennisspieler`", out MySqlConnection connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbTennisspieler.Add((int)sqlRdr.DataReader["Spieler_ID"], (int)sqlRdr.DataReader["JahreErfahrung"]);
+                            while (reader.Read())
+                                dbTennisspieler.Add((int)reader["Spieler_ID"], (int)reader["JahreErfahrung"]);
 
+                            connection.Close();
 
                             //Query Spieler
-                            sqlRdr = QueryDB($"Select * from `spieler`");
+                            reader = QueryDB($"Select * from `spieler`", out connection);
 
-                            while (sqlRdr.DataReader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
-                                dbSpieler.Add((int)sqlRdr.DataReader["ID"], new KeyValuePair<int, int>((int)sqlRdr.DataReader["Mitglied_ID"], (int)sqlRdr.DataReader["AnzahlSpiele"]));
+                            while (reader.Read()) //ID <Mitglied_ID & AnzahlSpiele>
+                                dbSpieler.Add((int)reader["ID"], new KeyValuePair<int, int>((int)reader["Mitglied_ID"], (int)reader["AnzahlSpiele"]));
 
+                            connection.Close();
 
                             //Query Mitglied
-                            sqlRdr = QueryDB($"Select * from `mitglied`");
+                            reader = QueryDB($"Select * from `mitglied`", out connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+                            while (reader.Read())
+                                dbMitglied.Add((int)reader["ID"], reader["Name"].ToString());
 
                             foreach (KeyValuePair<int, int> tennisspieler in dbTennisspieler)
                             {
@@ -154,8 +160,8 @@ namespace MitgliederService.Controllers
                                 }));
                             }
 
-                            sqlRdr.DataReader.Close();
-                            sqlRdr.Connection.Close();
+                            reader.Close();
+                            connection.Close();
                             break;
                         }
 
@@ -167,17 +173,18 @@ namespace MitgliederService.Controllers
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
                             //Query Mitglied
-                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `mitglied`");
+                            MySqlDataReader reader = QueryDB($"Select * from `mitglied`", out MySqlConnection connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+                            while (reader.Read())
+                                dbMitglied.Add((int)reader["ID"], reader["Name"].ToString());
 
+                            connection.Close();
 
                             //Query 
-                            sqlRdr = QueryDB($"Select * from `trainer`");
+                            reader = QueryDB($"Select * from `trainer`", out connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbTrainer.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
+                            while (reader.Read())
+                                dbTrainer.Add((int)reader["Mitglied_ID"]);
 
                             foreach (int trainer in dbTrainer)
                             {
@@ -189,8 +196,8 @@ namespace MitgliederService.Controllers
                                 }));
                             }
 
-                            sqlRdr.DataReader.Close();
-                            sqlRdr.Connection.Close();
+                            reader.Close();
+                            connection.Close();
                             break;
                         }
 
@@ -202,17 +209,18 @@ namespace MitgliederService.Controllers
                             Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
 
                             //Query Tennisspieler
-                            (MySqlDataReader DataReader, MySqlConnection Connection) sqlRdr = QueryDB($"Select * from `mitglied`");
+                            MySqlDataReader reader = QueryDB($"Select * from `mitglied`", out MySqlConnection connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbMitglied.Add((int)sqlRdr.DataReader["ID"], sqlRdr.DataReader["Name"].ToString());
+                            while (reader.Read())
+                                dbMitglied.Add((int)reader["ID"], reader["Name"].ToString());
+
+                            connection.Close();
 
                             //Query Physiotherapeut
-                            sqlRdr = QueryDB($"Select * from `physiotherapeut`");
+                            reader = QueryDB($"Select * from `physiotherapeut`", out connection);
 
-                            while (sqlRdr.DataReader.Read())
-                                dbPhysiotherapeut.Add((int)sqlRdr.DataReader["Mitglied_ID"]);
-
+                            while (reader.Read())
+                                dbPhysiotherapeut.Add((int)reader["Mitglied_ID"]);
 
                             foreach (int physiotherapeut in dbPhysiotherapeut)
                             {
@@ -224,8 +232,8 @@ namespace MitgliederService.Controllers
                                 }));
                             }
 
-                            sqlRdr.DataReader.Close();
-                            sqlRdr.Connection.Close();
+                            reader.Close();
+                            connection.Close();
                             break;
                         }
                 }
@@ -250,18 +258,18 @@ namespace MitgliederService.Controllers
             KeyValuePair<int, int> MitgliedIDs = new KeyValuePair<int, int>();
 
             //Check if Person Name is unique
-            (MySqlDataReader DataReader, MySqlConnection Connection) rdrConn = QueryDB($"select `id` from `mitglied` where `Name`= '{mitglied.Name}';");
+            MySqlDataReader reader = QueryDB($"select `id` from `mitglied` where `Name`= '{mitglied.Name}';", out MySqlConnection connection);
 
 
-            if (rdrConn.DataReader.HasRows) //If not unique, leave.
+            if (reader.HasRows) //If not unique, leave.
             {
-                rdrConn.DataReader.Close();
-                rdrConn.Connection.Close();
+                reader.Close();
+                connection.Close();
                 return;
             }
 
-            rdrConn.DataReader.Close();
-            rdrConn.Connection.Close();
+            reader.Close();
+            connection.Close();
 
             string insertString = $"insert into `Mitglied` (`Name`) values ('{mitglied.Name}');";
 
@@ -299,11 +307,11 @@ namespace MitgliederService.Controllers
                 );
             string updateString = String.Empty;
 
-            (MySqlDataReader DataReader, MySqlConnection Connection) rdrConn = QueryDB($"select p.id as 'MitgliedID', s.id as 'SpielerID' from Mitglied p join spieler s on s.Mitglied_Id = p.id where p.id = '{id}'");
-            rdrConn.DataReader.Read();
-            KeyValuePair<int, int> MitgliedIDs = new KeyValuePair<int, int>((int)rdrConn.DataReader["MitgliedID"], (int)rdrConn.DataReader["SpielerID"]);
-            rdrConn.DataReader.Close();
-            rdrConn.Connection.Close();
+            MySqlDataReader reader = QueryDB($"select p.id as 'MitgliedID', s.id as 'SpielerID' from Mitglied p join spieler s on s.Mitglied_Id = p.id where p.id = '{id}'", out MySqlConnection connection);
+            reader.Read();
+            KeyValuePair<int, int> MitgliedIDs = new KeyValuePair<int, int>((int)reader["MitgliedID"], (int)reader["SpielerID"]);
+            reader.Close();
+            connection.Close();
 
             if (mitglied is Fussballspieler fussballspieler)
             {
@@ -342,24 +350,26 @@ namespace MitgliederService.Controllers
         }
 
 
-        private (MySqlDataReader DataReader, MySqlConnection Connection) QueryDB(string sqlStr)
+        private MySqlDataReader QueryDB(string sqlStr, out MySqlConnection connection)
         {
-            (MySqlDataReader DataReader, MySqlConnection Connection) result = (null, null);
+            connection = null;
+            MySqlDataReader dataReader = null;
 
             try
             {
-                result.Connection = ConnectToDB();
-                if (result.Connection == null)
-                    return result;
-                MySqlCommand cmd = new MySqlCommand(sqlStr, result.Connection);
-                result.DataReader = cmd.ExecuteReader();
+                connection = ConnectToDB();
+                if (connection == null)
+                    return dataReader;
+                MySqlCommand cmd = new MySqlCommand(sqlStr, connection);
+                dataReader = cmd.ExecuteReader();
             }
             catch (Exception e)
             {
-                result = (null, null);
+                connection = null;
+                dataReader = null;
             }
 
-            return result;
+            return dataReader;
         }
         private int NonQueryDB(string sqlStr)
         {
@@ -372,6 +382,7 @@ namespace MitgliederService.Controllers
                     return result;
                 MySqlCommand cmd = new MySqlCommand(sqlStr, conn);
                 result = cmd.ExecuteNonQuery();
+                conn.Close();
             }
             catch (Exception e)
             {

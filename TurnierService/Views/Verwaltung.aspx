@@ -35,8 +35,16 @@
         <asp:Button ID="DeleteButton" runat="server" OnClick="DeleteTurnierButton_Click" Text="Delete" />
         <br />
         <br />
+        <br />
+        <asp:DropDownList ID="TeilnehmerDropDownList" runat="server">
+        </asp:DropDownList>
+        <br />
+        <br />
+        <asp:Button ID="AddTeilnehmerButton" runat="server" Text="Teilnehmer hinzufügen" />
+        <br />
+        <br />
 
-        <asp:Table CssClass="datatable" ID="TurnierTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
+        <asp:Table CssClass="datatable" ID="SpieleTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
             <asp:TableHeaderRow runat="server">
                 <asp:TableCell runat="server">Teilnehmer 1</asp:TableCell>
                 <asp:TableCell runat="server">Teilnehmer 2</asp:TableCell>

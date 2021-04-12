@@ -104,7 +104,7 @@ namespace LoginService.Views
             UsernameTextBox.Text = user.Username;
             PasswordTextBox.Text = user.Password;
             UserTypDropDown.Text = user.Type.ToString();
-            
+
             EditConfirmButton.Text = $"Bearbeite User {index + 1}";
 
             EditConfirmButton.Visible = true;
@@ -178,7 +178,7 @@ namespace LoginService.Views
             user.Password = PasswordTextBox.Text;
             user.Type = UserTypDropDown.SelectedValue == "Admin" ? UserType.Admin : UserType.User;
             user.Put();
-            
+
             EditConfirmButton.Visible = false;
             AddUserButton.Visible = true;
 

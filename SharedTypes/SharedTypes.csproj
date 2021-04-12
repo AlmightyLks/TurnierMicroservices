@@ -48,7 +48,6 @@
     <Compile Include="Models\Fussballspieler.cs" />
     <Compile Include="Models\Handballspieler.cs" />
     <Compile Include="Models\Mannschaft.cs" />
-    <Compile Include="Models\MannschaftPunkte.cs" />
     <Compile Include="Models\Mitglied.cs" />
     <Compile Include="Models\Physiotherapeut.cs" />
     <Compile Include="Models\Spiel.cs" />
@@ -56,6 +55,7 @@
     <Compile Include="Models\Tennisspieler.cs" />
     <Compile Include="Models\Trainer.cs" />
     <Compile Include="Models\Turnier.cs" />
+    <Compile Include="Models\TurnierTeilnehmer.cs" />
     <Compile Include="Models\UserType.cs" />
     <Compile Include="Models\Verein.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

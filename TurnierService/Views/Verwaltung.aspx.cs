@@ -29,7 +29,13 @@ namespace TurnierService.Views
 
             RedirectUnauthenticatedUser();
             Verwalter.FetchTurniere();
+            Verwalter.FetchMannschaften();
+            Verwalter.FetchMitglieder();
+            if (!IsPostBack)
+                Verwalter.Turniere.Add(new Turnier() { Id = 4, Sportart = "Tennis", Titel = "Foo" });
             LoadTurniere();
+            LoadSpiele();
+            LoadTeilnehmer();
 
             if (Verwalter.LoggedInUser?.Type != UserType.Admin)
             {
@@ -37,47 +43,89 @@ namespace TurnierService.Views
             }
         }
 
-        private void LoadTurniere()
+        private void LoadSpiele()
         {
-            for (int i = TurnierTable.Rows.Count; i > 1; i--)
+            for (int i = SpieleTable.Rows.Count; i > 1; i--)
             {
-                TurnierTable.Rows.RemoveAt(i);
+                SpieleTable.Rows.RemoveAt(i);
+            }
+            Turnier turnier = Verwalter.Turniere.Find(_ => _.Titel == TurnierDropDownList.SelectedValue);
+            foreach (Spiel spiel in turnier?.Spiele)
+            {
+                TableRow TR = new TableRow();
+                if (turnier.Sportart == "Tennis")
+                {
+                    TR.Cells.Add(new TableCell { Text = (spiel.ErsterTeilnehmer.Teilnehmer as Tennisspieler)?.Name });
+                    TR.Cells.Add(new TableCell { Text = (spiel.ZweiterTeilnehmer.Teilnehmer as Tennisspieler)?.Name });
+                    TR.Cells.Add(new TableCell { Text = $"{spiel.ErsterTeilnehmer.Punkte}:{spiel.ZweiterTeilnehmer.Punkte}" });
+                }
+                if (Verwalter.LoggedInUser?.Type == UserType.Admin)
+                {
+                    var editCell = new TableCell();
+                    var editButton = new Button();
+                    editButton.Text = "Edit";
+                    editButton.ID = "Edit " + turnier.Id;
+                    editButton.Click += EditSpielButton_Click;
+                    editCell.Controls.Add(editButton);
+
+                    var deleteCell = new TableCell();
+                    var deleteButton = new Button();
+                    deleteButton.Text = "Delete";
+                    deleteButton.ID = "Delete " + turnier.Id;
+                    deleteButton.Click += DeleteSpielButton_Click;
+                    deleteCell.Controls.Add(deleteButton);
+
+                    TR.Cells.Add(editCell);
+                    TR.Cells.Add(deleteCell);
+                }
+
+                SpieleTable.Rows.Add(TR);
+            }
+        }
+
+        private void LoadTeilnehmer()
+        {
+            Turnier currentTurnier = Verwalter.Turniere.Find(_ => _.Titel == TurnierDropDownList.SelectedValue);
+            if (currentTurnier == null)
+            {
+                return;
+            }
+            if (currentTurnier.Sportart == "Tennis")
+            {
+                IEnumerable<Tennisspieler> smth = Verwalter.Mitglieder
+                    .Where(_ => _ is Tennisspieler tennisspieler).Select(_ => _ as Tennisspieler);
+                foreach (Tennisspieler spieler in smth)
+                {
+                    if (!currentTurnier.Spiele
+                        .Any(e => (e.ErsterTeilnehmer.Teilnehmer as Tennisspieler) == spieler || (e.ZweiterTeilnehmer.Teilnehmer as Tennisspieler) == spieler))
+                    {
+                        TeilnehmerDropDownList.Items.Add($"{spieler.Id} {spieler.Name}");
+                    }
+                }
+            }
+            else
+            {
+                IEnumerable<Mannschaft> smth = Verwalter.Mannschaften
+                    .Where(_ => _.SportArt == currentTurnier.Sportart);
+                foreach (Mannschaft mannschaft in smth)
+                {
+                    if (!currentTurnier.Spiele
+                        .Any(e => (e.ErsterTeilnehmer.Teilnehmer as Mannschaft) == mannschaft || (e.ZweiterTeilnehmer.Teilnehmer as Mannschaft) == mannschaft))
+                    {
+                        TeilnehmerDropDownList.Items.Add($"{mannschaft.Id} {mannschaft.Name}");
+                    }
+                }
             }
 
-            int turnierIndex = 0;
+        }
+
+        private void LoadTurniere()
+        {
+            TurnierDropDownList.Items.Clear();
+            
             foreach (Turnier turnier in Verwalter.Turniere)
             {
-                foreach (Spiel spiel in turnier.Spiele)
-                {
-                    TableRow TR = new TableRow();
-
-                    TR.Cells.Add(new TableCell { Text = spiel.Punktestand.Mannschaft[0].Name });
-                    TR.Cells.Add(new TableCell { Text = spiel.Punktestand.Mannschaft[1].Name });
-                    TR.Cells.Add(new TableCell { Text = $"{spiel.Punktestand.Punkte[0]}:{spiel.Punktestand.Punkte[1]}" });
-
-                    if (Verwalter.LoggedInUser?.Type == UserType.Admin)
-                    {
-                        var editCell = new TableCell();
-                        var editButton = new Button();
-                        editButton.Text = "Edit";
-                        editButton.ID = "Edit " + turnierIndex;
-                        editButton.Click += EditSpielButton_Click;
-                        editCell.Controls.Add(editButton);
-
-                        var deleteCell = new TableCell();
-                        var deleteButton = new Button();
-                        deleteButton.Text = "Delete";
-                        deleteButton.ID = "Delete " + turnierIndex;
-                        deleteButton.Click += DeleteSpielButton_Click;
-                        deleteCell.Controls.Add(deleteButton);
-
-                        TR.Cells.Add(editCell);
-                        TR.Cells.Add(deleteCell);
-                    }
-
-                    TurnierTable.Rows.Add(TR);
-                }
-                turnierIndex++;
+                TurnierDropDownList.Items.Add(turnier.Titel);
             }
         }
 
@@ -108,7 +156,7 @@ namespace TurnierService.Views
             else
             {
                 Verwalter.LoggedInUser = Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"]);
-                if (Verwalter.LoggedInUser != null)
+                if (Verwalter.LoggedInUser == null)
                 {
                     Response.Redirect($"{Microservices.GatewayPage}");
                 }

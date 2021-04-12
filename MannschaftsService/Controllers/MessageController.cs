@@ -25,35 +25,36 @@ namespace MannschaftsService.Controllers
 
                 //Why this mess?
                 //Because we are not allowed to use ORM from i.e. EF Core, meaning we have to map our data ourselves, by hand with raw queries.
-                var newMannschaften = new List<Mannschaft>();                                       //Alle Mannschaften
-                var dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
-                var dbMannschaften = new List<KeyValuePair<int, KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>>>();           //ID, <Name, Sportart>
+                List<Mannschaft> newMannschaften = new List<Mannschaft>();                                       //Alle Mannschaften
+                Dictionary<int, string> dbMitglied = new Dictionary<int, string>();                                     //ID <Mitglied_ID & AnzahlSpiele>
+                List<KeyValuePair<int, KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>>> dbMannschaften = new List<KeyValuePair<int, KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>>>();           //ID, <Name, Sportart>
 
                 List<Mitglied> allMembers = FetchMitglieder();
 
                 //Query Mannschaften
-                var sqlRdr = QueryDB("select * from `mannschaft`");
+                MySqlDataReader rdr = QueryDB("select * from `mannschaft`", out MySqlConnection connection);
 
                 //Alle Mannschaften fetchen
-                while (sqlRdr.DataReader.Read())
+                while (rdr.Read())
                 {
-                    dbMannschaften.Add(new KeyValuePair<int, KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>>((int)sqlRdr.DataReader["id"],
+                    dbMannschaften.Add(new KeyValuePair<int, KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>>((int)rdr["id"],
                         new KeyValuePair<KeyValuePair<string, string>, List<Mitglied>>(
-                        new KeyValuePair<string, string>(sqlRdr.DataReader["Name"].ToString(), sqlRdr.DataReader["Sportart"].ToString()), new List<Mitglied>())));
+                        new KeyValuePair<string, string>(rdr["Name"].ToString(), rdr["Sportart"].ToString()), new List<Mitglied>())));
                 }
+                connection.Close();
 
                 //Query MannschaftMitglied
-                sqlRdr = QueryDB("select * from `mannschaftmitglied`");
+                rdr = QueryDB("select * from `mannschaftmitglied`", out connection);
 
                 //Alle MannschaftMitglieden & Mannschaften erstellen fetchen
-                while (sqlRdr.DataReader.Read())
+                while (rdr.Read())
                 {
-                    var mannschaft = new Mannschaft();
-                    mannschaft.Id = dbMannschaften.FirstOrDefault((el) => el.Key == (int)sqlRdr.DataReader["Mannschaft_ID"]).Key;
-                    mannschaft.Name = dbMannschaften.FirstOrDefault((el) => el.Key == (int)sqlRdr.DataReader["Mannschaft_ID"]).Value.Key.Key;
-                    mannschaft.SportArt = dbMannschaften.FirstOrDefault((el) => el.Key == (int)sqlRdr.DataReader["Mannschaft_ID"]).Value.Key.Value;
-                    var mitgliedId = (int)sqlRdr.DataReader["Mitglied_ID"];
-                    var alleMitglieder = allMembers.Where((member) => member.Id == mitgliedId);
+                    Mannschaft mannschaft = new Mannschaft();
+                    mannschaft.Id = dbMannschaften.FirstOrDefault((el) => el.Key == (int)rdr["Mannschaft_ID"]).Key;
+                    mannschaft.Name = dbMannschaften.FirstOrDefault((el) => el.Key == (int)rdr["Mannschaft_ID"]).Value.Key.Key;
+                    mannschaft.SportArt = dbMannschaften.FirstOrDefault((el) => el.Key == (int)rdr["Mannschaft_ID"]).Value.Key.Value;
+                    int mitgliedId = (int)rdr["Mitglied_ID"];
+                    IEnumerable<Mitglied> alleMitglieder = allMembers.Where((member) => member.Id == mitgliedId);
                     mannschaft.Mitglieder.AddRange(alleMitglieder);
                     newMannschaften.Add(mannschaft);
                 }
@@ -70,8 +71,8 @@ namespace MannschaftsService.Controllers
                     }
                 }
 
-                sqlRdr.DataReader.Close();
-                sqlRdr.Connection.Close();
+                rdr.Close();
+                connection.Close();
 
                 result.AddRange(newMannschaften);
 
@@ -89,7 +90,7 @@ namespace MannschaftsService.Controllers
 
         // POST: api/Message
         [HttpPost]
-        [Route("api/message")] 
+        [Route("api/message")]
         public bool Post([FromBody] string jsonStr)
         {
             try
@@ -100,11 +101,11 @@ namespace MannschaftsService.Controllers
                 });
 
                 _ = NonQueryDB($"insert into `mannschaft`(`Name`,`Sportart`) values('{mannschaft.Name}','{mannschaft.SportArt}')");
-                (MySqlDataReader DataReader, MySqlConnection Connection) temp = QueryDB("select max(id) as 'latestid' from mannschaft");
-                temp.DataReader.Read();
-                int latestId = (int)temp.DataReader["latestid"];
-                temp.DataReader.Close();
-                temp.Connection.Close();
+                MySqlDataReader reader = QueryDB("select max(id) as 'latestid' from mannschaft", out MySqlConnection connection);
+                reader.Read();
+                int latestId = (int)reader["latestid"];
+                reader.Close();
+                connection.Close();
 
                 if (mannschaft.Mitglieder.Count != 0)
                 {
@@ -185,24 +186,26 @@ namespace MannschaftsService.Controllers
             }
             return result;
         }
-        private (MySqlDataReader DataReader, MySqlConnection Connection) QueryDB(string sqlStr)
+        private MySqlDataReader QueryDB(string sqlStr, out MySqlConnection connection)
         {
-            (MySqlDataReader DataReader, MySqlConnection Connection) result = (null, null);
+            connection = null;
+            MySqlDataReader dataReader = null;
 
             try
             {
-                result.Connection = ConnectToDB();
-                if (result.Connection == null)
-                    return result;
-                MySqlCommand cmd = new MySqlCommand(sqlStr, result.Connection);
-                result.DataReader = cmd.ExecuteReader();
+                connection = ConnectToDB();
+                if (connection == null)
+                    return dataReader;
+                MySqlCommand cmd = new MySqlCommand(sqlStr, connection);
+                dataReader = cmd.ExecuteReader();
             }
             catch (Exception e)
             {
-                result = (null, null);
+                connection = null;
+                dataReader = null;
             }
 
-            return result;
+            return dataReader;
         }
         private int NonQueryDB(string sqlStr)
         {

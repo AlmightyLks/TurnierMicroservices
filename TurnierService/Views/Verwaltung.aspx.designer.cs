@@ -58,12 +58,30 @@ namespace TurnierService.Views {
         protected global::System.Web.UI.WebControls.Button DeleteButton;
         
         /// <summary>
-        /// TurnierTable-Steuerelement
+        /// TeilnehmerDropDownList-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table TurnierTable;
+        protected global::System.Web.UI.WebControls.DropDownList TeilnehmerDropDownList;
+        
+        /// <summary>
+        /// AddTeilnehmerButton-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddTeilnehmerButton;
+        
+        /// <summary>
+        /// SpieleTable-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table SpieleTable;
     }
 }

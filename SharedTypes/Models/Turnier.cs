@@ -13,13 +13,15 @@ namespace SharedTypes.Models
         #region Eigenschaften
         private int _id;
         private string _titel;
+        private string _sportart;
         private List<Spiel> _spiele;
         #endregion
-
+        
         #region Accessoren/Modifier
         public List<Spiel> Spiele { get => _spiele; set => _spiele = value; }
         public string Titel { get => _titel; set => _titel = value; }
         public int Id { get => _id; set => _id = value; }
+        public string Sportart { get => _sportart; set => _sportart = value; }
         #endregion
 
         #region Konstruktoren
@@ -27,25 +29,26 @@ namespace SharedTypes.Models
         {
             Id = 0;
             Titel = "";
+            Sportart = "";
             Spiele = new List<Spiel>();
         }
-        public Turnier(int id, List<Spiel> mySpiele, string myTitel)
+        public Turnier(int id, List<Spiel> mySpiele, string myTitel, string sportart)
         {
             Id = id;
             Titel = myTitel;
+            Sportart = sportart;
             Spiele = mySpiele;
         }
         public Turnier(Turnier turn)
         {
             Id = turn.Id;
             Titel = turn.Titel;
+            Sportart = turn.Sportart;
             Spiele = turn.Spiele;
         }
         #endregion
 
         #region Worker
-        //idk
-
         public void Post()
         {
             try

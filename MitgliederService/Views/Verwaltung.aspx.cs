@@ -2,6 +2,7 @@
 using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -30,7 +31,9 @@ namespace MitgliederService.Views
             {
                 LoadSportarten();
             }
-            LoadMitglieder();
+
+            Verwalter.FetchMitglieder();
+            PopulateTable(Verwalter.Mitglieder);
 
             if (Verwalter.LoggedInUser?.Type != UserType.Admin)
             {
@@ -39,7 +42,7 @@ namespace MitgliederService.Views
             }
         }
 
-        private void LoadMitglieder()
+        private void PopulateTable(List<Mitglied> mitglieder)
         {
             MyTable.Rows.Clear();
 
@@ -58,11 +61,9 @@ namespace MitgliederService.Views
 
             MyTable.Rows.Add(THR);
 
-            Verwalter.FetchMitglieder();
-
             int MitgliedIndex = 0;
 
-            foreach (Mitglied Mitglied in Verwalter.Mitglieder)
+            foreach (Mitglied Mitglied in mitglieder)
             {
                 TableRow TR = new TableRow();
 
@@ -112,6 +113,9 @@ namespace MitgliederService.Views
                     var editButton = new Button();
                     editButton.Text = "Edit";
                     editButton.ID = "Edit " + MitgliedIndex;
+                    editButton.Font.Size = FontUnit.Medium;
+                    editButton.BackColor = Color.LightBlue;
+                    editButton.CssClass = "BasicButton";
                     editButton.Click += EditButtonClick;
                     editCell.Controls.Add(editButton);
 
@@ -120,6 +124,9 @@ namespace MitgliederService.Views
                     deleteButton.Text = "Delete";
                     deleteButton.ID = "Delete " + MitgliedIndex;
                     deleteButton.Click += DeleteButtonClick;
+                    deleteButton.BackColor = Color.IndianRed;
+                    deleteButton.Font.Size = FontUnit.Medium;
+                    deleteButton.CssClass = "BasicButton";
                     deleteCell.Controls.Add(deleteButton);
 
                     TR.Cells.Add(editCell);
@@ -453,6 +460,20 @@ namespace MitgliederService.Views
                 MitgliedTypLabel.Text = "Tennisspieler";
             }
         }
+        protected void SearchMemberButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(NameInputTextBox.Text))
+            {
+                return;
+            }
+
+            List<Mitglied> allResults = 
+                Verwalter.Mitglieder
+                .Where(member => member.Name.ToLower().StartsWith(NameInputTextBox.Text.ToLower()))
+                .ToList();
+
+            PopulateTable(allResults);
+        }
 
 
         public string GetTurnierverwaltungsLink()
@@ -463,5 +484,6 @@ namespace MitgliederService.Views
             => $"#";
         public string GetMannschaftsverwaltungsLink()
             => $"{Microservices.MannschaftsServicePage}?SessionID={Request.Params["SessionID"]}";
+
     }
 }

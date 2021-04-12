@@ -3,6 +3,7 @@ using SharedTypes;
 using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -75,6 +76,9 @@ namespace MannschaftsService.Views
                     var editButton = new Button();
                     editButton.Text = "Edit";
                     editButton.ID = "Edit " + personIndex;
+                    editButton.Font.Size = FontUnit.Medium;
+                    editButton.BackColor = Color.LightBlue;
+                    editButton.CssClass = "BasicButton";
                     editButton.Click += EditButton_Click;
                     editCell.Controls.Add(editButton);
 
@@ -82,6 +86,9 @@ namespace MannschaftsService.Views
                     var deleteButton = new Button();
                     deleteButton.Text = "Delete";
                     deleteButton.ID = "Delete " + personIndex;
+                    deleteButton.BackColor = Color.IndianRed;
+                    deleteButton.Font.Size = FontUnit.Medium;
+                    deleteButton.CssClass = "BasicButton";
                     deleteButton.Click += DeleteButton_Click;
                     deleteCell.Controls.Add(deleteButton);
 

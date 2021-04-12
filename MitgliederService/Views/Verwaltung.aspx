@@ -26,8 +26,8 @@
         <br />
         <br />
         <br />
-        <asp:Button ID="AddMemberButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberButton_Click" />
-        <asp:Button ID="CancelButton" runat="server" Visible="false" Text="Abbrechen" OnClick="CancelButton_Click" />
+        <asp:Button ID="AddMemberButton" CssClass="BasicButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberButton_Click" />
+        <asp:Button ID="CancelButton" CssClass="BasicButton" runat="server" Visible="false" Text="Abbrechen" OnClick="CancelButton_Click" />
 
         <asp:Panel runat="server" ID="FormPanel" Visible="false">
             &nbsp;<br />
@@ -45,7 +45,7 @@
                 <asp:ListItem>Trainer</asp:ListItem>
             </asp:RadioButtonList>
             <br />
-            <asp:Button ID="ConfirmMitgliedTyp" runat="server" OnClick="ConfirmSportart_Click" Text="Sportart bestätigen" />
+            <asp:Button ID="ConfirmMitgliedTyp" CssClass="BasicButton" runat="server" OnClick="ConfirmSportart_Click" Text="Sportart bestätigen" />
             <br />
             <br />
             <asp:Label ID="MitgliedTypLabel" runat="server" Text=" " Font-Bold="True" Font-Overline="False" Font-Underline="True"></asp:Label>
@@ -70,9 +70,9 @@
             <asp:TextBox ID="MitgliedErfahrungTextBox" runat="server" Enabled="False" type="number"></asp:TextBox>
             <br />
             <br />
-            <asp:Button ID="AddMemberConfirmButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberConfirmButton_Click" />
+            <asp:Button ID="AddMemberConfirmButton" CssClass="BasicButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberConfirmButton_Click" />
             <br />
-            <asp:Button ID="EditMemberConfirmButton" runat="server" Text="Bestätigen" OnClick="EditMemberConfirmButton_Click" />
+            <asp:Button ID="EditMemberConfirmButton" CssClass="BasicButton" runat="server" Text="Bestätigen" OnClick="EditMemberConfirmButton_Click" />
             <br />
         </asp:Panel>
 
@@ -80,6 +80,12 @@
         <br />
         <asp:Label ID="Mitglieder" Font-Size="X-Large" Font-Bold="true" runat="server" Text="Mitglieder:"></asp:Label>
 
+        <br />
+        <br />
+        <asp:TextBox ID="NameInputTextBox" style="text-align: center" runat="server" Height="19px" Width="143px">Name...</asp:TextBox>
+        <br />
+        <br />
+        <asp:Button ID="SearchMemberButton" CssClass="BasicButton" runat="server" Text="Mitglieder suchen" OnClick="SearchMemberButton_Click" />
         <br />
         <br />
         <br />

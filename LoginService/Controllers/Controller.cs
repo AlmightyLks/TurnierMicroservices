@@ -66,11 +66,11 @@ namespace LoginService.Controllers
                     response.Wait();
                     Task<string> jsonStr = response.Result.Content.ReadAsStringAsync();
                     jsonStr.Wait();
-                    result = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result, new JsonSerializerSettings
+                    List<User> allUsers = JsonConvert.DeserializeObject<List<User>>(jsonStr.Result, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
-                    })
-                    .Find(_ => _.Password == password);
+                    });
+                    result = allUsers.Find(_ => _.Password == password);
                 }
             }
             catch (Exception e)
