@@ -57,11 +57,11 @@ namespace SharedTypes.Models
                 {
                     try
                     {
-                        string jsonStr = JsonConvert.SerializeObject(JsonConvert.SerializeObject(
+                        string jsonStr = JsonConvert.SerializeObject(
                                 this,
                                 Formatting.None,
                                 settings: new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }
-                                ));
+                                );
                         
                         StringContent strCon = new StringContent(
                             jsonStr,
@@ -69,7 +69,7 @@ namespace SharedTypes.Models
                             "application/json"
                             );
 
-                        HttpResponseMessage response = client.PostAsync($"{Microservices.MitgliederServiceApi}", strCon).GetAwaiter().GetResult();
+                        HttpResponseMessage response = client.PostAsync($"{Microservices.TurnierServiceApi}", strCon).GetAwaiter().GetResult();
                     }
                     catch (Exception e)
                     {
@@ -91,18 +91,18 @@ namespace SharedTypes.Models
                 {
                     try
                     {
-                        string jsonStr = JsonConvert.SerializeObject(JsonConvert.SerializeObject(
+                        string jsonStr = JsonConvert.SerializeObject(
                                 this,
                                 Formatting.None,
                                 settings: new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }
-                                ));
+                                );
 
                         StringContent strCon = new StringContent(
                             jsonStr,
                             Encoding.UTF8,
                             "application/json");
 
-                        HttpResponseMessage response = client.PutAsync($"{Microservices.MitgliederServiceApi}/{Id}", strCon).GetAwaiter().GetResult();
+                        HttpResponseMessage response = client.PutAsync($"{Microservices.TurnierServiceApi}/{Id}", strCon).GetAwaiter().GetResult();
                     }
                     catch (Exception e)
                     {
@@ -122,7 +122,7 @@ namespace SharedTypes.Models
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    HttpResponseMessage response = client.DeleteAsync($"{Microservices.MitgliederServiceApi}/{Id}").GetAwaiter().GetResult();
+                    HttpResponseMessage response = client.DeleteAsync($"{Microservices.TurnierServiceApi}/{Id}").GetAwaiter().GetResult();
                     string jsonStr = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 }
             }

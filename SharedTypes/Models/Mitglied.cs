@@ -14,16 +14,14 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public abstract class Mitglied
+    public abstract class Mitglied : DatabaseObject
     {
         #region Eigenschaften
-        private int _Id;
         private string _Name;
         #endregion
 
         #region Accessoren/Modifier
         public string Name { get => _Name; set => _Name = value; }
-        public int Id { get => _Id; set => _Id = value; }
         #endregion
 
         #region Konstruktoren

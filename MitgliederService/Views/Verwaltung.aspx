@@ -17,6 +17,7 @@
                 <li class="active"><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
                 <li><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li><a href="<%= GetTurnierverwaltungsLink() %>">Turnierverwaltung</a></li>
+                <li><a href="<%= GetRankingLink() %>">Ranking</a></li>
                 <li style="float: right;">
                     <asp:Button CssClass="logout" ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" Height="47px" />
                 </li>
@@ -26,14 +27,19 @@
         <br />
         <br />
         <br />
-        <asp:Button ID="AddMemberButton" CssClass="BasicButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberButton_Click" />
-        <asp:Button ID="CancelButton" CssClass="BasicButton" runat="server" Visible="false" Text="Abbrechen" OnClick="CancelButton_Click" />
+        <div style="width: 100%; text-align: center;">
+            <asp:Label ID="Mitglieder" Font-Size="X-Large" Font-Bold="true" runat="server" Text="Mitglieder"></asp:Label>
+            <br />
+            <br />
+            <asp:Button ID="AddMemberButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberButton_Click" Height="30px" Width="169px" />
+            <asp:Button ID="CancelButton" runat="server" Visible="false" Text="Abbrechen" OnClick="CancelButton_Click" Height="27px" Width="94px" />
+        </div>
 
         <asp:Panel runat="server" ID="FormPanel" Visible="false">
             &nbsp;<br />
             <asp:Label ID="SportartenListenLabel" runat="server" Text="Sportarten:"></asp:Label>
             <br />
-            <asp:DropDownList ID="SportArtenListe" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="SportArtenListe" runat="server" Height="25px" Width="105px"></asp:DropDownList>
             <br />
             <br />
             <asp:Label ID="AddPersonTypeLabel" runat="server" Text="Auswahl des Personen Typs:" Font-Size="Medium"></asp:Label>
@@ -45,50 +51,53 @@
                 <asp:ListItem>Trainer</asp:ListItem>
             </asp:RadioButtonList>
             <br />
-            <asp:Button ID="ConfirmMitgliedTyp" CssClass="BasicButton" runat="server" OnClick="ConfirmSportart_Click" Text="Sportart bestätigen" />
+            <asp:Button ID="ConfirmMitgliedTyp" runat="server" OnClick="ConfirmSportart_Click" Text="Sportart bestätigen" Height="30px" Width="168px" />
             <br />
             <br />
             <asp:Label ID="MitgliedTypLabel" runat="server" Text=" " Font-Bold="True" Font-Overline="False" Font-Underline="True"></asp:Label>
             <asp:Label ID="MitgliedIdLabel" runat="server" CssClass="AddLabel" Text="ID:"></asp:Label>
             <br />
-            <asp:TextBox ID="MitgliedIdTextBox" runat="server" CssClass="AddTextbox" Enabled="False" TextMode="Number"></asp:TextBox>
+            <asp:TextBox ID="MitgliedIdTextBox" runat="server" CssClass="AddTextbox" Enabled="False" TextMode="Number" Height="22px" Width="128px"></asp:TextBox>
             <br />
             <asp:Label ID="MitgliedNameLabel" CssClass="AddLabel" runat="server" Text="Name:"></asp:Label>
             <br />
-            <asp:TextBox ID="MitgliedNameTextBox" CssClass="AddTextbox" runat="server" Enabled="False"></asp:TextBox>
+            <asp:TextBox ID="MitgliedNameTextBox" CssClass="AddTextbox" runat="server" Enabled="False" Height="24px" Width="128px"></asp:TextBox>
             <br />
             <asp:Label ID="MitgliedAnzahlSpieleLabel" runat="server" CssClass="AddLabel" Text="Anzahl gespielter Spiele:"></asp:Label>
             <br />
-            <asp:TextBox ID="MitgliedAnzahlSpieleTextBox" runat="server" CssClass="AddTextbox" Enabled="False" type="number"></asp:TextBox>
+            <asp:TextBox ID="MitgliedAnzahlSpieleTextBox" runat="server" CssClass="AddTextbox" Enabled="False" type="number" Height="22px" Width="127px"></asp:TextBox>
             <br />
             <asp:Label ID="MitgliedPositionLabel" runat="server" Text="Position:"></asp:Label>
             <br />
-            <asp:TextBox ID="MitgliedPositionTextBox" runat="server" Enabled="False"></asp:TextBox>
+            <asp:TextBox ID="MitgliedPositionTextBox" runat="server" Enabled="False" Height="23px" Width="129px"></asp:TextBox>
             <br />
             <asp:Label ID="MitgliedErfahrungLabel" runat="server" Text="Erfahrung:"></asp:Label>
             <br />
-            <asp:TextBox ID="MitgliedErfahrungTextBox" runat="server" Enabled="False" type="number"></asp:TextBox>
+            <asp:TextBox ID="MitgliedErfahrungTextBox" runat="server" Enabled="False" type="number" Height="23px" Width="129px"></asp:TextBox>
             <br />
             <br />
-            <asp:Button ID="AddMemberConfirmButton" CssClass="BasicButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberConfirmButton_Click" />
+            <asp:Button ID="AddMemberConfirmButton" runat="server" Text="Mitglied hinzufügen" OnClick="AddMemberConfirmButton_Click" />
             <br />
-            <asp:Button ID="EditMemberConfirmButton" CssClass="BasicButton" runat="server" Text="Bestätigen" OnClick="EditMemberConfirmButton_Click" />
+            <asp:Button ID="EditMemberConfirmButton" runat="server" Text="Bestätigen" OnClick="EditMemberConfirmButton_Click" />
             <br />
         </asp:Panel>
 
-        <br />
-        <br />
-        <asp:Label ID="Mitglieder" Font-Size="X-Large" Font-Bold="true" runat="server" Text="Mitglieder:"></asp:Label>
 
-        <br />
-        <br />
-        <asp:TextBox ID="NameInputTextBox" style="text-align: center" runat="server" Height="19px" Width="143px">Name...</asp:TextBox>
-        <br />
-        <br />
-        <asp:Button ID="SearchMemberButton" CssClass="BasicButton" runat="server" Text="Mitglieder suchen" OnClick="SearchMemberButton_Click" />
-        <br />
-        <br />
-        <br />
+        <div style="width: 100%; text-align: center;">
+            <br />
+            <br />
+            <br />
+            <br />
+            <h5>Mitglied suchen...</h5>
+            <br />
+            <asp:TextBox ID="NameInputTextBox" Style="text-align: center" runat="server" Height="24px" Width="160px"></asp:TextBox>
+            <br />
+            <br />
+            <asp:Button ID="SearchMemberButton" runat="server" Text="Mitglieder suchen" OnClick="SearchMemberButton_Click" Height="26px" Width="156px" />
+            <br />
+            <br />
+            <br />
+        </div>
 
         <asp:Table CssClass="datatable" ID="MyTable" runat="server" BorderStyle="Inset" ForeColor="#003399" GridLines="Both" Height="50px" Width="800px">
             <asp:TableHeaderRow runat="server">

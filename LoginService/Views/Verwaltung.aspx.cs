@@ -56,7 +56,6 @@ namespace LoginService.Views
                 editButton.ID = "Edit " + userIndex;
                 editButton.Font.Size = FontUnit.Medium;
                 editButton.BackColor = Color.LightBlue;
-                editButton.CssClass = "BasicButton";
                 editButton.Click += EditButtonClick;
                 if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == Verwalter.LoggedInUser?.Id)
                 {
@@ -71,7 +70,6 @@ namespace LoginService.Views
                 deleteButton.ID = "Delete " + userIndex;
                 deleteButton.BackColor = Color.IndianRed;
                 deleteButton.Font.Size = FontUnit.Medium;
-                deleteButton.CssClass = "BasicButton";
                 deleteButton.Click += DeleteButtonClick;
                 if (oneOrNoAdmin && user.Type == UserType.Admin || user.Id == Verwalter.LoggedInUser?.Id)
                 {
@@ -145,6 +143,8 @@ namespace LoginService.Views
             => $"{Microservices.MitgliederServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetMannschaftsverwaltungsLink()
             => $"{Microservices.MannschaftsServicePage}?SessionID={Request.Params["SessionID"]}";
+        public string GetRankingLink()
+            => $"{Microservices.RankingServicePage}?SessionID={Request.Params["SessionID"]}";
         public string GetLoggedInUsername()
             => Verwalter.Users.Find(_ => _.SessionID == Request.Params["SessionID"])?.Username ?? "Unbekannt";
 

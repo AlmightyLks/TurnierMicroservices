@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Microservices.cs" />
     <Compile Include="Models\Bundesliga.cs" />
+    <Compile Include="Models\DatabaseObject.cs" />
     <Compile Include="Models\Fussballspieler.cs" />
     <Compile Include="Models\Handballspieler.cs" />
     <Compile Include="Models\Mannschaft.cs" />

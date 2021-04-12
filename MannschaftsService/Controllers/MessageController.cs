@@ -64,6 +64,7 @@ namespace MannschaftsService.Controllers
                     if (!newMannschaften.Any((el) => el.Name == dbMannschaft.Value.Key.Key))
                     {
                         var mannschaft = new Mannschaft();
+                        mannschaft.Id = dbMannschaft.Key;
                         mannschaft.Name = dbMannschaft.Value.Key.Key;
                         mannschaft.SportArt = dbMannschaft.Value.Key.Value;
                         mannschaft.Mitglieder = new List<Mitglied>();
@@ -149,7 +150,7 @@ namespace MannschaftsService.Controllers
         [Route("api/message/{id}")]
         public bool Delete(int id)
         {
-            int result = NonQueryDB($"delete from `mannschaft` where `id`='{id}'");
+            int result = NonQueryDB($"delete from `mannschaft` where `id`='{id}';");
             return result != 0;
         }
 

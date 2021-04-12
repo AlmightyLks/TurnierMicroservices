@@ -60,5 +60,7 @@ namespace Gateway.Views
             => $"{Microservices.MannschaftsServicePage}?SessionID={Session.SessionID}";
         public string GetTurnierverwaltungsLink()
             => $"{Microservices.TurnierServicePage}?SessionID={Session.SessionID}";
+        public string GetRankingLink()
+            => $"{Microservices.RankingServicePage}?SessionID={Session.SessionID}";
     }
 }

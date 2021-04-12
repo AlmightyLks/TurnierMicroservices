@@ -1,4 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using SharedTypes;
 using SharedTypes.Models;
 using System;
 using System.Collections.Generic;
@@ -18,31 +20,108 @@ namespace TurnierService.Controllers
         {
             List<Turnier> result = new List<Turnier>();
 
-            MySqlDataReader reader = QueryDB("", out MySqlConnection connection);
+            MySqlDataReader reader = QueryDB("select * from turnier;", out MySqlConnection connection);
+
+            if (reader == null || connection == null || !reader.HasRows)
+            {
+                reader?.Close();
+                connection?.Close();
+                return result;
+            }
+
+            while (reader.Read())
+            {
+                Turnier turnier = new Turnier();
+                turnier.Id = (int)reader["id"];
+                turnier.Titel = reader["titel"].ToString();
+                turnier.Sportart = reader["sportart"].ToString();
+                result.Add(turnier);
+            }
+            reader?.Close();
+            connection?.Close();
+
+
+            reader = QueryDB("select * from TurnierSpiel;", out connection);
+
+            if (reader == null || connection == null || !reader.HasRows)
+            {
+                reader?.Close();
+                connection?.Close();
+                return result;
+            }
+
+            while (reader.Read())
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Turnier turnier = result.Find(_ => _.Id == (int)reader["TurnierId"]);
+                    if (turnier == null)
+                    {
+                        continue;
+                    }
+                    Spiel spiel = new Spiel();
+                    spiel.ErsterTeilnehmer = new TurnierTeilnehmer()
+                    {
+                        TeilnehmerId = (int)reader["ErsterTeilnehmerId"],
+                        Punkte = (int)reader["ErsterTeilnehmerPunkte"]
+                    };
+                    spiel.ZweiterTeilnehmer = new TurnierTeilnehmer()
+                    {
+                        TeilnehmerId = (int)reader["ZweiterTeilnehmerId"],
+                        Punkte = (int)reader["ZweiterTeilnehmerPunkte"]
+                    };
+                    spiel.Id = (int)reader["Id"];
+                    spiel.Position = (int)reader["Position"];
+
+                    turnier.Spiele.Add(spiel);
+                }
+            }
+
+            reader?.Close();
+            connection?.Close();
 
             return result;
         }
 
-        // GET: api/Message/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST: api/Message
-        public void Post([FromBody]string value)
+        public void Post([FromBody] Turnier value)
         {
+            string insertQuery = string.Empty;
+
+            insertQuery += $"INSERT INTO `turnier`(`Titel`, `Sportart`) VALUES ('{value.Titel}','{value.Sportart}');";
+
+            if (value.Spiele.Count != 0)
+            {
+                insertQuery += $"INSERT INTO `turnierspiel`(`TurnierId`, `ErsterTeilnehmerId`, `ErsterTeilnehmerPunkte`, `ZweiterTeilnehmerId`, `ZweiterTeilnehmerPunkte`, `Position`) VALUES ";
+                insertQuery += $"{string.Join(",", value.Spiele.Select(_ => $"('{value.Id}', '{_.ErsterTeilnehmer.TeilnehmerId}', '{_.ErsterTeilnehmer.Punkte}', '{_.ZweiterTeilnehmer.TeilnehmerId}', '{_.ZweiterTeilnehmer.Punkte}', '{_.Position}')"))};";
+            }
+
+            _ = NonQueryDB(insertQuery);
         }
 
         // PUT: api/Message/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] Turnier value)
         {
+            string updateStr = string.Empty;
+
+            updateStr += $"update `turnier` set `Titel`='{value.Titel}', `Sportart`='{value.Sportart}' where `id`='{value.Id}';";
+            updateStr += $"delete from `turnierspiel` where `TurnierId`='{id}';";
+
+            if (value.Spiele.Count != 0)
+            {
+                updateStr += $"INSERT INTO `turnierspiel`(`TurnierId`, `ErsterTeilnehmerId`, `ErsterTeilnehmerPunkte`, `ZweiterTeilnehmerId`, `ZweiterTeilnehmerPunkte`, `Position`) VALUES ";
+                updateStr += $"{string.Join(",", value.Spiele.Select(_ => $"('{value.Id}', '{_.ErsterTeilnehmer.TeilnehmerId}', '{_.ErsterTeilnehmer.Punkte}', '{_.ZweiterTeilnehmer.TeilnehmerId}', '{_.ZweiterTeilnehmer.Punkte}', '{_.Position}')"))};";
+            }
+
+            _ = NonQueryDB(updateStr);
         }
 
         // DELETE: api/Message/5
         public void Delete(int id)
         {
+            _ = NonQueryDB($"delete from `turnier` where `id`='{id}'");
         }
+
         private MySqlDataReader QueryDB(string sqlStr, out MySqlConnection connection)
         {
             connection = null;

@@ -14,6 +14,7 @@
                 <li><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
                 <li><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li><a href="<%= GetTurnierverwaltungsLink() %>">Turnierverwaltung</a></li>
+                <li><a href="<%= GetRankingLink() %>">Ranking</a></li>
                 <li style="float: right">
                     <asp:Button CssClass="logout" ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" Height="47px" />
                 </li>

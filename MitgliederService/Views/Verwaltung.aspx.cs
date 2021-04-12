@@ -115,7 +115,6 @@ namespace MitgliederService.Views
                     editButton.ID = "Edit " + MitgliedIndex;
                     editButton.Font.Size = FontUnit.Medium;
                     editButton.BackColor = Color.LightBlue;
-                    editButton.CssClass = "BasicButton";
                     editButton.Click += EditButtonClick;
                     editCell.Controls.Add(editButton);
 
@@ -126,7 +125,6 @@ namespace MitgliederService.Views
                     deleteButton.Click += DeleteButtonClick;
                     deleteButton.BackColor = Color.IndianRed;
                     deleteButton.Font.Size = FontUnit.Medium;
-                    deleteButton.CssClass = "BasicButton";
                     deleteCell.Controls.Add(deleteButton);
 
                     TR.Cells.Add(editCell);
@@ -484,6 +482,8 @@ namespace MitgliederService.Views
             => $"#";
         public string GetMannschaftsverwaltungsLink()
             => $"{Microservices.MannschaftsServicePage}?SessionID={Request.Params["SessionID"]}";
+        public string GetRankingLink()
+            => $"{Microservices.RankingServicePage}?SessionID={Request.Params["SessionID"]}";
 
     }
 }

@@ -7,21 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LoginService.Views
+namespace RankingService.Views
 {
 
 
-    public partial class Verwaltung
+    public partial class View
     {
 
         /// <summary>
-        /// DingDaForm control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm DingDaForm;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
         /// LogoutButton control.
@@ -33,57 +33,39 @@ namespace LoginService.Views
         protected global::System.Web.UI.WebControls.Button LogoutButton;
 
         /// <summary>
-        /// UsernameTextBox control.
+        /// Turniere control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UsernameTextBox;
+        protected global::System.Web.UI.WebControls.Label Turniere;
 
         /// <summary>
-        /// PasswordTextBox control.
+        /// TurnierDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTextBox;
+        protected global::System.Web.UI.WebControls.DropDownList TurnierDropDownList;
 
         /// <summary>
-        /// UserTypDropDown control.
+        /// SportartLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList UserTypDropDown;
+        protected global::System.Web.UI.WebControls.Label SportartLabel;
 
         /// <summary>
-        /// AddUserButton control.
+        /// SpieleTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddUserButton;
-
-        /// <summary>
-        /// EditConfirmButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button EditConfirmButton;
-
-        /// <summary>
-        /// UserTable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table UserTable;
+        protected global::System.Web.UI.WebControls.Table SpieleTable;
     }
 }

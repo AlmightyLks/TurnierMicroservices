@@ -33,6 +33,15 @@ namespace MitgliederService.Views
         protected global::System.Web.UI.WebControls.Button LogoutButton;
 
         /// <summary>
+        /// Mitglieder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Mitglieder;
+
+        /// <summary>
         /// AddMemberButton control.
         /// </summary>
         /// <remarks>
@@ -220,15 +229,6 @@ namespace MitgliederService.Views
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button EditMemberConfirmButton;
-
-        /// <summary>
-        /// Mitglieder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Mitglieder;
 
         /// <summary>
         /// NameInputTextBox control.

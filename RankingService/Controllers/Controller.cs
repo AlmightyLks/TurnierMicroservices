@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 
-namespace TurnierService.Controllers
+namespace RankingService.Controllers
 {
     public class Controller
     {
@@ -111,19 +111,6 @@ namespace TurnierService.Controllers
 
             }
             return result;
-        }
-
-        public void DeleteTurnier(Turnier turnier)
-        {
-            turnier.Delete();
-        }
-        public void PostTurnier(Turnier turnier)
-        {
-            turnier.Post();
-        }
-        public void PutTurnier(Turnier turnier)
-        {
-            turnier.Put();
         }
     }
 }

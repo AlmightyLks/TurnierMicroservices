@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public struct TurnierTeilnehmer
+    public class DatabaseObject
     {
-        public int TeilnehmerId { get; set; }
-        public int Punkte { get; set; }
+        private int _id;
+        public int Id { get => _id; set => _id = value; }
     }
 }

@@ -22,5 +22,7 @@ namespace SharedTypes
 
         public const string TurnierServicePage = "http://localhost:55123/Views/Verwaltung";
         public const string TurnierServiceApi = "http://localhost:55123/api/Message";
+
+        public const string RankingServicePage = "http://localhost:63391/Views/View";
     }
 }

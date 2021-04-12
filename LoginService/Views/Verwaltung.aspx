@@ -18,6 +18,7 @@
                 <li><a href="<%= GetMitgliederverwaltungsLink() %>">Mitgliederverwaltung</a></li>
                 <li><a href="<%= GetMannschaftsverwaltungsLink() %>">Mannschaftsverwaltung</a></li>
                 <li><a href="<%= GetTurnierverwaltungsLink() %>">Turnierverwaltung</a></li>
+                <li><a href="<%= GetRankingLink() %>">Ranking</a></li>
                 <li style="float: right;">
                     <asp:Button CssClass="logout" ID="LogoutButton" runat="server" Text="Abmelden" OnClick="LogoutButton_Click" Height="47px" />
                 </li>
@@ -42,9 +43,9 @@
             <asp:DropDownList ID="UserTypDropDown" runat="server"></asp:DropDownList>
             <br />
             <br />
-            <asp:Button CssClass="BasicButton" ID="AddUserButton" runat="server" Text="Hinzufügen" OnClick="AddUserButton_Click" />
+            <asp:Button ID="AddUserButton" runat="server" Text="Hinzufügen" OnClick="AddUserButton_Click" Height="31px" Width="100px" />
             <br />
-            <asp:Button CssClass="BasicButton" ID="EditConfirmButton" runat="server" Text="Bearbeiten bestätigen" OnClick="EditConfirmButton_Click" Visible="False" />
+            <asp:Button ID="EditConfirmButton" runat="server" Text="Bearbeiten bestätigen" OnClick="EditConfirmButton_Click" Visible="False" Height="27px" Width="190px" />
             <br />
             <br />
         </main>

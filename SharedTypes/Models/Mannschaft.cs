@@ -13,10 +13,9 @@ using System.Threading.Tasks;
 
 namespace SharedTypes.Models
 {
-    public class Mannschaft
+    public class Mannschaft : DatabaseObject
     {
         #region Eigenschaften
-        private int _Id;
         private List<Mitglied> _Mitglieder;
         private string _Name;
         private string _SportArt;
@@ -26,7 +25,6 @@ namespace SharedTypes.Models
         public List<Mitglied> Mitglieder { get => _Mitglieder; set => _Mitglieder = value; }
         public string Name { get => _Name; set => _Name = value; }
         public string SportArt { get => _SportArt; set => _SportArt = value; }
-        public int Id { get => _Id; set => _Id = value; }
         #endregion
 
         #region Konstruktoren

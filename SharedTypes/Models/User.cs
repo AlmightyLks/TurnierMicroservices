@@ -9,10 +9,9 @@ using System.Web;
 
 namespace SharedTypes.Models
 {
-    public class User
+    public class User : DatabaseObject
     {
         #region Eigenschaften
-        private int _id;
         private UserType _type;
         private string _username;
         private string _password;
@@ -20,7 +19,6 @@ namespace SharedTypes.Models
         #endregion
 
         #region Accessoren/Modifier
-        public int Id { get => _id; set => _id = value; }
         public string Username { get => _username; set => _username = value; }
         public string Password { get => _password; set => _password = value; }
         public string SessionID { get => _sessionID; set => _sessionID = value; }
