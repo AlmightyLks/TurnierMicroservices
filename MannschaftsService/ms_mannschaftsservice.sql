@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2021 at 07:20 PM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.2.34
+-- Generation Time: Apr 13, 2021 at 01:25 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,12 @@ CREATE TABLE `mannschaft` (
 INSERT INTO `mannschaft` (`id`, `Name`, `Sportart`) VALUES
 (1, '1. FC Köln', 'Fussball'),
 (2, 'Rhein-Neckar Löwen', 'Handball'),
-(3, 'FC Wormersdorf', 'Tennis');
+(16, 'Fussball1', 'Fussball'),
+(17, 'Fussball2', 'Fussball'),
+(18, 'Handball1', 'Handball'),
+(19, 'Handball2', 'Handball'),
+(20, 'Fussball3', 'Fussball'),
+(21, 'Handball3', 'Handball');
 
 -- --------------------------------------------------------
 
@@ -60,8 +65,7 @@ CREATE TABLE `mannschaftmitglied` (
 
 INSERT INTO `mannschaftmitglied` (`id`, `Mannschaft_ID`, `Mitglied_ID`) VALUES
 (1, 1, 8),
-(2, 2, 10),
-(3, 3, 9);
+(2, 2, 10);
 
 --
 -- Indexes for dumped tables
@@ -88,7 +92,7 @@ ALTER TABLE `mannschaftmitglied`
 -- AUTO_INCREMENT for table `mannschaft`
 --
 ALTER TABLE `mannschaft`
-  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(33) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `mannschaftmitglied`

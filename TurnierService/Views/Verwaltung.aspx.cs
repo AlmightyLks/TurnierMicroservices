@@ -42,6 +42,8 @@ namespace TurnierService.Views
             if (Verwalter.LoggedInUser?.Type != UserType.Admin)
             {
                 DeleteButton.Visible = false;
+                AddTeilnehmerButton.Visible = false;
+                TeilnehmerDropDownList.Visible = false;
             }
         }
 

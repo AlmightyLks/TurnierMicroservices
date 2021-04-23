@@ -1,0 +1,10 @@
+Default User Accounts:
+Admin Admin
+User User
+
+
+Alle URLs in einer Übersicht in:
+/SharedTypes/Microservices.cs
+
+
+Die exportieren sql Dateien befinden sich in den jeweiligen Projekt Ordnern.

@@ -48,7 +48,7 @@ namespace MannschaftsService.Views
 
         private void LoadMannschaften()
         {
-            for (int i = MannschaftsTable.Rows.Count; i > 1; i--)
+            for (int i = MannschaftsTable.Rows.Count - 1; i > 1; i--)
             {
                 MannschaftsTable.Rows.RemoveAt(i);
             }

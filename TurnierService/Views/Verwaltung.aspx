@@ -31,7 +31,7 @@
             <asp:Label ID="Turniere" Font-Size="X-Large" Font-Bold="true" runat="server" Text="Turniere"></asp:Label>
             <br />
             <br />
-            <asp:DropDownList ID="TurnierDropDownList" runat="server" AutoPostBack="True" Height="20px" Width="85px"></asp:DropDownList>
+            <asp:DropDownList ID="TurnierDropDownList" runat="server" AutoPostBack="True" Height="20px" Width="124px"></asp:DropDownList>
             <br />
             <br />
             <asp:Button ID="DeleteButton" runat="server" OnClick="DeleteTurnierButton_Click" Text="Delete" Height="25px" Width="84px" />
